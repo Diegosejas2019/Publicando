@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -22,11 +23,14 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -61,6 +65,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private LinearLayout Dots_Layout;
+    private ImageView[] dots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +98,37 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
+        createDots(0);
+    }
+
+    private void createDots(int current_position)
+    {
+        if (Dots_Layout!=null)
+            Dots_Layout.removeAllViews();
+
+        dots = new ImageView[3];
+
+        for (int i= 0; i < dots.length; i++)
+        {
+            dots[i] = new ImageView(this);
+            if (i==current_position)
+            {
+                dots[i].setImageDrawable(ContextCompat.getDrawable(this,R.drawable.active_dots));
+            }
+            else
+            {
+                dots[i].setImageDrawable(ContextCompat.getDrawable(this,R.drawable.default_dots));
+            }
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            params.setMargins(4,0,4,0);
+
+            Dots_Layout.addView(dots[i],params);
+        }
+
     }
 
     private void populateAutoComplete() {

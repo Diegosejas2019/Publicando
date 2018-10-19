@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".LoginActivity">
+    tools:context=".CreateAccountActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -45,35 +45,23 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="15dp"
                 android:layout_marginTop="10dp"/>
-            <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-            android:padding="10dp"
-            android:text="INGRESA CON GOOGLE"
-                android:textColor="@color/colorWhite"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/bordesgoogle"
-            />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:layout_marginTop="10dp"
-                android:text="INGRESA CON TU MAIL"
-                android:textColor="@color/colorWhite"
+                android:hint="Ingrese Email"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/bordes"
+                android:background="@drawable/borderwhite"
                 />
-            <Button
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:layout_marginTop="10dp"
-                android:text="INGRESA CON FACEBOOK"
-                android:textColor="@color/colorWhite"
+                android:hint="Ingrese nombre"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/bordesface"
+                android:background="@drawable/borderwhite"
                 />
             <View
                 android:layout_width="match_parent"
