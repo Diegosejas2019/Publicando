@@ -1,10 +1,13 @@
 package com.code.publicando.publicando;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -12,10 +15,12 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetZoneActivity extends AppCompatActivity {
+public class SetZoneActivity extends AppCompatActivity implements View.OnClickListener{
 
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
+    private Button next;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,19 +30,34 @@ public class SetZoneActivity extends AppCompatActivity {
         createDots(1);
 
         List<String> spinnerArray =  new ArrayList<String>();
-        spinnerArray.add("item1");
-        spinnerArray.add("item2");
+        spinnerArray.add("Provincia");
+        List<String> spinnerArray2 =  new ArrayList<String>();
+        spinnerArray2.add("Localidad");
+        List<String> spinnerArray3 =  new ArrayList<String>();
+        spinnerArray3.add("Barrio");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item, spinnerArray);
 
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, spinnerArray2);
+
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, spinnerArray3);
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         Spinner sItems = (Spinner) findViewById(R.id.spinner);
         Spinner sItems2 = (Spinner) findViewById(R.id.spinner2);
         Spinner sItems3 = (Spinner) findViewById(R.id.spinner3);
         sItems.setAdapter(adapter);
-        sItems2.setAdapter(adapter);
-        sItems3.setAdapter(adapter);
+        sItems2.setAdapter(adapter2);
+        sItems3.setAdapter(adapter3);
+
+        next = findViewById(R.id.next);
+        next.setOnClickListener(this);
     }
 
     private void createDots(int current_position)
@@ -66,5 +86,14 @@ public class SetZoneActivity extends AppCompatActivity {
             Dots_Layout.addView(dots[i],params);
         }
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent myIntent = new Intent(SetZoneActivity.this,
+                LocationActivity.class);
+        startActivity(myIntent);
+        SetZoneActivity.this.finish();
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
     }
 }

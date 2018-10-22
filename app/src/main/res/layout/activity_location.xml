@@ -2,7 +2,8 @@
 <ScrollView android:id="@+id/login_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,8 +11,8 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ChooseZoneActivity">
 
@@ -35,6 +36,9 @@
                 android:textStyle="bold"
                 android:layout_gravity="center_horizontal"/>
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:map="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
@@ -42,12 +46,26 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:layout_margin="10dp"
-                tools:context=".LocationActivity" />
+
+                tools:context=".LocationActivity"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/fabmap"
+                android:src="@android:drawable/ic_menu_compass"
+                android:layout_gravity="bottom|end"
+                app:rippleColor="@color/colorNaranja"
+                app:backgroundTint="@color/colorNaranja"
+                app:borderWidth="0dp"/>
+            </FrameLayout>
             <EditText
                 android:layout_width="290dp"
                 android:layout_height="match_parent"
                 android:padding="5dp"
+                android:layout_marginTop="10dp"
                 android:hint="Indica distancia a la redonda(km)"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/borderwhite"

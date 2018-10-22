@@ -3,6 +3,8 @@ package com.code.publicando.publicando;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
 /**
  * A login screen that offers login via email/password.
@@ -92,7 +95,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                //attemptLogin();
+                //Intent myIntent = new Intent(LoginActivity.this, CreateAccountActivity.class);
+                //myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                //myIntent.putExtra("key", IDuser); //Optional parameters
+                //LoginActivity.this.startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle());
+
+                Intent mainIntent = new Intent(LoginActivity.this,
+                        CreateAccountActivity.class);
+                startActivity(mainIntent);
+                LoginActivity.this.finish();
+                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
             }
         });
 

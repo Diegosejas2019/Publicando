@@ -1,15 +1,24 @@
 package com.code.publicando.publicando;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class ChooseZoneActivity extends AppCompatActivity {
+import java.io.BufferedReader;
+
+import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
+
+public class ChooseZoneActivity extends AppCompatActivity implements View.OnClickListener {
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
+    private Button chooseButton;
+    private Button myUbication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +27,12 @@ public class ChooseZoneActivity extends AppCompatActivity {
 
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
         createDots(1);
+
+        chooseButton = findViewById(R.id.choose);
+        chooseButton.setOnClickListener(this);
+
+        myUbication = findViewById(R.id.myUbication);
+        myUbication.setOnClickListener(this);
     }
 
     private void createDots(int current_position)
@@ -46,5 +61,40 @@ public class ChooseZoneActivity extends AppCompatActivity {
             Dots_Layout.addView(dots[i],params);
         }
 
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        Intent myIntent;
+        switch (view.getId())
+        {
+            case R.id.myUbication:
+ /*               myIntent = new Intent(ChooseZoneActivity.this, LocationActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                //myIntent.putExtra("key", IDuser); //Optional parameters
+                ChooseZoneActivity.this.startActivity(myIntent);*/
+
+                myIntent = new Intent(ChooseZoneActivity.this,
+                        LocationActivity.class);
+                startActivity(myIntent);
+                ChooseZoneActivity.this.finish();
+                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                break;
+            case R.id.choose:
+/*                myIntent = new Intent(ChooseZoneActivity.this, SetZoneActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                //myIntent.putExtra("key", IDuser); //Optional parameters
+                ChooseZoneActivity.this.startActivity(myIntent);*/
+
+                myIntent = new Intent(ChooseZoneActivity.this,
+                        SetZoneActivity.class);
+                startActivity(myIntent);
+                ChooseZoneActivity.this.finish();
+                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+            break;
+            default:
+                break;
+        }
     }
 }

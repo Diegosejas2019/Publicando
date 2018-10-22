@@ -13,7 +13,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".CreateAccountActivity">
+    tools:context=".SetZoneActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -23,8 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
-
-
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -46,23 +44,27 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="15dp"
                 android:layout_marginTop="10dp"/>
+            <Spinner
+                android:id="@+id/spinner"
+
+                style="@style/spinner_style">
+
+            </Spinner>
+            <Spinner
+                android:id="@+id/spinner2"
+                style="@style/spinner_style">
+
+            </Spinner>
+            <Spinner
+                android:id="@+id/spinner3"
+                style="@style/spinner_style">
+            </Spinner>
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:padding="10dp"
-                android:hint="Ingrese Email"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/borderwhite"
-                android:focusedByDefault="false"
-                android:focusableInTouchMode="true"
-                />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:layout_height="match_parent"
+                android:padding="5dp"
                 android:layout_marginTop="10dp"
-                android:hint="Ingrese nombre"
+                android:hint="Indica distancia a la redonda(km)"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/borderwhite"
                 android:focusedByDefault="false"
@@ -74,48 +76,16 @@
                 android:layout_marginTop="20dp"
 
                 android:background="@color/colorNaranja"/>
-            <!--<android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <AutoCompleteTextView
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
-                    android:imeActionId="6"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>-->
 
             <Button
-                android:id="@+id/email_sign_in_button"
+                android:id="@+id/next"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bordes"
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="16dp"
-                android:text="Ya tengo cuenta"
+                android:text="Siguiente"
                 android:textStyle="bold" />
             <View
                 android:layout_width="wrap_content"
@@ -142,5 +112,6 @@
                 android:layout_height="wrap_content"
                 android:text="Ingresando estas aceptando nuestros terminos y condiciones" />
         </LinearLayout>
+
 </LinearLayout>
 </ScrollView>
