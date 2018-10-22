@@ -68,6 +68,17 @@
                 android:focusedByDefault="false"
                 android:focusableInTouchMode="true"
                 />
+
+            <Button
+                android:id="@+id/next"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bordes"
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="16dp"
+                android:text="Siguiente"
+                android:textStyle="bold" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"

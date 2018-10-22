@@ -1,18 +1,21 @@
 package com.code.publicando.publicando;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompatSideChannelService;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class GuideActivity extends AppCompatActivity {
+public class GuideActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ViewPager mPager;
     private int[] layouts = {R.layout.first_slide,R.layout.second_slide,R.layout.third_slide};
@@ -20,10 +23,16 @@ public class GuideActivity extends AppCompatActivity {
 
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
+    private Button skip,next;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (new PreferenceManager(this).checkPreference())
+        {
+            loadHome();
+        }
 
         if (Build.VERSION.SDK_INT >= 19)
         {
@@ -41,6 +50,12 @@ public class GuideActivity extends AppCompatActivity {
         mPager.setAdapter(mpagerAdapter);
 
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
+
+        skip = findViewById(R.id.skip);
+        next = findViewById(R.id.next);
+        skip.setOnClickListener(this);
+        next.setOnClickListener(this);
+
         createDots(0);
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -52,6 +67,17 @@ public class GuideActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 createDots(position);
+
+                if (position == layouts.length-1)
+                {
+                    next.setText("Comenzar");
+                    skip.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    next.setText("Siguiente");
+                    skip.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -73,7 +99,7 @@ public class GuideActivity extends AppCompatActivity {
             dots[i] = new ImageView(this);
             if (i==current_position)
             {
-                dots[i].setImageDrawable(ContextCompat.getDrawable(this,R.drawable.active_dots));
+                dots[i].setImageDrawable(ContextCompat.getDrawable(this,R.drawable.tes));
             }
             else
             {
@@ -85,6 +111,41 @@ public class GuideActivity extends AppCompatActivity {
             params.setMargins(4,0,4,0);
 
             Dots_Layout.addView(dots[i],params);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId())
+        {
+            case R.id.next:
+                loadNextSlide();
+                break;
+            case R.id.skip:
+                loadHome();
+                new PreferenceManager(this).writePreference();
+                break;
+        }
+    }
+
+    private void loadHome()
+    {
+        startActivity(new Intent(GuideActivity.this, MainActivity.class));
+        finish();
+    }
+
+    private void loadNextSlide()
+    {
+        int next_slide = mPager.getCurrentItem() + 1;
+
+        if (next_slide<layouts.length)
+        {
+            mPager.setCurrentItem(next_slide);
+        }
+        else
+        {
+            loadHome();
+            new PreferenceManager(this).writePreference();
         }
     }
 }

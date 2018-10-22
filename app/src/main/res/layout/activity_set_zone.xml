@@ -59,23 +59,32 @@
                 android:id="@+id/spinner3"
                 style="@style/spinner_style">
             </Spinner>
-            <EditText
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/borderwhite">
+                <fragment
+                    android:id="@+id/place_autocomplete_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/borderwhite"
+                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                    />
+            </LinearLayout>
+
+<!--            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="5dp"
                 android:layout_marginTop="10dp"
-                android:hint="Indica distancia a la redonda(km)"
+                android:hint="Calle y altura (Opcional)"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/borderwhite"
                 android:focusedByDefault="false"
                 android:focusableInTouchMode="true"
-                />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="20dp"
-
-                android:background="@color/colorNaranja"/>
+                />-->
 
             <Button
                 android:id="@+id/next"
@@ -87,6 +96,12 @@
                 android:layout_marginTop="16dp"
                 android:text="Siguiente"
                 android:textStyle="bold" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="20dp"
+
+                android:background="@color/colorNaranja"/>
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"

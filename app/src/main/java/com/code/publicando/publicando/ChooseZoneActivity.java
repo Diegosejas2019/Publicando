@@ -70,16 +70,16 @@ public class ChooseZoneActivity extends AppCompatActivity implements View.OnClic
         switch (view.getId())
         {
             case R.id.myUbication:
- /*               myIntent = new Intent(ChooseZoneActivity.this, LocationActivity.class);
+                myIntent = new Intent(ChooseZoneActivity.this, LocationActivity.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 //myIntent.putExtra("key", IDuser); //Optional parameters
-                ChooseZoneActivity.this.startActivity(myIntent);*/
+                ChooseZoneActivity.this.startActivity(myIntent);
 
-                myIntent = new Intent(ChooseZoneActivity.this,
+/*                myIntent = new Intent(ChooseZoneActivity.this,
                         LocationActivity.class);
                 startActivity(myIntent);
                 ChooseZoneActivity.this.finish();
-                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                overridePendingTransition(R.anim.fadein,R.anim.fadeout);*/
                 break;
             case R.id.choose:
 /*                myIntent = new Intent(ChooseZoneActivity.this, SetZoneActivity.class);
@@ -96,5 +96,13 @@ public class ChooseZoneActivity extends AppCompatActivity implements View.OnClic
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent myIntent = new Intent(ChooseZoneActivity.this, CreateAccountActivity.class);
+        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+        //myIntent.putExtra("key", IDuser); //Optional parameters
+        ChooseZoneActivity.this.startActivity(myIntent);
     }
 }

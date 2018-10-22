@@ -48,7 +48,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:id="@+id/choose"
                 android:padding="10dp"
                 android:text="Elegir Zona"
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:text="Mi Ubicación"
                 android:textColor="@color/colorWhite"
                 android:layout_gravity="center_horizontal"
@@ -74,7 +74,7 @@
 
                 android:background="@color/colorNaranja"/>
 
-            <Button
+<!--            <Button
                 android:id="@+id/email_sign_in_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
@@ -82,8 +82,8 @@
                 android:background="@drawable/bordes"
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="16dp"
-                android:text="Ya tengo cuenta"
-                android:textStyle="bold" />
+                android:text="Siguiente"
+                android:textStyle="bold" />-->
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"

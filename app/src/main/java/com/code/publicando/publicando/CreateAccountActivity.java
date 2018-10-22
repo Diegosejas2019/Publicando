@@ -26,6 +26,9 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         buttonLogin.setOnClickListener(this);
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
         createDots(0);
+
+        Button btn = findViewById(R.id.next);
+        btn.setOnClickListener(this);
     }
 
     private void createDots(int current_position)

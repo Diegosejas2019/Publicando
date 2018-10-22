@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -20,6 +21,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -58,7 +60,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private Marker mCurrLocationMarker;
-
+    private Button next;
     private FloatingActionButton fab;
 
     @Override
@@ -76,6 +78,17 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         fab = findViewById(R.id.fabmap);
         fab.setOnClickListener(this);
 
+        next = findViewById(R.id.next);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new PreferenceManager(LocationActivity.this).clearPreference();
+                Intent myIntent = new Intent(LocationActivity.this, GuideActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                //myIntent.putExtra("key", IDuser); //Optional parameters
+                LocationActivity.this.startActivity(myIntent);
+            }
+        });
     }
 
     @Override
@@ -155,7 +168,6 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
-            mMap.addCircle(new CircleOptions().radius(20));
         }
 
 /*        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -174,6 +186,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                 .zoom(15).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(camera));*/
     }
+
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -218,8 +231,14 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,13.0f));
 
+        mMap.addCircle(new CircleOptions()
+                .center(new LatLng(location.getLatitude(), location.getLongitude()))
+                .radius(1000)
+                .strokeColor(Color.RED)
+                .strokeWidth(5)
+                .fillColor(0x220000FF));
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
