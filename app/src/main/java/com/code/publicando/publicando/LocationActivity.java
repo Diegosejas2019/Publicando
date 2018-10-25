@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -36,6 +37,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -62,6 +64,9 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     private Marker mCurrLocationMarker;
     private Button next;
     private FloatingActionButton fab;
+    private LatLng latLng;
+    private int RADIUS_DEFAULT = 1000;
+    private Circle mCircle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +94,8 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                 LocationActivity.this.startActivity(myIntent);
             }
         });
+
+
     }
 
     @Override
@@ -159,6 +166,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                 buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
+
             } else {
                 //Request Location Permission
                 checkLocationPermission();
@@ -168,6 +176,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
+
         }
 
 /*        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -185,6 +194,35 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                 .tilt(30)
                 .zoom(15).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(camera));*/
+        SeekBar bar = findViewById(R.id.seekBar);
+        bar.setMax((int) mMap.getMaxZoomLevel());
+        bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // do nothing
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // do nothing
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                // use progress set map zoom level
+                // update map zoom level here
+                RADIUS_DEFAULT = RADIUS_DEFAULT + progress + 100;
+/*                mCircle = mMap.addCircle(new CircleOptions()
+                        .center(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
+                        .radius(RADIUS_DEFAULT)
+                        .strokeColor(Color.BLUE)
+                        .fillColor(Color.TRANSPARENT)
+                        .strokeWidth(5));*/
+                mCircle.setRadius(RADIUS_DEFAULT);
+            }
+        });
     }
 
 
@@ -208,8 +246,40 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
+
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (location == null) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
+        else {
+            handleNewLocation(location);
+        }
     }
 
+    private void handleNewLocation(Location location) {
+
+        double currentLatitude = location.getLatitude();
+        double currentLongitude = location.getLongitude();
+
+        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+        mLastLocation = location;
+        //mMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("Current Location"));
+        MarkerOptions options = new MarkerOptions()
+                .position(latLng)
+                .title("I am here!");
+        mMap.addMarker(options);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
+
+        mCircle = mMap.addCircle(new CircleOptions()
+                .center(latLng)
+                .radius(RADIUS_DEFAULT)
+                .strokeColor(Color.BLUE)
+                .fillColor(Color.TRANSPARENT)
+                .strokeWidth(5));
+
+    }
     @Override
     public void onConnectionSuspended(int i) {}
 
@@ -217,13 +287,13 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     public void onLocationChanged(Location location)
     {
-        mLastLocation = location;
+        /* mLastLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
 
         //Place current location marker
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
@@ -232,13 +302,12 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
 
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,13.0f));
-
-        mMap.addCircle(new CircleOptions()
-                .center(new LatLng(location.getLatitude(), location.getLongitude()))
-                .radius(1000)
+       mMap.addCircle(new CircleOptions()
+                .center(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
+                .radius(RADIUS_DEFAULT)
                 .strokeColor(Color.RED)
                 .strokeWidth(5)
-                .fillColor(0x220000FF));
+                .fillColor(0x220000FF));*/
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;

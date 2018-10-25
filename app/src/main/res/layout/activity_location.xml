@@ -72,6 +72,13 @@
                 android:focusedByDefault="false"
                 android:focusableInTouchMode="true"
                 />
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="237dp"
+                android:layout_height="32dp"
+                android:progressBackgroundTint="@android:color/white"
+                android:layout_alignTop="@+id/imageButton"
+                android:layout_centerHorizontal="true" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"

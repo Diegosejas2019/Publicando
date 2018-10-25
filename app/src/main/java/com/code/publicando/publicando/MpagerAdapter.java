@@ -33,6 +33,7 @@ public class MpagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = layoutInflater.inflate(layouts[position],container,false);
+        view.setTag(layouts[position]);
         container.addView(view);
         return view;
     }
