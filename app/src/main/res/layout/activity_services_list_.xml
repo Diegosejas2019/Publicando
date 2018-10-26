@@ -6,7 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".ServicesList_Activity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zona"
+        android:textSize="16sp"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/bordes"
+        android:id="@+id/skip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/colorWhite"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rubro"
+        android:textSize="16sp"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="true"
+        android:paddingRight="0dp"
+        android:background="@drawable/bordes"
+        android:id="@+id/next"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/colorWhite"/>
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="60dp"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

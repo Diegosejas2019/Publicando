@@ -72,21 +72,9 @@ public class ChooseZoneActivity extends AppCompatActivity implements View.OnClic
             case R.id.myUbication:
                 myIntent = new Intent(ChooseZoneActivity.this, LocationActivity.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                //myIntent.putExtra("key", IDuser); //Optional parameters
                 ChooseZoneActivity.this.startActivity(myIntent);
-
-/*                myIntent = new Intent(ChooseZoneActivity.this,
-                        LocationActivity.class);
-                startActivity(myIntent);
-                ChooseZoneActivity.this.finish();
-                overridePendingTransition(R.anim.fadein,R.anim.fadeout);*/
                 break;
             case R.id.choose:
-/*                myIntent = new Intent(ChooseZoneActivity.this, SetZoneActivity.class);
-                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                //myIntent.putExtra("key", IDuser); //Optional parameters
-                ChooseZoneActivity.this.startActivity(myIntent);*/
-
                 myIntent = new Intent(ChooseZoneActivity.this,
                         SetZoneActivity.class);
                 startActivity(myIntent);
@@ -102,7 +90,6 @@ public class ChooseZoneActivity extends AppCompatActivity implements View.OnClic
     public void onBackPressed() {
         Intent myIntent = new Intent(ChooseZoneActivity.this, CreateAccountActivity.class);
         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-        //myIntent.putExtra("key", IDuser); //Optional parameters
         ChooseZoneActivity.this.startActivity(myIntent);
     }
 }

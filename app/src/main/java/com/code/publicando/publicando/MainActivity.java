@@ -1,11 +1,15 @@
 package com.code.publicando.publicando;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +21,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.code.publicando.publicando.fragments.ChooseZoneFragment;
+import com.code.publicando.publicando.fragments.MainFragment;
+import com.code.publicando.publicando.fragments.ServiceListFragment;
 
 import org.w3c.dom.Text;
 
@@ -56,13 +65,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        Fragment fragment = new MainFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+/*        viewPager = (ViewPager) findViewById(R.id.viewPager);
 
         MpagerAdapter viewPagerAdapter = new MpagerAdapter(layouts,MainActivity.this);
 
         viewPager.setAdapter(viewPagerAdapter);
 
-        /*After setting the adapter use the timer */
+        *//*After setting the adapter use the timer *//*
         final Handler handler = new Handler();
         final Runnable Update = new Runnable() {
             public void run() {
@@ -102,12 +113,10 @@ public class MainActivity extends AppCompatActivity
             public void run() {
                 handler.post(Update);
             }
-        }, DELAY_MS, PERIOD_MS);
-
-        /*View baseLayout = viewPager.findViewWithTag(R.layout.first_slide);
-        TextView city = (TextView) baseLayout.findViewById(R.id.textoslide1);
-        city.setText("algo");*/
+        }, DELAY_MS, PERIOD_MS);*/
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -149,6 +158,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        boolean fragmentTransaction = false;
+        Fragment fragment = null;
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
@@ -173,11 +184,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
         int id = view.getId();
-
+        Fragment fragment;
         switch (id) {
             case R.id.btnServicio:
-                startActivity(new Intent(MainActivity.this, ServicesList_Activity.class));
-                finish();
+                fragment = new ServiceListFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 break;
             case R.id.btnComercio:
                 // do something else
@@ -185,6 +196,32 @@ public class MainActivity extends AppCompatActivity
             case R.id.btnPromo:
                 // i'm lazy, do nothing
                 break;
+            case R.id.imageView:
+                showInfoAlert(R.id.imageView);
+                break;
+            case R.id.btnZona:
+                fragment = new ChooseZoneFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                break;
         }
+    }
+
+    private void showInfoAlert(int ids)
+    {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+// ...Irrelevant code for customizing the buttons and title
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.service_detail, null);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setNegativeButton("Cerrar",null );
+        ImageView editText = (ImageView) dialogView.findViewById(R.id.ImageDetail);
+        ImageView imagen = findViewById(ids);
+        //editText.setImageResource(R.drawable.comidas);
+        editText.setImageDrawable(imagen.getDrawable());
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+ /*
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();*/
     }
 }
