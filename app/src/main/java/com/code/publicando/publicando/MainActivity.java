@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.code.publicando.publicando.fragments.ChooseZoneFragment;
 import com.code.publicando.publicando.fragments.MainFragment;
+import com.code.publicando.publicando.fragments.ServiceDetalDialogFragment;
 import com.code.publicando.publicando.fragments.ServiceListFragment;
 
 import org.w3c.dom.Text;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     final long PERIOD_MS = 6000;
     private View baseLayout;
     private ImageView img;
+    private String url = "10.0.2.2/api/version";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,6 +204,11 @@ public class MainActivity extends AppCompatActivity
             case R.id.btnZona:
                 fragment = new ChooseZoneFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                break;
+            case R.id.btnRubro:
+                ServiceDetalDialogFragment dialog = new ServiceDetalDialogFragment();
+
+                dialog.show(getFragmentManager(), "ServiceDetalDialogFragment");
                 break;
         }
     }

@@ -54,6 +54,8 @@
                 android:textColor="@color/colorWhite"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bordes"
+                android:id="@+id/ingresarEmail"
+                android:onClick="Click"
                 />
             <Button
             android:layout_width="match_parent"

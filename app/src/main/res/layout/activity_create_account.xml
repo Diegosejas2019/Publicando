@@ -54,6 +54,7 @@
                 android:hint="Ingrese Email"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/borderwhite"
+                android:id="@+id/createEmail"
                 android:focusedByDefault="false"
                 android:focusableInTouchMode="true"
                 />
@@ -66,6 +67,7 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/borderwhite"
                 android:focusedByDefault="false"
+                android:id="@+id/createName"
                 android:focusableInTouchMode="true"
                 />
 
@@ -77,46 +79,15 @@
                 android:background="@drawable/bordes"
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="16dp"
-                android:text="Siguiente"
+                android:text="Crear Cuenta"
                 android:textStyle="bold" />
-            <View
+            <!--<View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginTop="20dp"
 
                 android:background="@color/colorNaranja"/>
-            <!--<android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <AutoCompleteTextView
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
-                    android:imeActionId="6"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>-->
 
             <Button
                 android:id="@+id/email_sign_in_button"
@@ -127,7 +98,7 @@
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="16dp"
                 android:text="Ya tengo cuenta"
-                android:textStyle="bold" />
+                android:textStyle="bold" />-->
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
