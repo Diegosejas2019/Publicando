@@ -164,8 +164,11 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.nav_publicar) {
+            Intent myIntent = new Intent(MainActivity.this, PostSetDetailActivity.class);
+            myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+            //myIntent.putExtra("key", IDuser); //Optional parameters
+            MainActivity.this.startActivity(myIntent);
         } /*else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
