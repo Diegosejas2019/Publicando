@@ -61,17 +61,7 @@
                 app:backgroundTint="@color/colorNaranja"
                 app:borderWidth="0dp"/>
             </FrameLayout>
-            <EditText
-                android:layout_width="290dp"
-                android:layout_height="match_parent"
-                android:padding="5dp"
-                android:layout_marginTop="10dp"
-                android:hint="Indica distancia a la redonda(km)"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/borderwhite"
-                android:focusedByDefault="false"
-                android:focusableInTouchMode="true"
-                />
+
             <SeekBar
                 android:id="@+id/seekBar"
                 android:layout_width="237dp"
