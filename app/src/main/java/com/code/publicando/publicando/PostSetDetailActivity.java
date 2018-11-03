@@ -7,16 +7,18 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
-public class PostSetDetailActivity extends AppCompatActivity {
+public class PostSetDetailActivity extends AppCompatActivity implements View.OnClickListener{
 
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
@@ -47,6 +49,9 @@ public class PostSetDetailActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,elementos);
         auto.setThreshold(3);
         auto.setAdapter(adapter);
+
+        Button btnNext = findViewById(R.id.btnNext);
+        btnNext.setOnClickListener(this);
     }
 
     private void createDots(int current_position)
@@ -81,12 +86,37 @@ public class PostSetDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            Intent myIntent = new Intent(PostSetDetailActivity.this, MainActivity.class);
+            Intent myIntent = new Intent(PostSetDetailActivity.this, CreatePostActivity.class);
             myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
             startActivity(myIntent);
             finish(); // close this activity and return to preview activity (if there is any)
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent myIntent = new Intent(PostSetDetailActivity.this, CreatePostActivity .class);
+        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+        //myIntent.putExtra("key", IDuser); //Optional parameters
+        PostSetDetailActivity.this.startActivity(myIntent);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id)
+        {
+            case R.id.btnNext:
+                Intent myIntent = new Intent(PostSetDetailActivity.this, PostUploadPhotoActivity .class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                //myIntent.putExtra("key", IDuser); //Optional parameters
+                PostSetDetailActivity.this.startActivity(myIntent);
+                PostSetDetailActivity.this.finish();
+                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                break;
+        }
     }
 }

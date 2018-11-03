@@ -1,10 +1,9 @@
 package com.code.publicando.publicando;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,29 +12,20 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
-public class PostUploadPhotoActivity extends AppCompatActivity implements View.OnClickListener {
+public class PostFinishAcvitity extends AppCompatActivity implements View.OnClickListener{
 
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
-    public static final int GET_FROM_GALLERY = 3;
-    private AutoCompleteTextView auto;
-    private Button uploadButton;
-    String[] elementos = {"Mecanico","Electricista","Pintor","Albañil", "Abogado"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_upload_photo);
+        setContentView(R.layout.activity_post_finish_acvitity);
         try {
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -50,11 +40,7 @@ public class PostUploadPhotoActivity extends AppCompatActivity implements View.O
         }
 
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
-        createDots(2);
-        uploadButton =(Button) findViewById(R.id.uploadPhoto);
-        uploadButton.setOnClickListener(this);
-        Button uploadPhotoNext = findViewById(R.id.uploadPhotoNext);
-        uploadPhotoNext.setOnClickListener(this);
+        createDots(5);
     }
 
     private void createDots(int current_position)
@@ -89,7 +75,7 @@ public class PostUploadPhotoActivity extends AppCompatActivity implements View.O
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            Intent myIntent = new Intent(PostUploadPhotoActivity.this, PostSetDetailActivity.class);
+            Intent myIntent = new Intent(PostFinishAcvitity.this, PostFormActivity.class);
             myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
             startActivity(myIntent);
             finish(); // close this activity and return to preview activity (if there is any)
@@ -98,47 +84,35 @@ public class PostUploadPhotoActivity extends AppCompatActivity implements View.O
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id)
-        {
-            case R.id.uploadPhoto:
-                startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
-                break;
-            case R.id.uploadPhotoNext:
-                Intent myIntent = new Intent(PostUploadPhotoActivity.this, PostSetUbicationActivity.class);
-                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                startActivity(myIntent);
-                PostUploadPhotoActivity.this.finish();
-                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
-                break;
-        }
+    private void showInfoAlert()
+    {
+        new AlertDialog.Builder(this)
+                .setTitle("Publicación realizada!")
+                .setMessage("¡Tu publicidad fue cargada con éxito!\n\n Vamos a verificar los " +
+                        "datos ingresados y en breve te avisaremos cuando este publicado tu anuncio." +
+                        "\n\n ¡Muchas gracias!")
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent myIntent = new Intent(PostFinishAcvitity.this, MainActivity.class);
+                        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                        startActivity(myIntent);
+                        finish(); // close this activity and return to preview activity (if there is any)
+                    }
+                })
+                //.setNegativeButton("Cancel",null )
+                .show();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onClick(View v) {
+        int id = v.getId();
 
-
-        //Detects request codes
-        if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = data.getData();
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                ImageView img = findViewById(R.id.imageUpload);
-                img.setImageBitmap(bitmap);
-
-//Saves the  image
-               // MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, timestamp, timestamp);
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+        switch (id)
+        {
+            case R.id.btnPublicar:
+                showInfoAlert();
+                break;
         }
     }
 }

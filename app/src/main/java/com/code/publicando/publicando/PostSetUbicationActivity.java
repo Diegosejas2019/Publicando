@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -94,18 +95,10 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
         fab.setOnClickListener(this);
 
         next = findViewById(R.id.next);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-/*                new PreferenceManager(LocationActivity.this).clearPreference();
-                Intent myIntent = new Intent(LocationActivity.this, GuideActivity.class);
-                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                //myIntent.putExtra("key", IDuser); //Optional parameters
-                LocationActivity.this.startActivity(myIntent);*/
-            }
-        });
+        next.setOnClickListener(this);
 
-
+        Button next = findViewById(R.id.next);
+        next.setOnClickListener(this);
     }
 
     @Override
@@ -360,9 +353,23 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
 
     @Override
     public void onClick(View view) {
-        if (!this.checkGpsEnable())
+        int id = view.getId();
+        switch (id)
         {
-            showInfoAlert();
+            case R.id.fabmap:
+                if (!this.checkGpsEnable())
+                {
+                    showInfoAlert();
+                }
+                break;
+            case R.id.next:
+                Intent myIntent = new Intent(PostSetUbicationActivity.this, PostFormActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                //myIntent.putExtra("key", IDuser); //Optional parameters
+                PostSetUbicationActivity.this.startActivity(myIntent);
+                PostSetUbicationActivity.this.finish();
+                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                break;
         }
     }
 
@@ -372,10 +379,24 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            Intent myIntent = new Intent(PostSetUbicationActivity.this, PostUploadPhotoActivity.class);
+            myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+            startActivity(myIntent);
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onBackPressed() {
         Intent myIntent = new Intent(PostSetUbicationActivity.this, PostUploadPhotoActivity.class);
         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         //myIntent.putExtra("key", IDuser); //Optional parameters
         PostSetUbicationActivity.this.startActivity(myIntent);
+        finish();
     }
 }

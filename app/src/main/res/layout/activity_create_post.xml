@@ -42,18 +42,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="40dp"
                 android:text="PRODUCTO"
                 android:textColor="@color/colorWhite"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bordesgoogle"
-                android:id="@+id/ingresarEmail"
-                android:onClick="Click"
+                android:id="@+id/btnProducto"
                 />
             <Button
+                android:id="@+id/btnServicio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="25dp"
                 android:padding="10dp"
                 android:text="SERVICIO"
                 android:textColor="@color/colorWhite"
@@ -62,28 +62,30 @@
                 />
 
             <Button
+                android:id="@+id/btnComercio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="25dp"
                 android:text="COMERCIO"
                 android:textColor="@color/colorWhite"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bordesgoogle"
                 />
             <Button
+                android:id="@+id/btnPromocion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="25dp"
                 android:text="PROMOCIÓN"
                 android:textColor="@color/colorWhite"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bordesgoogle"
                 />
 
-            <Button
-                android:id="@+id/email_sign_in_button"
+<!--            <Button
+                android:id="@+id/btnNext"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,11 +93,11 @@
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="16dp"
                 android:text="SIGUIENTE"
-                android:textStyle="bold" />
+                android:textStyle="bold" />-->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="70dp"
 
                 android:background="@color/colorNaranja"/>
 

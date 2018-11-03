@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_publicar) {
-            Intent myIntent = new Intent(MainActivity.this, PostSetDetailActivity.class);
+            Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
             myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
             //myIntent.putExtra("key", IDuser); //Optional parameters
             MainActivity.this.startActivity(myIntent);

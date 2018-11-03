@@ -45,4 +45,9 @@ public class PreferenceManager {
     {
         sharedPreferences.edit().clear().commit();
     }
+
+    //Variables de Session
+    public static SharedPreferences getDefaultSharedPreferences(Context cntx) {
+       return cntx.getSharedPreferences(cntx.getString(R.string.my_preference),Context.MODE_PRIVATE);
+    }
 }

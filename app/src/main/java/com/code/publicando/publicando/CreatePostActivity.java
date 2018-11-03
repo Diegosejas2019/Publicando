@@ -8,13 +8,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
-public class CreatePostActivity extends AppCompatActivity {
+public class CreatePostActivity extends AppCompatActivity implements View.OnClickListener{
 
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
@@ -38,6 +40,14 @@ public class CreatePostActivity extends AppCompatActivity {
 
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
         createDots(0);
+        Button btnProducto = findViewById(R.id.btnProducto);
+        btnProducto.setOnClickListener(this);
+        Button btnServicio = findViewById(R.id.btnServicio);
+        btnServicio.setOnClickListener(this);
+        Button btnComercio = findViewById(R.id.btnComercio);
+        btnComercio.setOnClickListener(this);
+        Button btnPromocion = findViewById(R.id.btnPromocion);
+        btnPromocion.setOnClickListener(this);
     }
 
     private void createDots(int current_position)
@@ -79,5 +89,41 @@ public class CreatePostActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent myIntent = new Intent(CreatePostActivity.this, MainActivity .class);
+        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+        //myIntent.putExtra("key", IDuser); //Optional parameters
+        CreatePostActivity.this.startActivity(myIntent);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        Intent myIntent = new Intent(CreatePostActivity.this, PostSetDetailActivity .class);
+        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+
+        switch (id)
+        {
+            case R.id.btnProducto:
+                myIntent.putExtra("Type", "Producto"); //Optional parameters
+                break;
+            case R.id.btnServicio:
+                myIntent.putExtra("Type", "Servicio"); //Optional parameters
+                break;
+            case R.id.btnComercio:
+                myIntent.putExtra("Type", "Comercio"); //Optional parameters
+                break;
+            case R.id.btnPromocion:
+                myIntent.putExtra("Type", "Promocion"); //Optional parameters
+                break;
+        }
+
+        CreatePostActivity.this.startActivity(myIntent);
+        CreatePostActivity.this.finish();;
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
     }
 }

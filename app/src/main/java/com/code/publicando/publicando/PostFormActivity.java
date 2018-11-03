@@ -7,15 +7,17 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
-public class PostFormActivity extends AppCompatActivity {
+public class PostFormActivity extends AppCompatActivity implements View.OnClickListener{
 
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
@@ -39,6 +41,8 @@ public class PostFormActivity extends AppCompatActivity {
 
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
         createDots(4);
+        Button postformnext = findViewById(R.id.postformnext);
+        postformnext.setOnClickListener(this);
     }
 
     private void createDots(int current_position)
@@ -80,5 +84,30 @@ public class PostFormActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id)
+        {
+            case R.id.postformnext:
+                Intent myIntent = new Intent(PostFormActivity.this, PostFinishAcvitity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                //myIntent.putExtra("key", IDuser); //Optional parameters
+                PostFormActivity.this.startActivity(myIntent);
+                PostFormActivity.this.finish();
+                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent myIntent = new Intent(PostFormActivity.this, PostSetUbicationActivity.class);
+        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+        //myIntent.putExtra("key", IDuser); //Optional parameters
+        PostFormActivity.this.startActivity(myIntent);
+        finish();
     }
 }
