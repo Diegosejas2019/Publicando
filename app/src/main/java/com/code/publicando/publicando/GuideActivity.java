@@ -1,9 +1,7 @@
 package com.code.publicando.publicando;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.NotificationCompatSideChannelService;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +16,7 @@ import android.widget.LinearLayout;
 public class GuideActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ViewPager mPager;
-    private int[] layouts = {R.layout.first_slide,R.layout.second_slide,R.layout.third_slide};
+    private int[] layouts = {R.layout.first_slide,R.layout.detail_first_slide,R.layout.third_slide};
     private  MpagerAdapter mpagerAdapter;
 
     private LinearLayout Dots_Layout;

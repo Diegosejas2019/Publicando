@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -67,6 +69,13 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
     private int RADIUS_DEFAULT = 1000;
     private Circle mCircle;
 
+    private String mType;
+    private String mAuto;
+    private Bitmap mBitmap;
+
+    private double mLatitude;
+    private double mLongitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +91,21 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
         catch (Exception e )
         {
             Log.e(e.getMessage(),"TEST");
+        }
+
+        Bundle b = getIntent().getExtras();
+        int value = -1; // or other values
+        if(b != null){
+            mType = b.getString("Type");
+            mAuto = b.getString("Detail");
+            //mBitmap =  (Bitmap) b.getParcelable("Photo");
+
+                ImageView previewThumbnail = new ImageView(this);
+            mBitmap = BitmapFactory.decodeByteArray(
+                        getIntent().getByteArrayExtra("byteArray"),0,getIntent()
+                                .getByteArrayExtra("byteArray").length);
+                previewThumbnail.setImageBitmap(mBitmap);
+
         }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -246,6 +270,9 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
 
+        mLatitude = currentLatitude;
+        mLongitude = currentLongitude;
+
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
         mLastLocation = location;
         MarkerOptions options = new MarkerOptions()
@@ -365,7 +392,13 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
             case R.id.next:
                 Intent myIntent = new Intent(PostSetUbicationActivity.this, PostFormActivity.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                //myIntent.putExtra("key", IDuser); //Optional parameters
+                myIntent.putExtra("Detail", mAuto.toString());
+                myIntent.putExtra("Type", mType);
+                myIntent.putExtra("Photo", mBitmap);
+                myIntent.putExtra("Radius", RADIUS_DEFAULT);
+                myIntent.putExtra("Latitude", mLatitude);
+                myIntent.putExtra("Longitude", mLongitude);
+
                 PostSetUbicationActivity.this.startActivity(myIntent);
                 PostSetUbicationActivity.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);

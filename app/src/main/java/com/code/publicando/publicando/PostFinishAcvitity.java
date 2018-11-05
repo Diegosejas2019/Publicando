@@ -3,6 +3,7 @@ package com.code.publicando.publicando;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,13 +15,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
-public class PostFinishAcvitity extends AppCompatActivity implements View.OnClickListener{
+public class PostFinishAcvitity extends AppCompatActivity implements View.OnClickListener {
 
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
+
+    private String mType;
+    private String mAuto;
+    private Bitmap mBitmap;
+    private Integer mRadius;
+    private Double mLatitude;
+    private Double mLongitude;
+    private String mCelular;
+    private String mPhone;
+    private String mDescription;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +50,37 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
         {
             Log.e(e.getMessage(),"TEST");
         }
+
+        Bundle b = getIntent().getExtras();
+        int value = -1; // or other values
+        if(b != null){
+            mType = b.getString("Type");
+            mAuto = b.getString("Detail");
+            mBitmap = b.getParcelable("Bitmap");
+            mRadius = b.getInt("Radius");
+            mLatitude = b.getDouble("Latitude");
+            mLongitude = b.getDouble("Longitude");
+            mCelular = b.getString("Celular");
+            mPhone = b.getString("Phone");
+            mDescription = b.getString("Description");
+        }
+
+        ImageView imagenPost = findViewById(R.id.imagenPost);
+        imagenPost.setImageBitmap(mBitmap);
+
+        TextView detalleServicio = findViewById(R.id.detalleServicio);
+        detalleServicio.setText(mAuto);
+
+        TextView celular = findViewById(R.id.celular);
+        celular.setText(mCelular);
+
+        TextView telefono = findViewById(R.id.telefono);
+        telefono.setText(mPhone);
+
+        TextView descripcion = findViewById(R.id.description);
+        descripcion.setText(mDescription);
+
+
 
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
         createDots(5);

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -32,6 +33,11 @@ public class PostUploadPhotoActivity extends AppCompatActivity implements View.O
     private AutoCompleteTextView auto;
     private Button uploadButton;
     String[] elementos = {"Mecanico","Electricista","Pintor","Albañil", "Abogado"};
+
+    private String mType;
+    private String mAuto;
+    private Bitmap mBitmap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +54,14 @@ public class PostUploadPhotoActivity extends AppCompatActivity implements View.O
         {
             Log.e(e.getMessage(),"TEST");
         }
+
+        Bundle b = getIntent().getExtras();
+        int value = -1; // or other values
+        if(b != null){
+            mType = b.getString("Type");
+            mAuto = b.getString("Detail");
+        }
+
 
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
         createDots(2);
@@ -108,7 +122,14 @@ public class PostUploadPhotoActivity extends AppCompatActivity implements View.O
                 break;
             case R.id.uploadPhotoNext:
                 Intent myIntent = new Intent(PostUploadPhotoActivity.this, PostSetUbicationActivity.class);
+                ByteArrayOutputStream bs = new ByteArrayOutputStream();
+                mBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
+                myIntent.putExtra("byteArray", bs.toByteArray());
+
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                myIntent.putExtra("Detail", mAuto);
+                myIntent.putExtra("Type", mType);
+                //myIntent.putExtra("Photo", mBitmap);
                 startActivity(myIntent);
                 PostUploadPhotoActivity.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);
@@ -124,11 +145,11 @@ public class PostUploadPhotoActivity extends AppCompatActivity implements View.O
         //Detects request codes
         if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
             Uri selectedImage = data.getData();
-            Bitmap bitmap = null;
+            mBitmap = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                 ImageView img = findViewById(R.id.imageUpload);
-                img.setImageBitmap(bitmap);
+                img.setImageBitmap(mBitmap);
 
 //Saves the  image
                // MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, timestamp, timestamp);

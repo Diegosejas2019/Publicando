@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -57,7 +58,7 @@
                 android:id="@+id/ingresarEmail"
                 android:onClick="Click"
                 />
-            <Button
+<!--            <Button
                 android:id="@+id/sign_in_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,13 +68,23 @@
                 android:textColor="@color/colorWhite"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/bordesgoogle"
-            />
-<!--            <com.google.android.gms.common.SignInButton
+            />-->
+           <com.google.android.gms.common.SignInButton
                 android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />-->
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               android:layout_marginTop="10dp"/>
 
-            <Button
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:background="@drawable/bordesface"
+                facebook:com_facebook_login_text="INGRESA CON FACEBOOK" />
+<!--            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -82,7 +93,7 @@
                 android:textColor="@color/colorWhite"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bordesface"
-                />
+                />-->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"

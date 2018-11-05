@@ -1,10 +1,12 @@
 package com.code.publicando.publicando;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +24,8 @@ public class PostSetDetailActivity extends AppCompatActivity implements View.OnC
 
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
-
-    private AutoCompleteTextView auto;
+    private String mType;
+    private AutoCompleteTextView mAuto;
     String[] elementos = {"Mecanico","Electricista","Pintor","Albañil", "Abogado"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +44,19 @@ public class PostSetDetailActivity extends AppCompatActivity implements View.OnC
             Log.e(e.getMessage(),"TEST");
         }
 
+        Bundle b = getIntent().getExtras();
+        int value = -1; // or other values
+        if(b != null){
+            mType = b.getString("Type");
+        }
+
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
         createDots(1);
 
-        auto = (AutoCompleteTextView) findViewById(R.id.auto);
+        mAuto = (AutoCompleteTextView) findViewById(R.id.auto);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,elementos);
-        auto.setThreshold(3);
-        auto.setAdapter(adapter);
+        mAuto.setThreshold(3);
+        mAuto.setAdapter(adapter);
 
         Button btnNext = findViewById(R.id.btnNext);
         btnNext.setOnClickListener(this);
@@ -110,12 +118,32 @@ public class PostSetDetailActivity extends AppCompatActivity implements View.OnC
         switch (id)
         {
             case R.id.btnNext:
-                Intent myIntent = new Intent(PostSetDetailActivity.this, PostUploadPhotoActivity .class);
-                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                //myIntent.putExtra("key", IDuser); //Optional parameters
-                PostSetDetailActivity.this.startActivity(myIntent);
-                PostSetDetailActivity.this.finish();
-                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                mAuto.setError(null);
+
+                mAuto = findViewById(R.id.auto);
+
+                String detail = mAuto.getText().toString();
+
+                boolean cancel = false;
+                View focusView = null;
+
+                if (TextUtils.isEmpty(detail)) {
+                    mAuto.setError(getString(R.string.error_field_required));
+                    focusView = mAuto;
+                    cancel = true;
+                }
+
+                if (cancel) {
+                    focusView.requestFocus();
+                } else {
+                    Intent myIntent = new Intent(PostSetDetailActivity.this, PostUploadPhotoActivity .class);
+                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    myIntent.putExtra("Detail", mAuto.getText().toString());
+                    myIntent.putExtra("Type", mType);
+                    PostSetDetailActivity.this.startActivity(myIntent);
+                    PostSetDetailActivity.this.finish();
+                    overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                }
                 break;
         }
     }

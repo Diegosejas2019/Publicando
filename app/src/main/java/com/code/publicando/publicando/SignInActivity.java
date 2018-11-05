@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,7 +26,8 @@ import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
-public class CreateAccountActivity extends AppCompatActivity implements View.OnClickListener{
+public class SignInActivity extends AppCompatActivity implements View.OnClickListener{
+
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
     private Button buttonLogin;
@@ -40,12 +40,12 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     public static final String MY_PREFS_NAME = "MyPrefsFile";
     private static final String TAG_SUCCESS = "StatusCode";
     private static final String TAG_USER = "UserName";
-    private UserLoginTask mAuthTask = null;
+    private CreateAccountActivity.UserLoginTask mAuthTask = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_account);
+            setContentView(R.layout.activity_sign_in);
 
         buttonLogin = findViewById(R.id.next);
         buttonLogin.setOnClickListener(this);
@@ -55,8 +55,8 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         mEmailView = findViewById(R.id.createEmail);
         mNameView = findViewById(R.id.createName);
 
-        /*Button btn = findViewById(R.id.next);UserLoginTask
-        btn.setOnClickListener(this);*/
+        Button btn = findViewById(R.id.next);
+        btn.setOnClickListener(this);
     }
 
     private void createDots(int current_position)
@@ -89,38 +89,25 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-/*        Intent myIntent = new Intent(CreateAccountActivity.this, ChooseZoneActivity.class);
-        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-        //myIntent.putExtra("key", IDuser); //Optional parameters
-        CreateAccountActivity.this.startActivity(myIntent);*/
         int id = view.getId();
         switch (id)
         {
             case R.id.next:
-                crearCuenta();
+                ingresarCuenta();
                 break;
         }
 
     }
 
-    private void crearCuenta() {
+    private void ingresarCuenta() {
         mEmailView.setError(null);
-        mNameView.setError(null);
 
         mEmailView = findViewById(R.id.createEmail);
-        mNameView = findViewById(R.id.createName);
 
         String email = mEmailView.getText().toString();
-        String name = mNameView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
-
-        if (TextUtils.isEmpty(name)) {
-            mNameView.setError(getString(R.string.error_field_required));
-            focusView = mNameView;
-            cancel = true;
-        }
 
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
@@ -137,11 +124,10 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         } else {
             SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
             editor.putString("Email", email);
-            editor.putString("Name", name);
             editor.apply();
             //mAuthTask = new UserLoginTask(email, password);
             //mAuthTask.execute((Void) null);
-            new UserLoginTask(email, name).execute();
+            new SignInActivity.UserLoginTask(email).execute();
         }
     }
 
@@ -159,30 +145,27 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(CreateAccountActivity.this);
-            pDialog.setMessage("Registrando cuenta...");
+            pDialog = new ProgressDialog(SignInActivity.this);
+            pDialog.setMessage("Ingresando...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
         }
 
         private final String mEmail;
-        private final String mName;
 
-        UserLoginTask(String email, String name) {
+        UserLoginTask(String email) {
             mEmail = email;
-            mName = name;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             Boolean flag = false;
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
             nameValuePairs.add(new BasicNameValuePair("Email", mEmail));
-            nameValuePairs.add(new BasicNameValuePair("UserName", mName));
 
             String Resultado="";
-            JSONObject json = jParser.makeHttpRequest(url + "RegisterUser", "POST", nameValuePairs);
+            JSONObject json = jParser.makeHttpRequest(url + "AuthenticateUser", "POST", nameValuePairs);
 
             try {
                 if (json != null){
@@ -204,16 +187,12 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             pDialog.dismiss();
             mAuthTask = null;
             if (success) {
-/*                Intent myIntent = new Intent(CreateAccountActivity.this, ChooseZoneActivity.class);
-                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                myIntent.putExtra("key", IDuser); //Optional parameters
-                CreateAccountActivity.this.startActivity(myIntent);*/
-                Intent mainIntent = new Intent(CreateAccountActivity.this,
+                Intent mainIntent = new Intent(SignInActivity.this,
                         ChooseZoneActivity.class);
                 mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 mainIntent.putExtra("key", IDuser); //Optional parameters
                 startActivity(mainIntent);
-                CreateAccountActivity.this.finish();
+                SignInActivity.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);
             } else {
                 mNameView.setError(getString(R.string.error_incorrect_password));
@@ -225,15 +204,15 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         protected void onCancelled() {
             pDialog.dismiss();
             //mAuthTask = null;
-            Toast.makeText(CreateAccountActivity.this,"Sin conexión",Toast.LENGTH_LONG).show();
+            Toast.makeText(SignInActivity.this,"Sin conexión",Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onBackPressed() {
-      Intent myIntent = new Intent(CreateAccountActivity.this, LoginActivity.class);
+        Intent myIntent = new Intent(SignInActivity.this, LoginActivity.class);
         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         //myIntent.putExtra("key", IDuser); //Optional parameters
-        CreateAccountActivity.this.startActivity(myIntent);
+        SignInActivity.this.startActivity(myIntent);
     }
 }

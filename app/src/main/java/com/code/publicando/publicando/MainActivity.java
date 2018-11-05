@@ -1,14 +1,8 @@
 package com.code.publicando.publicando;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.Settings;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -21,19 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.code.publicando.publicando.fragments.ChooseZoneFragment;
 import com.code.publicando.publicando.fragments.MainFragment;
 import com.code.publicando.publicando.fragments.ServiceDetalDialogFragment;
 import com.code.publicando.publicando.fragments.ServiceListFragment;
 
-import org.w3c.dom.Text;
-
 import java.util.Timer;
-import java.util.TimerTask;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
@@ -41,7 +30,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     ViewPager viewPager;
-    private int[] layouts = {R.layout.first_slide,R.layout.second_slide,R.layout.third_slide};
+    private int[] layouts = {R.layout.first_slide,R.layout.detail_first_slide,R.layout.third_slide};
     int currentPage = 0;
     Timer timer;
     final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
@@ -69,53 +58,6 @@ public class MainActivity extends AppCompatActivity
 
         Fragment fragment = new MainFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
-/*        viewPager = (ViewPager) findViewById(R.id.viewPager);
-
-        MpagerAdapter viewPagerAdapter = new MpagerAdapter(layouts,MainActivity.this);
-
-        viewPager.setAdapter(viewPagerAdapter);
-
-        *//*After setting the adapter use the timer *//*
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                if (currentPage == layouts.length) {
-                    currentPage = 0;
-                }
-
-                switch (currentPage)
-                {
-                    case 0:
-                        baseLayout = viewPager.findViewWithTag(layouts[currentPage]);
-                        img = baseLayout.findViewById(R.id.imagen);
-                        img.setImageResource(R.drawable.inmobiliaria);
-                        break;
-                    case 1:
-                        baseLayout = viewPager.findViewWithTag(layouts[currentPage]);
-                        img = baseLayout.findViewById(R.id.imagen);
-                        img.setImageResource(R.drawable.heladeria);
-                        break;
-                    case 2:
-                        baseLayout = viewPager.findViewWithTag(layouts[currentPage]);
-                        img = baseLayout.findViewById(R.id.imagen);
-                        img.setImageResource(R.drawable.comidas);
-                        break;
-                }
-
-
-
-                viewPager.setCurrentItem(currentPage++, true);
-            }
-        };
-
-        timer = new Timer(); // This will create a new Thread
-        timer .schedule(new TimerTask() { // task to be scheduled
-
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, DELAY_MS, PERIOD_MS);*/
     }
 
 
@@ -126,9 +68,10 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        /*else {
-            super.onBackPressed();
-        }*/
+        else {
+            Fragment fragment = new MainFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+        }
     }
 
     @Override
@@ -140,9 +83,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

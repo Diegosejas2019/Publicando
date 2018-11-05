@@ -14,7 +14,7 @@
         android:layout_margin="5dp">
 
         <RelativeLayout
-            android:layout_width="370dp"
+            android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingRight="8dp"

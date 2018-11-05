@@ -7,70 +7,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/borderwhite">
 
-    <LinearLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/dotsLayout"
+        android:layout_height="match_parent"
+        android:src="@drawable/logo"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="55dp">
-        <ImageView
-            android:id="@+id/imagen"
-            android:padding="10dp"
-            android:src="@drawable/comidas"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-    </LinearLayout>
-<!--    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Omitir"
-        android:textSize="16sp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@null"
-        android:id="@+id/skip"
-        android:layout_marginBottom="8dp"
-        android:textColor="@color/colorWhite"/>-->
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:id="@+id/fabmap"
-        android:src="@android:drawable/ic_menu_compass"
-        android:layout_gravity="bottom|start"
-        android:layout_marginLeft="15dp"
-        android:layout_marginBottom="15dp"
-        app:rippleColor="@color/colorNaranja"
-        app:backgroundTint="@color/colorNaranja"
-        app:borderWidth="0dp"/>
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:id="@+id/fabmap2"
-        android:src="@android:drawable/ic_menu_compass"
-        android:layout_gravity="bottom|end"
-        app:rippleColor="@color/colorNaranja"
-        app:backgroundTint="@color/colorNaranja"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="15dp"
-        app:borderWidth="0dp"/>
-<!--    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Siguiente"
-        android:textSize="16sp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:paddingRight="20dp"
-        android:background="@null"
-        android:id="@+id/next"
-        android:layout_marginBottom="8dp"
-        android:textColor="@color/colorWhite"/>-->
+        android:scaleType="centerCrop"
+        android:layout_marginTop="0dp"/>
 </RelativeLayout>

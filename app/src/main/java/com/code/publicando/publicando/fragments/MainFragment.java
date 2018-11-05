@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.code.publicando.publicando.MainActivity;
 import com.code.publicando.publicando.MpagerAdapter;
 import com.code.publicando.publicando.R;
 
@@ -26,7 +24,7 @@ import java.util.TimerTask;
 public class MainFragment extends Fragment {
 
     ViewPager viewPager;
-    private int[] layouts = {R.layout.first_slide,R.layout.second_slide,R.layout.third_slide};
+    private int[] layouts = {R.layout.detail_first_slide,R.layout.detail_second_slide,R.layout.detail_third_slide};
     int currentPage = 0;
     Timer timer;
     final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
