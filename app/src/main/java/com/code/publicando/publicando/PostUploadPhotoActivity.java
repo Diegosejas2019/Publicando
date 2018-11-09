@@ -37,7 +37,7 @@ public class PostUploadPhotoActivity extends AppCompatActivity implements View.O
     private String mType;
     private String mAuto;
     private Bitmap mBitmap;
-
+    private Integer mIdUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +60,7 @@ public class PostUploadPhotoActivity extends AppCompatActivity implements View.O
         if(b != null){
             mType = b.getString("Type");
             mAuto = b.getString("Detail");
+            mIdUser = b.getInt("idUser");
         }
 
 
@@ -122,14 +123,12 @@ public class PostUploadPhotoActivity extends AppCompatActivity implements View.O
                 break;
             case R.id.uploadPhotoNext:
                 Intent myIntent = new Intent(PostUploadPhotoActivity.this, PostSetUbicationActivity.class);
-                ByteArrayOutputStream bs = new ByteArrayOutputStream();
-                mBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
-                myIntent.putExtra("byteArray", bs.toByteArray());
-
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                BitmapHelper.getInstance().setBitmap(mBitmap);
+
                 myIntent.putExtra("Detail", mAuto);
                 myIntent.putExtra("Type", mType);
-                //myIntent.putExtra("Photo", mBitmap);
+                myIntent.putExtra("idUser", mIdUser);
                 startActivity(myIntent);
                 PostUploadPhotoActivity.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);

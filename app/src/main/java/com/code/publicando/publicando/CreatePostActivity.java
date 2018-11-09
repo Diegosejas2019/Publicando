@@ -20,6 +20,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
 
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
+    private Integer mIdUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,11 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
         catch (Exception e )
         {
             Log.e(e.getMessage(),"TEST");
+        }
+
+        Bundle b = getIntent().getExtras();
+        if(b != null){
+            mIdUser = b.getInt("idUser");
         }
 
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
@@ -122,6 +128,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
                 break;
         }
 
+        myIntent.putExtra("idUser", mIdUser); //Optional parameters
         CreatePostActivity.this.startActivity(myIntent);
         CreatePostActivity.this.finish();;
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);

@@ -67,12 +67,18 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     private LatLng latLng;
     private int RADIUS_DEFAULT = 1000;
     private Circle mCircle;
+    private Integer mIdUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        Bundle b = getIntent().getExtras();
+        if(b != null){
+            mIdUser = b.getInt("idUser");
+        }
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -90,7 +96,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                 new PreferenceManager(LocationActivity.this).clearPreference();
                 Intent myIntent = new Intent(LocationActivity.this, GuideActivity.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                //myIntent.putExtra("key", IDuser); //Optional parameters
+                myIntent.putExtra("idUser", mIdUser); //Optional parameters
                 LocationActivity.this.startActivity(myIntent);
             }
         });

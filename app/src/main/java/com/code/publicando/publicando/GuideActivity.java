@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
+
 public class GuideActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ViewPager mPager;
@@ -22,6 +24,7 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
     private Button skip,next;
+    private Integer mIdUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,11 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         next.setOnClickListener(this);
 
         createDots(0);
+
+        Bundle b = getIntent().getExtras();
+        if(b != null){
+            mIdUser = b.getInt("idUser");
+        }
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -128,7 +136,11 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
 
     private void loadHome()
     {
-        startActivity(new Intent(GuideActivity.this, MainActivity.class));
+        new PreferenceManager(GuideActivity.this).clearPreference();
+        Intent myIntent = new Intent(GuideActivity.this, MainActivity.class);
+        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+        myIntent.putExtra("idUser", mIdUser); //Optional parameters
+        GuideActivity.this.startActivity(myIntent);
         finish();
     }
 

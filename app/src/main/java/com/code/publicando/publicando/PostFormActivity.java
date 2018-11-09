@@ -33,6 +33,7 @@ public class PostFormActivity extends AppCompatActivity implements View.OnClickL
     private TextView mCelular;
     private TextView mPhone;
     private TextView mDescription;
+    private Integer mIdUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class PostFormActivity extends AppCompatActivity implements View.OnClickL
             mRadius = b.getInt("Radius");
             mLatitude = b.getDouble("Latitude");
             mLongitude = b.getDouble("Longitude");
+            mIdUser = b.getInt("idUser");
         }
 
 
@@ -147,13 +149,13 @@ public class PostFormActivity extends AppCompatActivity implements View.OnClickL
                     myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                     myIntent.putExtra("Type", mType);
                     myIntent.putExtra("Detail", mAuto);
-                    myIntent.putExtra("Bitmap", mBitmap);
+                    myIntent.putExtra("idUser", mIdUser);
                     myIntent.putExtra("Radius", mRadius);
                     myIntent.putExtra("Latitude", mLatitude);
                     myIntent.putExtra("Longitude", mLongitude);
-                    myIntent.putExtra("Celular", mCelular.toString());
-                    myIntent.putExtra("Phone", mPhone.toString());
-                    myIntent.putExtra("Description", mDescription.toString());
+                    myIntent.putExtra("Celular", mCelular.getText().toString());
+                    myIntent.putExtra("Phone", mPhone.getText().toString());
+                    myIntent.putExtra("Description", mDescription.getText().toString());
                     PostFormActivity.this.startActivity(myIntent);
                     PostFormActivity.this.finish();
                     overridePendingTransition(R.anim.fadein,R.anim.fadeout);

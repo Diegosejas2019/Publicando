@@ -2,6 +2,7 @@ package com.code.publicando.publicando;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity
     private View baseLayout;
     private ImageView img;
     private String url = "10.0.2.2/api/version";
+    private Integer mIdUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +48,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        Bundle b = getIntent().getExtras();
+        if(b != null){
+            mIdUser = b.getInt("idUser");
+        }
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -107,7 +113,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_publicar) {
             Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
             myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-            //myIntent.putExtra("key", IDuser); //Optional parameters
+            myIntent.putExtra("idUser", mIdUser); //Optional parameters
             MainActivity.this.startActivity(myIntent);
         } /*else if (id == R.id.nav_gallery) {
 

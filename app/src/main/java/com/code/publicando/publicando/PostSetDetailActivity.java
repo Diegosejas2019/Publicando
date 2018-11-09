@@ -26,6 +26,8 @@ public class PostSetDetailActivity extends AppCompatActivity implements View.OnC
     private ImageView[] dots;
     private String mType;
     private AutoCompleteTextView mAuto;
+    private Integer mIdUser;
+
     String[] elementos = {"Mecanico","Electricista","Pintor","Albañil", "Abogado"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class PostSetDetailActivity extends AppCompatActivity implements View.OnC
         int value = -1; // or other values
         if(b != null){
             mType = b.getString("Type");
+            mIdUser = b.getInt("idUser");
         }
 
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
@@ -140,6 +143,7 @@ public class PostSetDetailActivity extends AppCompatActivity implements View.OnC
                     myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                     myIntent.putExtra("Detail", mAuto.getText().toString());
                     myIntent.putExtra("Type", mType);
+                    myIntent.putExtra("idUser", mIdUser);
                     PostSetDetailActivity.this.startActivity(myIntent);
                     PostSetDetailActivity.this.finish();
                     overridePendingTransition(R.anim.fadein,R.anim.fadeout);

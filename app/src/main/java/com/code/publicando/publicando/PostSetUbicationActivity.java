@@ -72,7 +72,7 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
     private String mType;
     private String mAuto;
     private Bitmap mBitmap;
-
+    private Integer mIdUser;
     private double mLatitude;
     private double mLongitude;
 
@@ -98,14 +98,8 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
         if(b != null){
             mType = b.getString("Type");
             mAuto = b.getString("Detail");
-            //mBitmap =  (Bitmap) b.getParcelable("Photo");
-
-                ImageView previewThumbnail = new ImageView(this);
-            mBitmap = BitmapFactory.decodeByteArray(
-                        getIntent().getByteArrayExtra("byteArray"),0,getIntent()
-                                .getByteArrayExtra("byteArray").length);
-                previewThumbnail.setImageBitmap(mBitmap);
-
+            mBitmap = BitmapHelper.getInstance().getBitmap();
+            mIdUser = b.getInt("idUser");
         }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -394,7 +388,7 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 myIntent.putExtra("Detail", mAuto.toString());
                 myIntent.putExtra("Type", mType);
-                myIntent.putExtra("Photo", mBitmap);
+                myIntent.putExtra("idUser", mIdUser);
                 myIntent.putExtra("Radius", RADIUS_DEFAULT);
                 myIntent.putExtra("Latitude", mLatitude);
                 myIntent.putExtra("Longitude", mLongitude);

@@ -54,26 +54,31 @@
 
             <TextView
                 android:id="@+id/detalleServicio"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
+                android:hint="Servicio:"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@drawable/borderwhite"/>
             <TextView
                 android:id="@+id/celular"
-                android:layout_marginTop="20dp"
+                android:hint="Celular:"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@drawable/borderwhite"/>
             <TextView
                 android:id="@+id/telefono"
-                android:visibility="gone"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:hint="Telefono:"
+                android:background="@drawable/borderwhite"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="5dp"
                 android:layout_marginTop="10dp"
-                android:hint="Contanos lo que ofreces"
+                android:hint="Descripción"
                 android:id="@+id/description"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/borderwhite"

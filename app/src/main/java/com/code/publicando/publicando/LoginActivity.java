@@ -6,8 +6,10 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -26,6 +28,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -68,6 +71,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -92,6 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+    private static final String TAG = "";
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -126,6 +133,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        printHashKey(LoginActivity.this);
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(this);
@@ -178,13 +187,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 onFblogin();
             }
         });
+
+
+    }
+
+
+    public void printHashKey(Context pContext) {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (android.content.pm.Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String hashKey = new String(Base64.encode(md.digest(), 0));
+                Log.i(TAG, "printHashKey() Hash Key: " + hashKey);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(TAG, "printHashKey()", e);
+        } catch (Exception e) {
+            Log.e(TAG, "printHashKey()", e);
+        }
     }
 
     private void onFblogin() {
         callbackManager = CallbackManager.Factory.create();
-        loginButton.setReadPermissions(Arrays.asList(
-                "public_profile", "email"));
-
+        //loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "user_photos", "public_profile"));
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     public static final String TAG_ERROR = "Error";
@@ -192,33 +219,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        System.out.println("Success");
-                        GraphRequest.newMeRequest(
-                                loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-                                    @Override
-                                    public void onCompleted(JSONObject json, GraphResponse response) {
-                                        if (response.getError() != null) {
-                                            // handle error
-                                            System.out.println("ERROR");
-                                        } else {
-                                            System.out.println("Success");
-                                            try {
-                                                String jsonresult = String.valueOf(json);
-                                                System.out.println("JSON Result"+jsonresult);
-                                                String fullname = json.getString("name");
-                                                String iduser = json.getString("id");
-                                                String name = json.getString("name");
+                        // App code
+                        GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject json, GraphResponse response) {
+                                // Application code
+                                if (response.getError() != null) {
+                                    System.out.println("ERROR");
+                                } else {
+                                    System.out.println("Success");
+                                    String jsonresult = String.valueOf(json);
+                                    System.out.println("JSON Result" + jsonresult);
 
-
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }
-
-                                }).executeAsync();
+                                    String fbUserId = json.optString("id");
+                                    String fbUserFirstName = json.optString("name");
+                                    String fbUserEmail = json.optString("email");
+                                    String fbUserProfilePics = "http://graph.facebook.com/" + fbUserId + "/picture?type=large";
+                                    new UserLoginTask(fbUserEmail, fbUserFirstName).execute();
+                                    Toast.makeText(LoginActivity.this, fbUserEmail, Toast.LENGTH_LONG).show();
+                                }
+                                Log.v("FaceBook Response :", response.toString());
+                            }
+                        });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,name,email,gender, birthday");
+                        request.setParameters(parameters);
+                        request.executeAsync();
                     }
-
                     @Override
                     public void onCancel() {
                         Log.d(TAG_CANCEL,"On cancel");
@@ -343,33 +370,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (requestCode == SIGN_IN) {
 
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                GoogleSignInAccount acct = result.getSignInAccount();
-                //get user's email
-                String mEmail = acct.getEmail();
-
-                //get user's full name
-                String mFullName = acct.getDisplayName();
-
-                String gPlusID = acct.getId();
-
-                new UserLoginTask(mEmail, mFullName).execute();
-                Toast.makeText(this, mEmail, Toast.LENGTH_LONG).show();
-            }
+            handleSignInResult(result);
         }
+
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+    private void handleSignInResult(GoogleSignInResult result) {
+        if (result.isSuccess()) {
+            GoogleSignInAccount acct = result.getSignInAccount();
+            //get user's email
+            String mEmail = acct.getEmail();
 
-            // Signed in successfully, show authenticated UI.
-            //updateUI(account);
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-           // Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-           // updateUI(null);
+            //get user's full name
+            String mFullName = acct.getDisplayName();
+
+            String gPlusID = acct.getId();
+
+            new UserLoginTask(mEmail, mFullName).execute();
+            Toast.makeText(this, mEmail, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -440,7 +459,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent mainIntent = new Intent(LoginActivity.this,
                         ChooseZoneActivity.class);
                 mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                mainIntent.putExtra("key", IDuser); //Optional parameters
+                mainIntent.putExtra("idUser", IDuser); //Optional parameters
                 startActivity(mainIntent);
                 LoginActivity.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);

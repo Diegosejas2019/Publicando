@@ -1,21 +1,36 @@
 package com.code.publicando.publicando;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
@@ -33,6 +48,16 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
     private String mCelular;
     private String mPhone;
     private String mDescription;;
+    private Integer mIdUser;
+
+    private String url = "http://10.0.2.2/api/login/";
+    JSONParser jParser = new JSONParser();
+    private ProgressDialog pDialog;
+    private EditText mEmailView;
+    private EditText mNameView;
+    private Integer IDuser;
+    private static final String TAG_SUCCESS = "StatusCode";
+    private static final String TAG_USER = "UserName";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +81,14 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
         if(b != null){
             mType = b.getString("Type");
             mAuto = b.getString("Detail");
-            mBitmap = b.getParcelable("Bitmap");
+            mBitmap = BitmapHelper.getInstance().getBitmap();
             mRadius = b.getInt("Radius");
             mLatitude = b.getDouble("Latitude");
             mLongitude = b.getDouble("Longitude");
             mCelular = b.getString("Celular");
             mPhone = b.getString("Phone");
             mDescription = b.getString("Description");
+            mIdUser = b.getInt("idUser");
         }
 
         ImageView imagenPost = findViewById(R.id.imagenPost);
@@ -154,8 +180,100 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
         switch (id)
         {
             case R.id.btnPublicar:
+                new RegisterPost().execute();
                 showInfoAlert();
                 break;
+        }
+    }
+
+    class RegisterPost extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(PostFinishAcvitity.this);
+            pDialog.setMessage("Realizando Publicación...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Boolean flag = false;
+            
+            ByteArrayOutputStream bao = new ByteArrayOutputStream();
+
+            //Resize the image
+            double width = mBitmap.getWidth();
+            double height = mBitmap.getHeight();
+            double ratio = 400/width;
+            int newheight = (int)(ratio * height);
+
+            mBitmap = Bitmap.createScaledBitmap(mBitmap, 400, newheight, true);
+
+            //Here you can define .PNG as well
+            mBitmap.compress(Bitmap.CompressFormat.JPEG, 95, bao);
+            byte[] ba = bao.toByteArray();
+            String base64 = Base64.encodeToString(ba, Base64.DEFAULT);
+            
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("TypeWork", mType));
+            nameValuePairs.add(new BasicNameValuePair("WorkDetail", mAuto));
+            nameValuePairs.add(new BasicNameValuePair("Image64", base64));
+            nameValuePairs.add(new BasicNameValuePair("Radius", mRadius.toString()));
+            nameValuePairs.add(new BasicNameValuePair("Latitude", mLatitude.toString()));
+            nameValuePairs.add(new BasicNameValuePair("Longitude", mLongitude.toString()));
+            nameValuePairs.add(new BasicNameValuePair("Celular", mCelular));
+            nameValuePairs.add(new BasicNameValuePair("Phone", mPhone));
+            nameValuePairs.add(new BasicNameValuePair("Description", mDescription));
+            nameValuePairs.add(new BasicNameValuePair("idUser", "1"));
+
+
+            String Resultado="";
+            JSONObject json = jParser.makeHttpRequest(url + "RegisterPost", "POST", nameValuePairs);
+
+            try {
+                if (json != null){
+                    int success = json.getInt(TAG_SUCCESS);
+                    if (success == 200){
+                        IDuser = json.getInt("IdUser");
+                        flag = true;}
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Resultado = e.getMessage();
+            }
+            return flag;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            pDialog.dismiss();
+            if (success) {
+/*                Intent myIntent = new Intent(CreateAccountActivity.this, ChooseZoneActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                myIntent.putExtra("key", IDuser); //Optional parameters
+                CreateAccountActivity.this.startActivity(myIntent);*/
+                Intent mainIntent = new Intent(PostFinishAcvitity.this,
+                        ChooseZoneActivity.class);
+                mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                mainIntent.putExtra("idUser", IDuser); //Optional parameters
+                startActivity(mainIntent);
+                PostFinishAcvitity.this.finish();
+                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+            } else {
+                mNameView.setError(getString(R.string.error_incorrect_password));
+                mNameView.requestFocus();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            pDialog.dismiss();
+            //mAuthTask = null;
+            Toast.makeText(PostFinishAcvitity.this,"Sin conexión",Toast.LENGTH_LONG).show();
         }
     }
 }

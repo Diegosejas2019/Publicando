@@ -19,11 +19,17 @@ public class ChooseZoneActivity extends AppCompatActivity implements View.OnClic
     private ImageView[] dots;
     private Button chooseButton;
     private Button myUbication;
+    private Integer mIdUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_zone);
+
+        Bundle b = getIntent().getExtras();
+        if(b != null){
+            mIdUser = b.getInt("idUser");
+        }
 
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
         createDots(1);
@@ -73,10 +79,12 @@ public class ChooseZoneActivity extends AppCompatActivity implements View.OnClic
                 myIntent = new Intent(ChooseZoneActivity.this, LocationActivity.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 ChooseZoneActivity.this.startActivity(myIntent);
+                myIntent.putExtra("idUser", mIdUser); //Optional parameters
                 break;
             case R.id.choose:
                 myIntent = new Intent(ChooseZoneActivity.this,
                         SetZoneActivity.class);
+                myIntent.putExtra("idUser", mIdUser); //Optional parameters
                 startActivity(myIntent);
                 ChooseZoneActivity.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);
