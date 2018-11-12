@@ -163,10 +163,13 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent myIntent = new Intent(PostFinishAcvitity.this, MainActivity.class);
-                        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                        startActivity(myIntent);
-                        finish(); // close this activity and return to preview activity (if there is any)
+                        Intent mainIntent = new Intent(PostFinishAcvitity.this,
+                                MainActivity.class);
+                        mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                        mainIntent.putExtra("idUser", IDuser); //Optional parameters
+                        startActivity(mainIntent);
+                        PostFinishAcvitity.this.finish();
+                        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
                     }
                 })
                 //.setNegativeButton("Cancel",null )
@@ -181,7 +184,7 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
         {
             case R.id.btnPublicar:
                 new RegisterPost().execute();
-                showInfoAlert();
+
                 break;
         }
     }
@@ -256,13 +259,8 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 myIntent.putExtra("key", IDuser); //Optional parameters
                 CreateAccountActivity.this.startActivity(myIntent);*/
-                Intent mainIntent = new Intent(PostFinishAcvitity.this,
-                        ChooseZoneActivity.class);
-                mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                mainIntent.putExtra("idUser", IDuser); //Optional parameters
-                startActivity(mainIntent);
-                PostFinishAcvitity.this.finish();
-                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                showInfoAlert();
+
             } else {
                 mNameView.setError(getString(R.string.error_incorrect_password));
                 mNameView.requestFocus();

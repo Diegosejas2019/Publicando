@@ -65,7 +65,8 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     private Button next;
     private FloatingActionButton fab;
     private LatLng latLng;
-    private int RADIUS_DEFAULT = 1000;
+    private int RADIUS_DEFAULT = 2000;
+    private int NEW_RADIUS = 0;
     private Circle mCircle;
     private Integer mIdUser;
 
@@ -164,7 +165,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
         //Initialize Google Play Services
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+/*        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -183,25 +184,28 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-        }
+        }*/
 
-/*        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mMap.setMyLocationEnabled(true);*/
-       // mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        // Add a marker in Sydney and move the camera
-/*        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        CameraPosition camera = new CameraPosition.Builder()
-                .target(sydney)
-                .bearing(0)
-                .tilt(30)
-                .zoom(15).build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(camera));*/
+        LatLng sevilla = new LatLng(-34.6969607,-58.5372425);
+        mMap.addMarker(new MarkerOptions().position(sevilla).title("Hola desde Sevilla!").draggable(true));
+
+        final CameraPosition camera = new CameraPosition.Builder()
+                .target(sevilla)
+                .zoom(11.0f)           // limit -> 21
+                .bearing(0)         // 0 - 365º
+                .tilt(30)           // limit -> 90
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(camera));
+
+        mCircle = mMap.addCircle(new CircleOptions()
+                .center(sevilla)
+                .radius(RADIUS_DEFAULT)
+                .strokeColor(Color.BLUE)
+                .fillColor(Color.TRANSPARENT)
+                .strokeWidth(5));
+
         SeekBar bar = findViewById(R.id.seekBar);
-        bar.setMax((int) mMap.getMaxZoomLevel());
+        bar.setMax(20);
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -219,13 +223,82 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                                           boolean fromUser) {
                 // use progress set map zoom level
                 // update map zoom level here
-                RADIUS_DEFAULT = RADIUS_DEFAULT + progress + 100;
+/*                if (progress > NEW_RADIUS) {
+                    NEW_RADIUS = NEW_RADIUS + progress;
+                    RADIUS_DEFAULT = RADIUS_DEFAULT + 100;
+                }
+                else{
+                    NEW_RADIUS = NEW_RADIUS - progress;
+                    RADIUS_DEFAULT = RADIUS_DEFAULT - 100;
+                }*/
 /*                mCircle = mMap.addCircle(new CircleOptions()
                         .center(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
                         .radius(RADIUS_DEFAULT)
                         .strokeColor(Color.BLUE)
                         .fillColor(Color.TRANSPARENT)
                         .strokeWidth(5));*/
+                switch (progress){
+                    case 1:
+                        RADIUS_DEFAULT = 2300;
+                        break;
+                    case 2:
+                        RADIUS_DEFAULT = 2600;
+                        break;
+                    case 3:
+                        RADIUS_DEFAULT = 2900;
+                        break;
+                    case 4:
+                        RADIUS_DEFAULT = 3200;
+                        break;
+                    case 5:
+                        RADIUS_DEFAULT = 3500;
+                        break;
+                    case 6:
+                        RADIUS_DEFAULT = 3800;
+                        break;
+                    case 7:
+                        RADIUS_DEFAULT = 4100;
+                        break;
+                    case 8:
+                        RADIUS_DEFAULT = 4400;
+                        break;
+                    case 9:
+                        RADIUS_DEFAULT = 4700;
+                        break;
+                    case 10:
+                        RADIUS_DEFAULT = 5000;
+                        break;
+                    case 11:
+                        RADIUS_DEFAULT = 5300;
+                        break;
+                    case 12:
+                        RADIUS_DEFAULT = 5600;
+                        break;
+                    case 13:
+                        RADIUS_DEFAULT = 5900;
+                        break;
+                    case 14:
+                        RADIUS_DEFAULT = 6200;
+                        break;
+                    case 15:
+                        RADIUS_DEFAULT = 6500;
+                        break;
+                    case 16:
+                        RADIUS_DEFAULT = 6800;
+                        break;
+                    case 17:
+                        RADIUS_DEFAULT = 7100;
+                        break;
+                    case 18:
+                        RADIUS_DEFAULT = 7400;
+                        break;
+                    case 19:
+                        RADIUS_DEFAULT = 7700;
+                        break;
+                    case 20:
+                        RADIUS_DEFAULT = 8000;
+                        break;
+                }
                 mCircle.setRadius(RADIUS_DEFAULT);
             }
         });
@@ -282,7 +355,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                 .center(latLng)
                 .radius(RADIUS_DEFAULT)
                 .strokeColor(Color.BLUE)
-                .fillColor(Color.TRANSPARENT)
+                .fillColor(0x220000FF)
                 .strokeWidth(5));
 
     }

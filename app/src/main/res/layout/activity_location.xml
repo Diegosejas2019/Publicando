@@ -61,14 +61,24 @@
                 app:backgroundTint="@color/colorNaranja"
                 app:borderWidth="0dp"/>
             </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="70dp"
+                android:layout_marginTop="20dp">
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="237dp"
+                    android:layout_height="32dp"
+                    android:progressBackgroundTint="@color/colorNaranja"
+                    android:layout_alignTop="@+id/imageButton"
+                    android:thumbTint="@color/colorNaranja"
+                    android:progress="1"
+                    android:max="10"
+                    android:min="1"
+                    android:layout_centerHorizontal="true" />
+            </LinearLayout>
 
-            <SeekBar
-                android:id="@+id/seekBar"
-                android:layout_width="237dp"
-                android:layout_height="32dp"
-                android:progressBackgroundTint="@android:color/white"
-                android:layout_alignTop="@+id/imageButton"
-                android:layout_centerHorizontal="true" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
