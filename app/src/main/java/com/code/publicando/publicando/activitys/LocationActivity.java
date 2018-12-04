@@ -1,8 +1,7 @@
-package com.code.publicando.publicando;
+package com.code.publicando.publicando.activitys;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,7 +9,6 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -27,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.code.publicando.publicando.R;
+import com.code.publicando.publicando.clases.PreferenceManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -35,8 +35,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -69,6 +67,8 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     private int NEW_RADIUS = 0;
     private Circle mCircle;
     private Integer mIdUser;
+    private Integer mLatitude;
+    private Integer mLongitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +98,9 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                 Intent myIntent = new Intent(LocationActivity.this, GuideActivity.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                myIntent.putExtra("Latitude", mLatitude); //Optional parameters
+                myIntent.putExtra("Longitud", mLongitud); //Optional parameters
+                myIntent.putExtra("Radius", RADIUS_DEFAULT); //Optional parameters
                 LocationActivity.this.startActivity(myIntent);
             }
         });
@@ -165,7 +168,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
         //Initialize Google Play Services
-/*        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -184,10 +187,13 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-        }*/
+        }
 
-        LatLng sevilla = new LatLng(-34.6969607,-58.5372425);
+/*        LatLng sevilla = new LatLng(-34.6969607,-58.5372425);
         mMap.addMarker(new MarkerOptions().position(sevilla).title("Hola desde Sevilla!").draggable(true));
+
+        mLatitude = (int) sevilla.latitude;
+        mLongitud = (int) sevilla.longitude;
 
         final CameraPosition camera = new CameraPosition.Builder()
                 .target(sevilla)
@@ -202,7 +208,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                 .radius(RADIUS_DEFAULT)
                 .strokeColor(Color.BLUE)
                 .fillColor(Color.TRANSPARENT)
-                .strokeWidth(5));
+                .strokeWidth(5));*/
 
         SeekBar bar = findViewById(R.id.seekBar);
         bar.setMax(20);
@@ -340,6 +346,9 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
 
+        mLatitude = (int) currentLatitude;
+        mLongitud = (int) currentLongitude;
+
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
         mLastLocation = location;
         //mMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("Current Location"));
@@ -349,12 +358,12 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         mMap.addMarker(options);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11.0f));
 
         mCircle = mMap.addCircle(new CircleOptions()
                 .center(latLng)
                 .radius(RADIUS_DEFAULT)
-                .strokeColor(Color.BLUE)
+                .strokeColor(Color.RED)
                 .fillColor(0x220000FF)
                 .strokeWidth(5));
 

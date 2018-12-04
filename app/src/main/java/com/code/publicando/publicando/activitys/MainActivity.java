@@ -1,11 +1,12 @@
-package com.code.publicando.publicando;
+package com.code.publicando.publicando.activitys;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.fragments.ChooseZoneFragment;
 import com.code.publicando.publicando.fragments.MainFragment;
 import com.code.publicando.publicando.fragments.ServiceDetalDialogFragment;
@@ -26,6 +28,7 @@ import com.code.publicando.publicando.fragments.ServiceListFragment;
 import java.util.Timer;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
+import static com.code.publicando.publicando.activitys.LoginActivity.MY_PREFS_NAME;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -40,6 +43,9 @@ public class MainActivity extends AppCompatActivity
     private ImageView img;
     private String url = "10.0.2.2/api/version";
     private Integer mIdUser;
+    private Integer mLatitude;
+    private Integer mLongitud;
+    private Integer mRadius;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +54,26 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Bundle b = getIntent().getExtras();
-        if(b != null){
-            mIdUser = b.getInt("idUser");
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        Integer restoredText = prefs.getInt("idUser", 0);
+        if (restoredText != 0) {
+            mIdUser = prefs.getInt("idUser", 0);
+            mLatitude = prefs.getInt("Latitude", 0);
+            mLongitud = prefs.getInt("Longitud", 0);
+            mRadius = prefs.getInt("Radius", 0);
         }
+        else
+         {
+             Bundle b = getIntent().getExtras();
+             if(b != null){
+                 mIdUser = b.getInt("idUser");
+                 mLatitude = b.getInt("Latitude");
+                 mLongitud = b.getInt("Longitud");
+                 mRadius = b.getInt("Radius");
+             }
+         }
+
+
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -148,6 +170,7 @@ public class MainActivity extends AppCompatActivity
                 // i'm lazy, do nothing
                 break;
             case R.id.imageView:
+
                 showInfoAlert(R.id.imageView);
                 break;
             case R.id.btnZona:
@@ -159,11 +182,19 @@ public class MainActivity extends AppCompatActivity
 
                 dialog.show(getFragmentManager(), "ServiceDetalDialogFragment");
                 break;
+            case R.id.btnPublicar:
+                Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                MainActivity.this.startActivity(myIntent);
+                break;
+
         }
     }
 
     private void showInfoAlert(int ids)
     {
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 // ...Irrelevant code for customizing the buttons and title
         LayoutInflater inflater = this.getLayoutInflater();

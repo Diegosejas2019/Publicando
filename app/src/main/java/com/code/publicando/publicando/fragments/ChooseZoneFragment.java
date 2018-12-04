@@ -12,17 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.code.publicando.publicando.ChooseZoneActivity;
-import com.code.publicando.publicando.CreateAccountActivity;
-import com.code.publicando.publicando.LocationActivity;
-import com.code.publicando.publicando.LoginActivity;
+import com.code.publicando.publicando.activitys.LocationActivity;
 import com.code.publicando.publicando.R;
-import com.code.publicando.publicando.SetZoneActivity;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 

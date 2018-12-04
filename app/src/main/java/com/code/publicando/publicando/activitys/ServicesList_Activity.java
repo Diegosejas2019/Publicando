@@ -1,4 +1,4 @@
-package com.code.publicando.publicando;
+package com.code.publicando.publicando.activitys;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,6 +11,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import com.code.publicando.publicando.R;
+import com.code.publicando.publicando.clases.Product;
+import com.code.publicando.publicando.clases.ProductAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +55,7 @@ public class ServicesList_Activity extends AppCompatActivity implements Navigati
 
 
         //adding some items to our list
-        productList.add(
+        /*productList.add(
                 new Product(
                         1,
                         "Comercio modelo 1",
@@ -91,7 +95,7 @@ public class ServicesList_Activity extends AppCompatActivity implements Navigati
                         1,
                         "Promos Modelo 1",
                         "Increibles descuentos",
-                        R.drawable.promos));
+                        R.drawable.promos));*/
         //creating recyclerview adapter
         ProductAdapter adapter = new ProductAdapter(this, productList);
 

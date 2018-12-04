@@ -14,7 +14,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ChooseZoneActivity">
+    tools:context=".activitys.ChooseZoneActivity">
 
     <!-- Login progress -->
 
@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
 
-                tools:context=".LocationActivity"/>
+                tools:context=".activitys.LocationActivity"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"

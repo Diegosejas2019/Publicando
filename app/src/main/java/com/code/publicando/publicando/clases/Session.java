@@ -1,4 +1,4 @@
-package com.code.publicando.publicando;
+package com.code.publicando.publicando.clases;
 
 import android.content.Context;
 import android.content.SharedPreferences;

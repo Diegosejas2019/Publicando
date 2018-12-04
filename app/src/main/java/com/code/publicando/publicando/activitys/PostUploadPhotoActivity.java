@@ -1,4 +1,4 @@
-package com.code.publicando.publicando;
+package com.code.publicando.publicando.activitys;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,13 +13,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import java.io.ByteArrayOutputStream;
+import com.code.publicando.publicando.R;
+import com.code.publicando.publicando.clases.BitmapHelper;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 

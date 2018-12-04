@@ -1,4 +1,4 @@
-package com.code.publicando.publicando;
+package com.code.publicando.publicando.activitys;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.code.publicando.publicando.R;
+import com.code.publicando.publicando.clases.JSONParser;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -26,8 +29,7 @@ import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
-public class SignInActivity extends AppCompatActivity implements View.OnClickListener{
-
+public class CreateAccountActivity extends AppCompatActivity implements View.OnClickListener{
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
     private Button buttonLogin;
@@ -40,12 +42,12 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     public static final String MY_PREFS_NAME = "MyPrefsFile";
     private static final String TAG_SUCCESS = "StatusCode";
     private static final String TAG_USER = "UserName";
-    private CreateAccountActivity.UserLoginTask mAuthTask = null;
+    private UserLoginTask mAuthTask = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_create_account);
 
         buttonLogin = findViewById(R.id.next);
         buttonLogin.setOnClickListener(this);
@@ -55,8 +57,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         mEmailView = findViewById(R.id.createEmail);
         mNameView = findViewById(R.id.createName);
 
-        Button btn = findViewById(R.id.next);
-        btn.setOnClickListener(this);
+        /*Button btn = findViewById(R.id.next);UserLoginTask
+        btn.setOnClickListener(this);*/
     }
 
     private void createDots(int current_position)
@@ -89,25 +91,38 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
+/*        Intent myIntent = new Intent(CreateAccountActivity.this, ChooseZoneActivity.class);
+        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+        //myIntent.putExtra("key", IDuser); //Optional parameters
+        CreateAccountActivity.this.startActivity(myIntent);*/
         int id = view.getId();
         switch (id)
         {
             case R.id.next:
-                ingresarCuenta();
+                crearCuenta();
                 break;
         }
 
     }
 
-    private void ingresarCuenta() {
+    private void crearCuenta() {
         mEmailView.setError(null);
+        mNameView.setError(null);
 
         mEmailView = findViewById(R.id.createEmail);
+        mNameView = findViewById(R.id.createName);
 
         String email = mEmailView.getText().toString();
+        String name = mNameView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
+
+        if (TextUtils.isEmpty(name)) {
+            mNameView.setError(getString(R.string.error_field_required));
+            focusView = mNameView;
+            cancel = true;
+        }
 
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
@@ -124,10 +139,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         } else {
             SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
             editor.putString("Email", email);
+            editor.putString("Name", name);
             editor.apply();
             //mAuthTask = new UserLoginTask(email, password);
             //mAuthTask.execute((Void) null);
-            new SignInActivity.UserLoginTask(email).execute();
+            new UserLoginTask(email, name).execute();
         }
     }
 
@@ -145,27 +161,30 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(SignInActivity.this);
-            pDialog.setMessage("Ingresando...");
+            pDialog = new ProgressDialog(CreateAccountActivity.this);
+            pDialog.setMessage("Registrando cuenta...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
         }
 
         private final String mEmail;
+        private final String mName;
 
-        UserLoginTask(String email) {
+        UserLoginTask(String email, String name) {
             mEmail = email;
+            mName = name;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             Boolean flag = false;
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
             nameValuePairs.add(new BasicNameValuePair("Email", mEmail));
+            nameValuePairs.add(new BasicNameValuePair("UserName", mName));
 
             String Resultado="";
-            JSONObject json = jParser.makeHttpRequest(url + "AuthenticateUser", "POST", nameValuePairs);
+            JSONObject json = jParser.makeHttpRequest(url + "RegisterUser", "POST", nameValuePairs);
 
             try {
                 if (json != null){
@@ -187,12 +206,15 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             pDialog.dismiss();
             mAuthTask = null;
             if (success) {
-                Intent mainIntent = new Intent(SignInActivity.this,
+                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                editor.putString("idUser", IDuser.toString());
+                editor.apply();
+                Intent mainIntent = new Intent(CreateAccountActivity.this,
                         ChooseZoneActivity.class);
                 mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                mainIntent.putExtra("key", IDuser); //Optional parameters
+                mainIntent.putExtra("idUser", IDuser); //Optional parameters
                 startActivity(mainIntent);
-                SignInActivity.this.finish();
+                CreateAccountActivity.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);
             } else {
                 mNameView.setError(getString(R.string.error_incorrect_password));
@@ -204,15 +226,15 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         protected void onCancelled() {
             pDialog.dismiss();
             //mAuthTask = null;
-            Toast.makeText(SignInActivity.this,"Sin conexión",Toast.LENGTH_LONG).show();
+            Toast.makeText(CreateAccountActivity.this,"Sin conexión",Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onBackPressed() {
-        Intent myIntent = new Intent(SignInActivity.this, LoginActivity.class);
+      Intent myIntent = new Intent(CreateAccountActivity.this, LoginActivity.class);
         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         //myIntent.putExtra("key", IDuser); //Optional parameters
-        SignInActivity.this.startActivity(myIntent);
+        CreateAccountActivity.this.startActivity(myIntent);
     }
 }

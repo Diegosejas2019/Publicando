@@ -1,4 +1,4 @@
-package com.code.publicando.publicando;
+package com.code.publicando.publicando.clases;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
+import com.code.publicando.publicando.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -56,8 +59,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         //holder.textViewRating.setText(String.valueOf(product.getRating()));
         //holder.textViewPrice.setText(String.valueOf(product.getPrice()));
 
-        holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
-
+        //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
+        Picasso.with(mCtx)
+                .load("http://10.0.2.2/Imagenes/" + product.getImageUrl().substring((product.getImageUrl().length()-6)).replaceAll("\\\\", ""))
+                .resize(1400, 850)
+                .into(holder.imageView);
     }
 
 
@@ -90,6 +96,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public void onClick(View v)
     {
+
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mCtx);
 
             LayoutInflater inflater = LayoutInflater.from(mCtx);
@@ -97,7 +104,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             dialogBuilder.setView(dialogView);
             dialogBuilder.setNegativeButton("Cerrar",null );
             ImageView editText = (ImageView) dialogView.findViewById(R.id.ImageDetail);
-            ImageView imagen = v.findViewById(v.getId());
+            ImageView imagen = v.findViewById(R.id.imageView);
             //editText.setImageResource(R.drawable.comidas);
             editText.setImageDrawable(imagen.getDrawable());
             AlertDialog alertDialog = dialogBuilder.create();

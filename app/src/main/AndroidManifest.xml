@@ -3,10 +3,11 @@
     package="com.code.publicando.publicando">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -23,7 +24,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name=".activitys.LoginActivity"
             android:label="@string/title_activity_login"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
@@ -31,19 +32,19 @@
 
         </activity>
         <activity
-            android:name=".splash"
+            android:name=".clases.splash"
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
         <activity
-            android:name=".GuideActivity"
+            android:name=".activitys.GuideActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CreateAccountActivity"
+            android:name=".activitys.CreateAccountActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ChooseZoneActivity"
+            android:name=".activitys.ChooseZoneActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -71,37 +72,37 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LocationActivity"
+            android:name=".activitys.LocationActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
+
+        </activity>
+        <activity
+            android:name=".activitys.SetZoneActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activitys.ServicesList_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activitys.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SetZoneActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ServicesList_Activity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity android:name=".CreatePostActivity" />
-        <activity android:name=".PostSetDetailActivity" />
-        <activity android:name=".PostUploadPhotoActivity" />
-        <activity android:name=".PostSetUbicationActivity" />
-        <activity android:name=".PostFormActivity"></activity>
-        <activity android:name=".PostFinishAcvitity"></activity>
-        <activity android:name=".SignInActivity"
+        <activity android:name=".activitys.CreatePostActivity" />
+        <activity android:name=".activitys.PostSetDetailActivity" />
+        <activity android:name=".activitys.PostUploadPhotoActivity" />
+        <activity android:name=".activitys.PostSetUbicationActivity" />
+        <activity android:name=".activitys.PostFormActivity"></activity>
+        <activity android:name=".activitys.PostFinishAcvitity"></activity>
+        <activity android:name=".activitys.SignInActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
 

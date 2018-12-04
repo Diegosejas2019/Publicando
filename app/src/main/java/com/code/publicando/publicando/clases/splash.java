@@ -1,6 +1,5 @@
-package com.code.publicando.publicando;
+package com.code.publicando.publicando.clases;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Handler;
@@ -8,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import com.code.publicando.publicando.activitys.LoginActivity;
+import com.code.publicando.publicando.R;
 
 public class splash extends AppCompatActivity {
     private static final long SPLASH_SCREEN_DELAY = 3000;

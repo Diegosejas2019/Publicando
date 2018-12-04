@@ -1,11 +1,9 @@
-package com.code.publicando.publicando;
+package com.code.publicando.publicando.activitys;
 
 import android.content.Intent;
-import android.net.wifi.WifiConfiguration;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.code.publicando.publicando.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -22,7 +21,6 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class SetZoneActivity extends AppCompatActivity implements View.OnClickListener{
 

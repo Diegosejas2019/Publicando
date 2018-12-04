@@ -1,6 +1,7 @@
-package com.code.publicando.publicando;
+package com.code.publicando.publicando.activitys;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -13,18 +14,26 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.code.publicando.publicando.R;
+import com.code.publicando.publicando.clases.MpagerAdapter;
+import com.code.publicando.publicando.clases.PreferenceManager;
+
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
+import static com.code.publicando.publicando.activitys.LoginActivity.MY_PREFS_NAME;
 
 public class GuideActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ViewPager mPager;
     private int[] layouts = {R.layout.first_slide,R.layout.detail_first_slide,R.layout.third_slide};
-    private  MpagerAdapter mpagerAdapter;
+    private MpagerAdapter mpagerAdapter;
 
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
     private Button skip,next;
     private Integer mIdUser;
+    private Integer mRadius;
+    private Integer mLatitude;
+    private Integer mLongitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +71,9 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         Bundle b = getIntent().getExtras();
         if(b != null){
             mIdUser = b.getInt("idUser");
+            mLatitude = b.getInt("Latitude");
+            mLongitud = b.getInt("Longitud");
+            mRadius = b.getInt("Radius");
         }
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -136,10 +148,20 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
 
     private void loadHome()
     {
+        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putInt("idUser", mIdUser);
+        editor.putInt("Latitude", mLatitude);
+        editor.putInt("Longitud", mLongitud);
+        editor.putInt("Radius", mRadius);
+        editor.apply();
         new PreferenceManager(GuideActivity.this).clearPreference();
         Intent myIntent = new Intent(GuideActivity.this, MainActivity.class);
         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-        myIntent.putExtra("idUser", mIdUser); //Optional parameters
+        myIntent.putExtra("idUser", mIdUser);
+        myIntent.putExtra("Latitude", mLatitude);
+        myIntent.putExtra("Longitud", mLongitud);
+        myIntent.putExtra("Radius", mRadius);
+
         GuideActivity.this.startActivity(myIntent);
         finish();
     }

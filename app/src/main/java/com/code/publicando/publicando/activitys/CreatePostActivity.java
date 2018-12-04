@@ -1,38 +1,32 @@
-package com.code.publicando.publicando;
+package com.code.publicando.publicando.activitys;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.code.publicando.publicando.R;
+
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
-public class PostSetDetailActivity extends AppCompatActivity implements View.OnClickListener{
+public class CreatePostActivity extends AppCompatActivity implements View.OnClickListener{
 
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
-    private String mType;
-    private AutoCompleteTextView mAuto;
     private Integer mIdUser;
 
-    String[] elementos = {"Mecanico","Electricista","Pintor","Albañil", "Abogado"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_set_detail);
+        setContentView(R.layout.activity_create_post);
         try {
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -47,22 +41,20 @@ public class PostSetDetailActivity extends AppCompatActivity implements View.OnC
         }
 
         Bundle b = getIntent().getExtras();
-        int value = -1; // or other values
         if(b != null){
-            mType = b.getString("Type");
             mIdUser = b.getInt("idUser");
         }
 
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
-        createDots(1);
-
-        mAuto = (AutoCompleteTextView) findViewById(R.id.auto);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,elementos);
-        mAuto.setThreshold(3);
-        mAuto.setAdapter(adapter);
-
-        Button btnNext = findViewById(R.id.btnNext);
-        btnNext.setOnClickListener(this);
+        createDots(0);
+        Button btnProducto = findViewById(R.id.btnProducto);
+        btnProducto.setOnClickListener(this);
+        Button btnServicio = findViewById(R.id.btnServicio);
+        btnServicio.setOnClickListener(this);
+        Button btnComercio = findViewById(R.id.btnComercio);
+        btnComercio.setOnClickListener(this);
+        Button btnPromocion = findViewById(R.id.btnPromocion);
+        btnPromocion.setOnClickListener(this);
     }
 
     private void createDots(int current_position)
@@ -97,7 +89,7 @@ public class PostSetDetailActivity extends AppCompatActivity implements View.OnC
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            Intent myIntent = new Intent(PostSetDetailActivity.this, CreatePostActivity.class);
+            Intent myIntent = new Intent(CreatePostActivity.this, MainActivity.class);
             myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
             startActivity(myIntent);
             finish(); // close this activity and return to preview activity (if there is any)
@@ -108,47 +100,38 @@ public class PostSetDetailActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onBackPressed() {
-        Intent myIntent = new Intent(PostSetDetailActivity.this, CreatePostActivity .class);
+        Intent myIntent = new Intent(CreatePostActivity.this, MainActivity .class);
         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         //myIntent.putExtra("key", IDuser); //Optional parameters
-        PostSetDetailActivity.this.startActivity(myIntent);
-
+        CreatePostActivity.this.startActivity(myIntent);
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
+
+        Intent myIntent = new Intent(CreatePostActivity.this, PostSetDetailActivity .class);
+        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+
         switch (id)
         {
-            case R.id.btnNext:
-                mAuto.setError(null);
-
-                mAuto = findViewById(R.id.auto);
-
-                String detail = mAuto.getText().toString();
-
-                boolean cancel = false;
-                View focusView = null;
-
-                if (TextUtils.isEmpty(detail)) {
-                    mAuto.setError(getString(R.string.error_field_required));
-                    focusView = mAuto;
-                    cancel = true;
-                }
-
-                if (cancel) {
-                    focusView.requestFocus();
-                } else {
-                    Intent myIntent = new Intent(PostSetDetailActivity.this, PostUploadPhotoActivity .class);
-                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                    myIntent.putExtra("Detail", mAuto.getText().toString());
-                    myIntent.putExtra("Type", mType);
-                    myIntent.putExtra("idUser", mIdUser);
-                    PostSetDetailActivity.this.startActivity(myIntent);
-                    PostSetDetailActivity.this.finish();
-                    overridePendingTransition(R.anim.fadein,R.anim.fadeout);
-                }
+            case R.id.btnProducto:
+                myIntent.putExtra("Type", "Producto"); //Optional parameters
+                break;
+            case R.id.btnServicio:
+                myIntent.putExtra("Type", "Servicio"); //Optional parameters
+                break;
+            case R.id.btnComercio:
+                myIntent.putExtra("Type", "Comercio"); //Optional parameters
+                break;
+            case R.id.btnPromocion:
+                myIntent.putExtra("Type", "Promocion"); //Optional parameters
                 break;
         }
+
+        myIntent.putExtra("idUser", mIdUser); //Optional parameters
+        CreatePostActivity.this.startActivity(myIntent);
+        CreatePostActivity.this.finish();;
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
     }
 }
