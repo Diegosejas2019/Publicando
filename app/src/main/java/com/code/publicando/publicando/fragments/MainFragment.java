@@ -45,7 +45,8 @@ public class MainFragment extends Fragment {
     private Context context;
     JSONArray jsonarray;
     JSONObject jsonobject;
-    private String url = "http://10.0.2.2/api/login/";
+    private String url = "http://10.0.2.2/";
+    //private String url = "http://192.168.1.149/";
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
     private Integer IDuser;
@@ -132,26 +133,38 @@ public class MainFragment extends Fragment {
                         }
                         img = baseLayout.findViewById(R.id.imagen);
                         Picasso.with(context)
-                                .load("http://10.0.2.2/Imagenes/" + Direcciones.get(0))
+                                .load(url + "Imagenes/" + Direcciones.get(0))
                                 .resize(1400, 850)
                                 .into(img);
                         //img.setImageResource(R.drawable.inmobiliaria);
                         break;
                     case 1:
                         baseLayout = viewPager.findViewWithTag(layouts[currentPage]);
+                        if(baseLayout == null)
+                        {
+                            MpagerAdapter viewPagerAdapter = new MpagerAdapter(layouts,context);
+                            viewPager.setAdapter(viewPagerAdapter);
+                            baseLayout = viewPager.findViewWithTag(layouts[currentPage]);
+                        }
                         img = baseLayout.findViewById(R.id.imagen);
                         Picasso.with(context)
-                                .load("http://10.0.2.2/Imagenes/" + Direcciones.get(1))
+                                .load(url + "Imagenes/" + Direcciones.get(1))
                                 .resize(1400, 850)
                                 .into(img);
                         //img.setImageResource(R.drawable.heladeria);
                         break;
                     case 2:
                         baseLayout = viewPager.findViewWithTag(layouts[currentPage]);
+                        if(baseLayout == null)
+                        {
+                            MpagerAdapter viewPagerAdapter = new MpagerAdapter(layouts,context);
+                            viewPager.setAdapter(viewPagerAdapter);
+                            baseLayout = viewPager.findViewWithTag(layouts[currentPage]);
+                        }
                         img = baseLayout.findViewById(R.id.imagen);
                         //img.setImageResource(R.drawable.comidas);
                         Picasso.with(context)
-                                .load("http://10.0.2.2/Imagenes/" + Direcciones.get(2))
+                                .load(url + "Imagenes/" + Direcciones.get(2))
                                 .resize(1400, 850)
                                 .into(img);
                         break;
@@ -227,7 +240,7 @@ public class MainFragment extends Fragment {
 
             Direcciones = new ArrayList<String>() ;
 
-            JSONObject json = jParser.makeHttpRequest(url + "GetImageUrl", "GET",parames);
+            JSONObject json = jParser.makeHttpRequest(url + "api/login/GetImageUrl", "GET",parames);
 
             try {
 

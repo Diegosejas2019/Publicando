@@ -38,7 +38,9 @@ public class ServiceListFragment extends Fragment {
 
     JSONArray jsonarray;
     JSONObject jsonobject;
-    private String url = "http://10.0.2.2/api/login/";
+
+    private String url = "http://10.0.2.2/";
+    //private String url = "http://192.168.1.149/";
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
     ArrayList<Post> posts;
@@ -147,7 +149,7 @@ public class ServiceListFragment extends Fragment {
 
             List parames = new ArrayList();
 
-            JSONObject json = jParser.makeHttpRequest(url  + "/GetAllPost", "GET", parames);
+            JSONObject json = jParser.makeHttpRequest(url  + "api/login/GetAllPost", "GET", parames);
 
             try {
 

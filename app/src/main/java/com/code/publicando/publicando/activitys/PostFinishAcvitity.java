@@ -53,6 +53,7 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
     private Integer mIdUser;
 
     private String url = "http://10.0.2.2/api/login/";
+    //private String url = "http://192.168.1.149/api/login/";
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
     private EditText mEmailView;
@@ -232,7 +233,7 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
             nameValuePairs.add(new BasicNameValuePair("Celular", mCelular));
             nameValuePairs.add(new BasicNameValuePair("Phone", mPhone));
             nameValuePairs.add(new BasicNameValuePair("Description", mDescription));
-            nameValuePairs.add(new BasicNameValuePair("idUser", "1"));
+            nameValuePairs.add(new BasicNameValuePair("idUser", mIdUser.toString()));
 
 
             String Resultado="";

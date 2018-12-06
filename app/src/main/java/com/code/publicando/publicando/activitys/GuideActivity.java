@@ -150,9 +150,10 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
     {
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         editor.putInt("idUser", mIdUser);
-        editor.putInt("Latitude", mLatitude);
-        editor.putInt("Longitud", mLongitud);
-        editor.putInt("Radius", mRadius);
+        editor.putString("Latitude", mLatitude.toString());
+        editor.putString("Longitud", mLongitud.toString());
+        editor.putString("Radius", mRadius.toString());
+        editor.putInt("Guide", 1);
         editor.apply();
         new PreferenceManager(GuideActivity.this).clearPreference();
         Intent myIntent = new Intent(GuideActivity.this, MainActivity.class);

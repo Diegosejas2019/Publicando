@@ -1,6 +1,7 @@
 package com.code.publicando.publicando.activitys;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import com.code.publicando.publicando.R;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
+import static com.code.publicando.publicando.activitys.LoginActivity.MY_PREFS_NAME;
 
 public class ChooseZoneActivity extends AppCompatActivity implements View.OnClickListener {
     private LinearLayout Dots_Layout;
@@ -30,6 +32,7 @@ public class ChooseZoneActivity extends AppCompatActivity implements View.OnClic
         if(b != null){
             mIdUser = b.getInt("idUser");
         }
+
 
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
         createDots(1);
@@ -78,8 +81,9 @@ public class ChooseZoneActivity extends AppCompatActivity implements View.OnClic
             case R.id.myUbication:
                 myIntent = new Intent(ChooseZoneActivity.this, LocationActivity.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                ChooseZoneActivity.this.startActivity(myIntent);
                 myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                ChooseZoneActivity.this.startActivity(myIntent);
+                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
                 break;
             case R.id.choose:
                 myIntent = new Intent(ChooseZoneActivity.this,

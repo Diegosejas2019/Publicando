@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -42,6 +43,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
+import static com.code.publicando.publicando.activitys.LoginActivity.MY_PREFS_NAME;
 
 
 public class LocationActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener ,GoogleApiClient.ConnectionCallbacks,
@@ -67,8 +69,8 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     private int NEW_RADIUS = 0;
     private Circle mCircle;
     private Integer mIdUser;
-    private Integer mLatitude;
-    private Integer mLongitud;
+    private double mLatitude;
+    private double mLongitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,12 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                editor.putString("Latitude", String.valueOf(mLatitude));
+                editor.putString("Longitud", String.valueOf(mLongitud));
+                editor.putString("Radius", String.valueOf(RADIUS_DEFAULT));
+                editor.apply();
+
                 new PreferenceManager(LocationActivity.this).clearPreference();
                 Intent myIntent = new Intent(LocationActivity.this, GuideActivity.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);

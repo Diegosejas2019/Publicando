@@ -62,6 +62,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
         Picasso.with(mCtx)
                 .load("http://10.0.2.2/Imagenes/" + product.getImageUrl().substring((product.getImageUrl().length()-6)).replaceAll("\\\\", ""))
+                //.load("http://192.168.1.149/Imagenes/" + product.getImageUrl().substring((product.getImageUrl().length()-6)).replaceAll("\\\\", ""))
                 .resize(1400, 850)
                 .into(holder.imageView);
     }

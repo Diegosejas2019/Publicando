@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,9 +44,9 @@ public class MainActivity extends AppCompatActivity
     private ImageView img;
     private String url = "10.0.2.2/api/version";
     private Integer mIdUser;
-    private Integer mLatitude;
-    private Integer mLongitud;
-    private Integer mRadius;
+    private String mLatitude;
+    private String mLongitud;
+    private String mRadius;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,18 +59,18 @@ public class MainActivity extends AppCompatActivity
         Integer restoredText = prefs.getInt("idUser", 0);
         if (restoredText != 0) {
             mIdUser = prefs.getInt("idUser", 0);
-            mLatitude = prefs.getInt("Latitude", 0);
-            mLongitud = prefs.getInt("Longitud", 0);
-            mRadius = prefs.getInt("Radius", 0);
+            mLatitude = prefs.getString("Latitude", null);
+            mLongitud = prefs.getString("Longitud", null);
+            mRadius = prefs.getString("Radius", null);
         }
         else
          {
              Bundle b = getIntent().getExtras();
              if(b != null){
                  mIdUser = b.getInt("idUser");
-                 mLatitude = b.getInt("Latitude");
-                 mLongitud = b.getInt("Longitud");
-                 mRadius = b.getInt("Radius");
+                 mLatitude = b.getString("Latitude");
+                 mLongitud = b.getString("Longitud");
+                 mRadius = b.getString("Radius");
              }
          }
 
@@ -118,6 +119,10 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         if (id == R.id.cerrarSesion) {
+            SharedPreferences spreferences =  getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor spreferencesEditor = spreferences.edit();
+            spreferencesEditor.clear();
+            spreferencesEditor.commit();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
@@ -133,6 +138,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_publicar) {
+            getSupportFragmentManager().beginTransaction().
+                    remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
+
             Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
             myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
             myIntent.putExtra("idUser", mIdUser); //Optional parameters
@@ -183,6 +191,8 @@ public class MainActivity extends AppCompatActivity
                 dialog.show(getFragmentManager(), "ServiceDetalDialogFragment");
                 break;
             case R.id.btnPublicar:
+                getSupportFragmentManager().beginTransaction().
+                        remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
                 Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 myIntent.putExtra("idUser", mIdUser); //Optional parameters

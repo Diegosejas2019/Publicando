@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -92,7 +93,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
 
-    private String url = "http://10.0.2.2/api/login/";
+    //private String url = "http://10.0.2.2/api/login/";
+    private String url = "http://192.168.1.149/api/login/";
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
     private EditText mEmailView;
@@ -118,18 +120,49 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         //printHashKey(LoginActivity.this);
+/*        SharedPreferences spreferences =  getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor spreferencesEditor = spreferences.edit();
+        spreferencesEditor.clear();
+        spreferencesEditor.commit();*/
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        Integer restoredText = prefs.getInt("idUser", 0);
-        if (restoredText != 0) {
-            Integer IDuser = prefs.getInt("idUser", 0);
-            Intent mainIntent = new Intent(LoginActivity.this,
-                    ChooseZoneActivity.class);
-            mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-            mainIntent.putExtra("idUser", IDuser); //Optional parameters
-            startActivity(mainIntent);
-            LoginActivity.this.finish();
-            overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+        Integer IDuser = prefs.getInt("idUser", 0);
+        if (IDuser != 0) {
+            String mLongitud = prefs.getString("Longitud", null);
+            String mLatitude = prefs.getString("Latitude", null);
+            String mRadius = prefs.getString("Radius", null);
+            Integer Guide = prefs.getInt("Guide", 0);
+            if (mLongitud != null)
+            {
+                if (Guide != 0)
+                {
+                    Intent mainIntent = new Intent(LoginActivity.this,
+                            MainActivity.class);
+                    mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    mainIntent.putExtra("idUser", IDuser); //Optional parameters
+                    startActivity(mainIntent);
+                    LoginActivity.this.finish();
+                    overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                }
+                else{
+                    Intent mainIntent = new Intent(LoginActivity.this,
+                            ChooseZoneActivity.class);
+                    mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    mainIntent.putExtra("idUser", IDuser); //Optional parameters
+                    startActivity(mainIntent);
+                    LoginActivity.this.finish();
+                    overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                }
+            }
+            else{
+                Intent mainIntent = new Intent(LoginActivity.this,
+                        ChooseZoneActivity.class);
+                mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                mainIntent.putExtra("idUser", IDuser); //Optional parameters
+                startActivity(mainIntent);
+                LoginActivity.this.finish();
+                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+            }
         }
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
@@ -444,7 +477,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 myIntent.putExtra("key", IDuser); //Optional parameters
                 CreateAccountActivity.this.startActivity(myIntent);*/
                 SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                editor.putInt("idUser", IDuser);
+                editor.putString("idUser", IDuser.toString());
                 editor.apply();
                 Intent mainIntent = new Intent(LoginActivity.this,
                         ChooseZoneActivity.class);

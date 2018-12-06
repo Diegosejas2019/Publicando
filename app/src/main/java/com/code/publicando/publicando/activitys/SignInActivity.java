@@ -34,7 +34,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
     private Button buttonLogin;
-    private String url = "http://10.0.2.2/api/login/";
+    //private String url = "http://10.0.2.2/api/login/";
+    private String url = "http://192.168.1.149/api/login/";
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
     private EditText mEmailView;
