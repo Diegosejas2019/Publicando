@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.clases.JSONParser;
+import com.code.publicando.publicando.clases.Url;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -33,7 +34,6 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
     private Button buttonLogin;
-    private String url = "http://10.0.2.2/api/login/";
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
     private EditText mEmailView;
@@ -184,7 +184,8 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             nameValuePairs.add(new BasicNameValuePair("UserName", mName));
 
             String Resultado="";
-            JSONObject json = jParser.makeHttpRequest(url + "RegisterUser", "POST", nameValuePairs);
+            Url url = new Url();
+            JSONObject json = jParser.makeHttpRequest(url.getDireccion() + "/api/master/RegisterUser", "POST", nameValuePairs);
 
             try {
                 if (json != null){
@@ -207,7 +208,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             mAuthTask = null;
             if (success) {
                 SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                editor.putString("idUser", IDuser.toString());
+                editor.putInt("idUser", IDuser);
                 editor.apply();
                 Intent mainIntent = new Intent(CreateAccountActivity.this,
                         ChooseZoneActivity.class);

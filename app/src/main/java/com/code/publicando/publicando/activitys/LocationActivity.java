@@ -2,6 +2,7 @@ package com.code.publicando.publicando.activitys;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -27,7 +29,9 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.code.publicando.publicando.R;
+import com.code.publicando.publicando.clases.JSONParser;
 import com.code.publicando.publicando.clases.PreferenceManager;
+import com.code.publicando.publicando.clases.Url;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -41,6 +45,14 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 import static com.code.publicando.publicando.activitys.LoginActivity.MY_PREFS_NAME;
@@ -72,6 +84,11 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     private double mLatitude;
     private double mLongitud;
 
+    JSONParser jParser = new JSONParser();
+    Url url = new Url();
+    private ProgressDialog pDialog;
+    private static final String TAG_SUCCESS = "StatusCode";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,12 +113,62 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                new SaveUbicationTask().execute();
+            }
+        });
+
+
+    }
+
+    public class SaveUbicationTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(LocationActivity.this);
+            pDialog.setMessage("Guardando ubicación...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Boolean flag = false;
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+            nameValuePairs.add(new BasicNameValuePair("IdUser", mIdUser.toString()));
+            nameValuePairs.add(new BasicNameValuePair("Radius", Integer.toString(RADIUS_DEFAULT)));
+            nameValuePairs.add(new BasicNameValuePair("Latitude", Double.toString(mLatitude)));
+            nameValuePairs.add(new BasicNameValuePair("Longitude", Double.toString(mLongitud)));
+
+            String Resultado="";
+
+            JSONObject json = jParser.makeHttpRequest(url.getDireccion() + "/api/master/SaveUbication", "POST", nameValuePairs);
+
+            try {
+                if (json != null){
+                    int success = json.getInt(TAG_SUCCESS);
+                    if (success == 200){
+                        flag = true;}
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Resultado = e.getMessage();
+            }
+            return flag;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            pDialog.dismiss();
+            if (success) {
                 SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                 editor.putString("Latitude", String.valueOf(mLatitude));
                 editor.putString("Longitud", String.valueOf(mLongitud));
                 editor.putString("Radius", String.valueOf(RADIUS_DEFAULT));
                 editor.apply();
-
                 new PreferenceManager(LocationActivity.this).clearPreference();
                 Intent myIntent = new Intent(LocationActivity.this, GuideActivity.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
@@ -110,12 +177,18 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                 myIntent.putExtra("Longitud", mLongitud); //Optional parameters
                 myIntent.putExtra("Radius", RADIUS_DEFAULT); //Optional parameters
                 LocationActivity.this.startActivity(myIntent);
+            } else {
+                Toast.makeText(LocationActivity.this,"Hubo un problema al guardar la ubicación",Toast.LENGTH_LONG).show();
             }
-        });
+        }
 
+        @Override
+        protected void onCancelled() {
+            pDialog.dismiss();
 
+            Toast.makeText(LocationActivity.this,"Sin conexión",Toast.LENGTH_LONG).show();
+        }
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -354,8 +427,8 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
 
-        mLatitude = (int) currentLatitude;
-        mLongitud = (int) currentLongitude;
+        mLatitude =  currentLatitude;
+        mLongitud =  currentLongitude;
 
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
         mLastLocation = location;

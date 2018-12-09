@@ -20,17 +20,15 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:screenOrientation="portrait"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".activitys.LoginActivity"
             android:label="@string/title_activity_login"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".clases.splash"
             android:screenOrientation="portrait"
@@ -80,9 +78,7 @@
         <activity
             android:name=".activitys.LocationActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activitys.SetZoneActivity"
             android:screenOrientation="portrait"
@@ -95,20 +91,18 @@
             android:name=".activitys.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activitys.CreatePostActivity" />
         <activity android:name=".activitys.PostSetDetailActivity" />
         <activity android:name=".activitys.PostUploadPhotoActivity" />
         <activity android:name=".activitys.PostSetUbicationActivity" />
-        <activity android:name=".activitys.PostFormActivity"></activity>
-        <activity android:name=".activitys.PostFinishAcvitity"></activity>
-        <activity android:name=".activitys.SignInActivity"
+        <activity android:name=".activitys.PostFormActivity" />
+        <activity android:name=".activitys.PostFinishAcvitity" />
+        <activity
+            android:name=".activitys.SignInActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activitys.MyAdvertisementsActivity"></activity>
     </application>
 
 </manifest>

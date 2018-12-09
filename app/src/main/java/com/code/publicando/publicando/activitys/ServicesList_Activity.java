@@ -97,7 +97,7 @@ public class ServicesList_Activity extends AppCompatActivity implements Navigati
                         "Increibles descuentos",
                         R.drawable.promos));*/
         //creating recyclerview adapter
-        ProductAdapter adapter = new ProductAdapter(this, productList);
+        ProductAdapter adapter = new ProductAdapter(this, productList,1);
 
         //setting adapter to recyclerview
         recyclerView.setAdapter(adapter);

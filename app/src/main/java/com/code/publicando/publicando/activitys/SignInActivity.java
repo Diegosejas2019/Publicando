@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.clases.JSONParser;
+import com.code.publicando.publicando.clases.Url;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -35,7 +36,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private ImageView[] dots;
     private Button buttonLogin;
     //private String url = "http://10.0.2.2/api/login/";
-    private String url = "http://192.168.1.149/api/login/";
+    //private String url = "http://192.168.1.149/api/login/";
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
     private EditText mEmailView;
@@ -169,7 +170,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             nameValuePairs.add(new BasicNameValuePair("Email", mEmail));
 
             String Resultado="";
-            JSONObject json = jParser.makeHttpRequest(url + "AuthenticateUser", "POST", nameValuePairs);
+            Url url = new Url();
+            JSONObject json = jParser.makeHttpRequest(url.getDireccion() + "/api/master/AuthenticateUser", "POST", nameValuePairs);
 
             try {
                 if (json != null){

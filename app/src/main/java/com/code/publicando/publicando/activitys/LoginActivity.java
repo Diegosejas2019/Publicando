@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.clases.JSONParser;
+import com.code.publicando.publicando.clases.Url;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -94,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ImageView[] dots;
 
     //private String url = "http://10.0.2.2/api/login/";
-    private String url = "http://192.168.1.149/api/login/";
+    //private String url = "http://192.168.1.149/api/login/";
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
     private EditText mEmailView;
@@ -120,10 +121,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         //printHashKey(LoginActivity.this);
-/*        SharedPreferences spreferences =  getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor spreferencesEditor = spreferences.edit();
-        spreferencesEditor.clear();
-        spreferencesEditor.commit();*/
+//        SharedPreferences spreferences =  getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+//        SharedPreferences.Editor spreferencesEditor = spreferences.edit();
+//        spreferencesEditor.clear();
+//        spreferencesEditor.commit();
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         Integer IDuser = prefs.getInt("idUser", 0);
@@ -450,7 +451,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             nameValuePairs.add(new BasicNameValuePair("UserName", mName));
 
             String Resultado="";
-            JSONObject json = jParser.makeHttpRequest(url + "RegisterUser", "POST", nameValuePairs);
+            Url url = new Url();
+            JSONObject json = jParser.makeHttpRequest(url.getDireccion() + "/api/master/RegisterUser", "POST", nameValuePairs);
 
             try {
                 if (json != null){

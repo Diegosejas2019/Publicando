@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.fragments.ChooseZoneFragment;
 import com.code.publicando.publicando.fragments.MainFragment;
+import com.code.publicando.publicando.fragments.MyAdvertisementsFragment;
 import com.code.publicando.publicando.fragments.ServiceDetalDialogFragment;
 import com.code.publicando.publicando.fragments.ServiceListFragment;
 
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity
     final long PERIOD_MS = 6000;
     private View baseLayout;
     private ImageView img;
-    private String url = "10.0.2.2/api/version";
+    //private String url = "10.0.2.2/api/version";
     private Integer mIdUser;
     private String mLatitude;
     private String mLongitud;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity
              }
          }
 
-
+        setActionBarTitle("Publicando");
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -114,10 +115,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
         if (id == R.id.cerrarSesion) {
             SharedPreferences spreferences =  getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
             SharedPreferences.Editor spreferencesEditor = spreferences.edit();
@@ -135,6 +132,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         boolean fragmentTransaction = false;
         Fragment fragment = null;
+        Bundle args;
         int id = item.getItemId();
 
         if (id == R.id.nav_publicar) {
@@ -145,9 +143,14 @@ public class MainActivity extends AppCompatActivity
             myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
             myIntent.putExtra("idUser", mIdUser); //Optional parameters
             MainActivity.this.startActivity(myIntent);
-        } /*else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_anuncios) {
+            fragment = new MyAdvertisementsFragment();
+            args = new Bundle();
+            args.putString("idUser", mIdUser.toString());
+            fragment.setArguments(args);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
 
-        } else if (id == R.id.nav_slideshow) {
+        } /*else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
 
@@ -162,20 +165,36 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
     @Override
     public void onClick(View view) {
         int id = view.getId();
         Fragment fragment;
+        Bundle args;
         switch (id) {
             case R.id.btnServicio:
                 fragment = new ServiceListFragment();
+                args = new Bundle();
+                args.putString("Type", "Servicio");
+                fragment.setArguments(args);
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 break;
             case R.id.btnComercio:
-                // do something else
+                fragment = new ServiceListFragment();
+                args = new Bundle();
+                args.putString("Type", "Comercio");
+                fragment.setArguments(args);
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 break;
             case R.id.btnPromo:
-                // i'm lazy, do nothing
+                fragment = new ServiceListFragment();
+                args = new Bundle();
+                args.putString("Type", "Promocion");
+                fragment.setArguments(args);
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 break;
             case R.id.imageView:
 
