@@ -12,15 +12,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.activitys.MainActivity;
 import com.code.publicando.publicando.clases.JSONParser;
 import com.code.publicando.publicando.clases.Post;
 import com.code.publicando.publicando.clases.Product;
 import com.code.publicando.publicando.clases.ProductAdapter;
-import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.clases.Url;
 
 import org.apache.http.NameValuePair;
@@ -34,21 +33,19 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ServiceListFragment extends Fragment {
+public class FavoriteFragment extends Fragment {
 
     List<Product> productList;
 
-    //the recyclerview
     RecyclerView recyclerView;
     JSONArray jsonarray;
     JSONObject jsonobject;
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
-    private String Type;
-    private Integer IdUser;
+    private String idUser;
     ArrayList<Post> posts;
     private Context context;
-    public ServiceListFragment() {
+    public FavoriteFragment() {
         // Required empty public constructor
     }
 
@@ -57,32 +54,13 @@ public class ServiceListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         context = inflater.getContext();
-        View view = inflater.inflate(R.layout.fragment_service_list, container, false);
-
-/*        Button btnZona = view.findViewById(R.id.btnZona);
-        btnZona.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment newFragment = new ChooseZoneFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.commit();
-            }
-        });*/
-
-/*        ImageButton btnFavorite = view.findViewById(R.id.favorite);
-        btnFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnFavorite.setImageResource(R.drawable.ic_favorite_selected);
-            }
-        });*/
-
-        Bundle args = getArguments();
-        Type = args.getString("Type", null);
-        IdUser = args.getInt("IdUser", 0);
+        View view = inflater.inflate(R.layout.fragment_my_advertisements, container, false);
 
         ((MainActivity) getActivity())
-                .setActionBarTitle(Type);
+                .setActionBarTitle("Mis Favoritos");
+
+        Bundle args = getArguments();
+        idUser = args.getString("idUser", null);
 
         new ObtenerDestacados().execute();
 
@@ -93,10 +71,6 @@ public class ServiceListFragment extends Fragment {
         productList = new ArrayList<>();
 
         return view;
-    }
-
-    public void onClickZona() {
-        Toast.makeText(context,"algo",Toast.LENGTH_LONG).show();
     }
 
     public class ObtenerDestacados extends AsyncTask<Void, Void, Boolean> {
@@ -117,8 +91,8 @@ public class ServiceListFragment extends Fragment {
 
             List parames = new ArrayList();
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-            nameValuePairs.add(new BasicNameValuePair("TypeWork", Type));
-            nameValuePairs.add(new BasicNameValuePair("IdUser", String.valueOf(IdUser)));
+            nameValuePairs.add(new BasicNameValuePair("TypeWork", null));
+            nameValuePairs.add(new BasicNameValuePair("IdUser", String.valueOf(idUser)));
             Url url = new Url();
             JSONObject json = jParser.makeHttpRequest(url.getDireccion()  + "/api/master/GetAllPost/", "POST", nameValuePairs);
 
@@ -156,26 +130,26 @@ public class ServiceListFragment extends Fragment {
             pDialog.dismiss();
             for (int i = 0; i < posts.size(); i++) {
                 if (posts.get(i).Favorite == 1){
-                productList.add(
-                        new Product(
-                                posts.get(i).IdPost,
-                                posts.get(i).TypeWork,
-                                posts.get(i).Description,
-                                posts.get(i).ImageUrl,
-                                posts.get(i).Favorite));
+                    productList.add(
+                            new Product(
+                                    posts.get(i).IdPost,
+                                    posts.get(i).TypeWork,
+                                    posts.get(i).Description,
+                                    posts.get(i).ImageUrl,
+                                    posts.get(i).Favorite));
                 }
                 else
-                    {
-                        productList.add(
-                                new Product(
-                                        posts.get(i).IdPost,
-                                        posts.get(i).TypeWork,
-                                        posts.get(i).Description,
-                                        posts.get(i).ImageUrl,
-                                        0));
-                    }
+                {
+                    productList.add(
+                            new Product(
+                                    posts.get(i).IdPost,
+                                    posts.get(i).TypeWork,
+                                    posts.get(i).Description,
+                                    posts.get(i).ImageUrl,
+                                    0));
+                }
             }
-            ProductAdapter adapter = new ProductAdapter(context, productList,IdUser);
+            ProductAdapter adapter = new ProductAdapter(context, productList, Integer.parseInt(idUser));
 
             recyclerView.setAdapter(adapter);
         }

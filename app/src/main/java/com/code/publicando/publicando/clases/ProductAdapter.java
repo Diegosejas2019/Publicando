@@ -99,7 +99,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.textViewShortDesc.setText(product.getShortdesc());
         //holder.textViewRating.setText(String.valueOf(product.getRating()));
         //holder.textViewPrice.setText(String.valueOf(product.getPrice()));
-        holder.imgFavorite.setTag(R.drawable.ic_favorite_unselected);
+        if(productList.get(position).getFavorite() == 1)
+        {
+            holder.imgFavorite.setTag(R.drawable.ic_favorite_selected);
+            holder.imgFavorite.setImageResource(R.drawable.ic_favorite_selected);
+        }
+        else
+        {
+            holder.imgFavorite.setTag(R.drawable.ic_favorite_unselected);
+            holder.imgFavorite.setImageResource(R.drawable.ic_favorite_unselected);
+        }
         //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
         Url url = new Url();
         Picasso.with(mCtx)
@@ -113,7 +122,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
                 idPost = String.valueOf(productList.get(position).getId());
                 //Toast.makeText(mCtx, String.valueOf(productList.get(position).getId()) , Toast.LENGTH_SHORT).show();
-                Toast.makeText(mCtx,String.valueOf(mIdUser),Toast.LENGTH_LONG).show();
+                //Toast.makeText(mCtx,String.valueOf(mIdUser),Toast.LENGTH_LONG).show();
                 if ( holder.imgFavorite.getTag().equals(R.drawable.ic_favorite_selected) )
                 {
                     holder.imgFavorite.setImageResource(R.drawable.ic_favorite_unselected);
@@ -124,7 +133,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     holder.imgFavorite.setTag(R.drawable.ic_favorite_selected);
                 }
 
-                //new ObtenerDestacados().execute();
+                new MarcarFavoritos().execute();
             }
         });
 
@@ -201,13 +210,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
     }*/
 
-    public class ObtenerDestacados extends AsyncTask<Void, Void, Boolean> {
+    public class MarcarFavoritos extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(mCtx);
-            pDialog.setMessage("Obteniendo publicaciones...");
+            pDialog.setMessage("Guardando Favorito...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();

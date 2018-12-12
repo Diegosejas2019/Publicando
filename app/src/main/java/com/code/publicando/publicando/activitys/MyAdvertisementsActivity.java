@@ -104,6 +104,7 @@ public class MyAdvertisementsActivity extends AppCompatActivity {
                             post.setTypeWork(jsonobject.getString("TypeWork"));
                             post.setRadius(jsonobject.optInt("Radius"));
                             post.setWorkDetail(jsonobject.getString("WorkDetail"));
+
                             posts.add(post);
                         }
                 }}
@@ -124,7 +125,7 @@ public class MyAdvertisementsActivity extends AppCompatActivity {
                                 posts.get(i).IdPost,
                                 posts.get(i).TypeWork,
                                 posts.get(i).Description,
-                                posts.get(i).ImageUrl));
+                                posts.get(i).ImageUrl,1));
             }
             ProductAdapter adapter = new ProductAdapter(MyAdvertisementsActivity.this, productList,1);
 

@@ -11,16 +11,18 @@ public class Product {
     private String shortdesc;
     //private double rating;
     private int image;
-
+    private int favorite;
     private String imageUrl;
 
-    public Product(int id, String title, String shortdesc, String image) {
+
+    public Product(int id, String title, String shortdesc, String image, int favorite) {
         this.id = id;
         this.title = title;
         this.shortdesc = shortdesc;
         //this.rating = rating;
         //this.image = image;
         this.imageUrl = image;
+        this.favorite = favorite;
     }
 
     public int getId() {
@@ -45,6 +47,10 @@ public class Product {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public int getFavorite(){
+        return this.favorite;
     }
 }
 

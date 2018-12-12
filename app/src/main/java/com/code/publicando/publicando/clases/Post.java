@@ -13,6 +13,7 @@ public class Post {
     public String Celular ;
     public String Phone ;
     public String Description ;
+    public Integer Favorite;
 
     public Post()
     {
@@ -123,4 +124,11 @@ public class Post {
     }
 
     public String ImageUrl ;
+
+    public Integer getFavorite(){return this.Favorite;}
+
+    public void setFavorite(Integer favorite)
+    {
+        this.Favorite = favorite;
+    }
 }

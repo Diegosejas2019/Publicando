@@ -22,8 +22,10 @@ import android.widget.ImageView;
 
 import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.fragments.ChooseZoneFragment;
+import com.code.publicando.publicando.fragments.FavoriteFragment;
 import com.code.publicando.publicando.fragments.MainFragment;
 import com.code.publicando.publicando.fragments.MyAdvertisementsFragment;
+import com.code.publicando.publicando.fragments.ServiceDetailFragment;
 import com.code.publicando.publicando.fragments.ServiceDetalDialogFragment;
 import com.code.publicando.publicando.fragments.ServiceListFragment;
 
@@ -135,7 +137,33 @@ public class MainActivity extends AppCompatActivity
         Bundle args;
         int id = item.getItemId();
 
-        if (id == R.id.nav_publicar) {
+        switch (id)
+        {
+            case R.id.nav_publicar:
+                getSupportFragmentManager().beginTransaction().
+                        remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
+
+                Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                MainActivity.this.startActivity(myIntent);
+                break;
+            case R.id.nav_anuncios:
+                fragment = new MyAdvertisementsFragment();
+                args = new Bundle();
+                args.putString("idUser", mIdUser.toString());
+                fragment.setArguments(args);
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                break;
+            case R.id.nav_fav:
+                fragment = new FavoriteFragment();
+                args = new Bundle();
+                args.putString("idUser", mIdUser.toString());
+                fragment.setArguments(args);
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                break;
+        }
+        /*if (id == R.id.nav_publicar) {
             getSupportFragmentManager().beginTransaction().
                     remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
 
@@ -150,7 +178,7 @@ public class MainActivity extends AppCompatActivity
             fragment.setArguments(args);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
 
-        } /*else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
 
@@ -173,25 +201,26 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View view) {
         int id = view.getId();
         Fragment fragment;
-        Bundle args;
+        Bundle args = new Bundle();
+        args.putInt("IdUser", mIdUser);
         switch (id) {
             case R.id.btnServicio:
                 fragment = new ServiceListFragment();
-                args = new Bundle();
+                //args = new Bundle();
                 args.putString("Type", "Servicio");
                 fragment.setArguments(args);
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 break;
             case R.id.btnComercio:
                 fragment = new ServiceListFragment();
-                args = new Bundle();
+                //args = new Bundle();
                 args.putString("Type", "Comercio");
                 fragment.setArguments(args);
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 break;
             case R.id.btnPromo:
                 fragment = new ServiceListFragment();
-                args = new Bundle();
+                //args = new Bundle();
                 args.putString("Type", "Promocion");
                 fragment.setArguments(args);
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
@@ -205,9 +234,11 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 break;
             case R.id.btnRubro:
-                ServiceDetalDialogFragment dialog = new ServiceDetalDialogFragment();
+/*                ServiceDetalDialogFragment dialog = new ServiceDetalDialogFragment();
 
-                dialog.show(getFragmentManager(), "ServiceDetalDialogFragment");
+                dialog.show(getFragmentManager(), "ServiceDetalDialogFragment");*/
+                fragment = new ServiceDetailFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 break;
             case R.id.btnPublicar:
                 getSupportFragmentManager().beginTransaction().
