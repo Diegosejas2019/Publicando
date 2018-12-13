@@ -237,8 +237,8 @@ public class MainActivity extends AppCompatActivity
 /*                ServiceDetalDialogFragment dialog = new ServiceDetalDialogFragment();
 
                 dialog.show(getFragmentManager(), "ServiceDetalDialogFragment");*/
-                fragment = new ServiceDetailFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                //fragment = new ServiceDetailFragment();
+                //getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 break;
             case R.id.btnPublicar:
                 getSupportFragmentManager().beginTransaction().

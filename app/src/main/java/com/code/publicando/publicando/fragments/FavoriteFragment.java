@@ -138,7 +138,7 @@ public class FavoriteFragment extends Fragment {
                                     posts.get(i).ImageUrl,
                                     posts.get(i).Favorite));
                 }
-                else
+/*                else
                 {
                     productList.add(
                             new Product(
@@ -147,7 +147,7 @@ public class FavoriteFragment extends Fragment {
                                     posts.get(i).Description,
                                     posts.get(i).ImageUrl,
                                     0));
-                }
+                }*/
             }
             ProductAdapter adapter = new ProductAdapter(context, productList, Integer.parseInt(idUser));
 

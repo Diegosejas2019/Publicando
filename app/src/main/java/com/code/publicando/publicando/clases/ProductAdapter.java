@@ -1,5 +1,6 @@
 package com.code.publicando.publicando.clases;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -7,7 +8,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 
 
 import com.code.publicando.publicando.R;
+import com.code.publicando.publicando.fragments.ServiceDetailFragment;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -76,15 +79,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         CardView card_view =  (CardView) view.findViewById(R.id.card_view);
         //        //card_view.setOnClickListener(this);
         ImageView imageView =  (ImageView) view.findViewById(R.id.imageView);
-        imageView.setOnClickListener(this);
+        //imageView.setOnClickListener(this);
         favo =  (ImageView) view.findViewById(R.id.favorite);
         //favorite.setOnClickListener(this);
         TextView textViewTitle =  (TextView) view.findViewById(R.id.textViewTitle);
-        textViewTitle.setOnClickListener(this);
+        //textViewTitle.setOnClickListener(this);
         TextView textViewShortDesc =  (TextView) view.findViewById(R.id.textViewShortDesc);
-        textViewShortDesc.setOnClickListener(this);
+        //textViewShortDesc.setOnClickListener(this);
         RatingBar ratingBar =  (RatingBar) view.findViewById(R.id.ratingBar);
-        ratingBar.setOnClickListener(this);
+        //ratingBar.setOnClickListener(this);
 
         return new ProductViewHolder(view);
     }
@@ -96,7 +99,29 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.cardView.setTag(position);
         //binding the data with the viewholder views
         holder.textViewTitle.setText(product.getTitle());
+        holder.textViewTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                idPost = String.valueOf(productList.get(position).getId());
+                ((Activity) mCtx).getFragmentManager().beginTransaction()
+                        .remove(((Activity) mCtx).getFragmentManager().findFragmentById(R.id.content_frame)).commit();
+                Fragment fragment = new ServiceDetailFragment();
+                ((Activity) mCtx).getFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, fragment)
+                        .commit();
+            }
+        });
         holder.textViewShortDesc.setText(product.getShortdesc());
+        holder.textViewShortDesc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                idPost = String.valueOf(productList.get(position).getId());
+                Fragment fragment = new ServiceDetailFragment();
+                ((Activity) mCtx).getFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, fragment)
+                        .commit();
+            }
+        });
         //holder.textViewRating.setText(String.valueOf(product.getRating()));
         //holder.textViewPrice.setText(String.valueOf(product.getPrice()));
         if(productList.get(position).getFavorite() == 1)
@@ -172,14 +197,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public void onClick(View v)
     {
+
 /*        //int position = (int) v.getTag();
         int id = v.getId();
 
         switch (id) {
             case R.id.favorite:
                 Toast.makeText(mCtx,"algo",Toast.LENGTH_LONG).show();
-                break;
-            default:*/
+                break
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mCtx);
 
             LayoutInflater inflater = LayoutInflater.from(mCtx);

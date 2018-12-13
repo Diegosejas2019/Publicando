@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
     tools:context=".fragments.ServiceDetailFragment">
 
     <LinearLayout
@@ -11,24 +12,60 @@
         android:orientation="vertical"
         android:padding="10dp">
 
+        <ImageView
+            android:id="@+id/imagenPost"
+            android:layout_width="300dp"
+            android:layout_height="140dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/comidas" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="Abogado"
+            android:textSize="20sp"
+            android:textStyle="italic" />
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
-            android:text="We hope you enjoyed your meal with us today"
+            android:text="Celular: 1555793722"
+            android:textSize="20sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="Telefono: 46997998"
             android:textSize="20sp"
             android:textStyle="italic" />
-
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="Descripción: asdasdasdasdasdasdasdasdasdasdasdasd"
+            android:textSize="20sp"
+            android:textStyle="italic" />
         <RatingBar
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
+            android:theme="@style/RatingBar"
             android:numStars="5"
-            android:rating="5"
+            android:rating="1"
             android:stepSize="1" />
 
         <TextView
@@ -37,11 +74,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:text="Awesome. I love it"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+          />
 
-        <EditText
+<!--        <EditText
             android:id="@+id/etFeedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,15 +85,15 @@
             android:gravity="top"
             android:hint="Tell us what you loved"
             android:inputType="textMultiLine"
-            android:lines="5" />
+            android:lines="5" />-->
 
         <Button
             android:id="@+id/btnSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="#e57373"
-            android:text="Send feedback"
+            android:background="@color/colorNaranja"
+            android:text="Enviar calificación"
             android:textColor="@android:color/white" />
 
     </LinearLayout>
