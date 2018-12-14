@@ -96,13 +96,19 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
-        else {
-            Fragment fragment = new MainFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            }
+            else {
+                Fragment fragment = new MainFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+            }
+        } else {
+            getFragmentManager().popBackStack();
         }
     }
 
@@ -241,8 +247,8 @@ public class MainActivity extends AppCompatActivity
                 //getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 break;
             case R.id.btnPublicar:
-                getSupportFragmentManager().beginTransaction().
-                        remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
+                    getSupportFragmentManager().beginTransaction().
+                            remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
                 Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 myIntent.putExtra("idUser", mIdUser); //Optional parameters

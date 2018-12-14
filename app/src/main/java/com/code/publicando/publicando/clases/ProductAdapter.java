@@ -103,11 +103,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             @Override
             public void onClick(View v) {
                 idPost = String.valueOf(productList.get(position).getId());
-                ((Activity) mCtx).getFragmentManager().beginTransaction()
-                        .remove(((Activity) mCtx).getFragmentManager().findFragmentById(R.id.content_frame)).commit();
                 Fragment fragment = new ServiceDetailFragment();
+                Bundle args = new Bundle();
+                args.putString("idPost", idPost);
+                args.putInt("idUser", mIdUser);
+                fragment.setArguments(args);
                 ((Activity) mCtx).getFragmentManager().beginTransaction()
                         .replace(R.id.content_frame, fragment)
+                        .addToBackStack(null)
                         .commit();
             }
         });
@@ -117,8 +120,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             public void onClick(View v) {
                 idPost = String.valueOf(productList.get(position).getId());
                 Fragment fragment = new ServiceDetailFragment();
+                Bundle args = new Bundle();
+                args.putString("idPost", idPost);
+                args.putInt("idUser", mIdUser);
+                fragment.setArguments(args);
                 ((Activity) mCtx).getFragmentManager().beginTransaction()
                         .replace(R.id.content_frame, fragment)
+                        .addToBackStack(null)
                         .commit();
             }
         });

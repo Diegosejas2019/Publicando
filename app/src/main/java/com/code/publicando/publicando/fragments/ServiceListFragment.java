@@ -95,6 +95,7 @@ public class ServiceListFragment extends Fragment {
         return view;
     }
 
+
     public void onClickZona() {
         Toast.makeText(context,"algo",Toast.LENGTH_LONG).show();
     }
@@ -187,4 +188,6 @@ public class ServiceListFragment extends Fragment {
             Toast.makeText(context,"Sin conexión",Toast.LENGTH_LONG).show();
         }
     }
+
+
 }
