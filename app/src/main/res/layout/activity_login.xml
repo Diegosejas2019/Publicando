@@ -35,56 +35,75 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="¡Bienvenido a Publicando!"
                 android:textSize="25dp"
-                android:textStyle="bold"
-                android:layout_gravity="center_horizontal"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Encontra lo que buscas"
                 android:layout_gravity="center_horizontal"
-                android:textSize="15dp"
-                android:layout_marginTop="10dp"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_marginTop="20dp"
-                android:text="INGRESA CON TU MAIL"
-                android:textColor="@color/colorWhite"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/bordes"
-                android:id="@+id/ingresarEmail"
-                android:onClick="Click"
-                />
-<!--            <Button
-                android:id="@+id/sign_in_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-            android:padding="10dp"
-            android:text="INGRESA CON GOOGLE"
-                android:textColor="@color/colorWhite"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/bordesgoogle"
-            />-->
-           <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_button"
+                android:text="Encontra lo que buscas"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/ingresarEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-               android:layout_marginTop="10dp"/>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bordes"
+                android:onClick="Click"
+                android:padding="10dp"
+                android:drawableLeft="@drawable/arroba25"
+                android:text="INGRESA CON TU MAIL"
+                android:textColor="@color/colorWhite" />
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/sign_in_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp" />
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="90dp"
+                    android:minHeight="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/sign_in_button"
+                    android:layout_alignRight="@+id/sign_in_button"
+                    android:layout_alignBottom="@+id/sign_in_button"
+                    android:layout_marginEnd="300dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginBottom="0dp"
+
+                    android:src="@drawable/googlepluslogo" />
+
+            </RelativeLayout>
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/bordesface"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
-                android:background="@drawable/bordesface"
                 facebook:com_facebook_login_text="INGRESA CON FACEBOOK" />
-<!--            <Button
+            <!--            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -99,7 +118,7 @@
                 android:layout_height="2dp"
                 android:layout_marginTop="20dp"
 
-                android:background="@color/colorNaranja"/>
+                android:background="@color/colorNaranja" />
             <!--<android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -138,34 +157,36 @@
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bordes"
-                android:textColor="@color/colorWhite"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/bordes"
                 android:text="Ya tengo cuenta"
+                android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
+
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:alpha=".5"
                 android:layout_above="@id/dotsLayout"
-                android:background="@color/colorWhite"
-                android:layout_marginBottom="15dp"></View>
+                android:layout_marginBottom="15dp"
+                android:alpha=".5"
+                android:background="@color/colorWhite"></View>
 
             <LinearLayout
+                android:id="@+id/dotsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/dotsLayout"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
-                android:orientation="horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="15dp"
                 android:gravity="center"
-                android:layout_marginBottom="15dp">
+                android:orientation="horizontal">
 
             </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_marginTop="50dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
                 android:text="Ingresando estas aceptando nuestros terminos y condiciones" />
         </LinearLayout>
     </ScrollView>

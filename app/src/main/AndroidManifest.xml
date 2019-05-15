@@ -28,17 +28,11 @@
             android:label="@string/title_activity_login"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".clases.splash"
             android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/FullscreenTheme"></activity>
         <activity
             android:name=".activitys.GuideActivity"
             android:screenOrientation="portrait"
@@ -78,11 +72,14 @@
         <activity
             android:name=".activitys.LocationActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activitys.SetZoneActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
         <activity
             android:name=".activitys.ServicesList_Activity"
             android:screenOrientation="portrait"
@@ -91,7 +88,13 @@
             android:name=".activitys.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activitys.CreatePostActivity" />
         <activity android:name=".activitys.PostSetDetailActivity" />
         <activity android:name=".activitys.PostUploadPhotoActivity" />
@@ -101,8 +104,17 @@
         <activity
             android:name=".activitys.SignInActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".activitys.MyAdvertisementsActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activitys.MyAdvertisementsActivity" />
+        <activity
+            android:name=".activitys.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity android:name=".activitys.NewLogin"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

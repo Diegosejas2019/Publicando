@@ -40,6 +40,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -84,6 +85,9 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     private double mLatitude;
     private double mLongitud;
 
+    private String Latitude;
+    private String Longitud;
+
     JSONParser jParser = new JSONParser();
     Url url = new Url();
     private ProgressDialog pDialog;
@@ -97,6 +101,8 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         Bundle b = getIntent().getExtras();
         if(b != null){
             mIdUser = b.getInt("idUser");
+            Latitude = b.getString("Latitude", null);
+            Longitud = b.getString("Longitud", null);
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -270,26 +276,29 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
 
         }
 
-/*        LatLng sevilla = new LatLng(-34.6969607,-58.5372425);
-        mMap.addMarker(new MarkerOptions().position(sevilla).title("Hola desde Sevilla!").draggable(true));
+/*        if ((!Latitude.isEmpty()) && (!Longitud.isEmpty()))
+        {1
+            LatLng sevilla = new LatLng(Double.parseDouble(Latitude),Double.parseDouble(Longitud));
+            mMap.addMarker(new MarkerOptions().position(sevilla).title("").draggable(true));
 
-        mLatitude = (int) sevilla.latitude;
-        mLongitud = (int) sevilla.longitude;
+            mLatitude = (int) sevilla.latitude;
+            mLongitud = (int) sevilla.longitude;
 
-        final CameraPosition camera = new CameraPosition.Builder()
-                .target(sevilla)
-                .zoom(11.0f)           // limit -> 21
-                .bearing(0)         // 0 - 365º
-                .tilt(30)           // limit -> 90
-                .build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(camera));
+            final CameraPosition camera = new CameraPosition.Builder()
+                    .target(sevilla)
+                    .zoom(11.0f)           // limit -> 21
+                    .bearing(0)         // 0 - 365º
+                    .tilt(30)           // limit -> 90
+                    .build();
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(camera));
 
-        mCircle = mMap.addCircle(new CircleOptions()
-                .center(sevilla)
-                .radius(RADIUS_DEFAULT)
-                .strokeColor(Color.BLUE)
-                .fillColor(Color.TRANSPARENT)
-                .strokeWidth(5));*/
+            mCircle = mMap.addCircle(new CircleOptions()
+                    .center(sevilla)
+                    .radius(RADIUS_DEFAULT)
+                    .strokeColor(Color.BLUE)
+                    .fillColor(Color.TRANSPARENT)
+                    .strokeWidth(5));
+        }*/
 
         SeekBar bar = findViewById(R.id.seekBar);
         bar.setMax(20);

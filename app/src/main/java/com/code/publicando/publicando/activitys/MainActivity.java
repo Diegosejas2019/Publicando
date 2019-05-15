@@ -58,6 +58,11 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        SharedPreferences spreferences =  getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor spreferencesEditor = spreferences.edit();
+        spreferencesEditor.clear();
+        spreferencesEditor.commit();
+
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         Integer restoredText = prefs.getInt("idUser", 0);
         if (restoredText != 0) {
@@ -65,6 +70,8 @@ public class MainActivity extends AppCompatActivity
             mLatitude = prefs.getString("Latitude", null);
             mLongitud = prefs.getString("Longitud", null);
             mRadius = prefs.getString("Radius", null);
+/*            item = findViewById(R.id.registrarse);
+            item.setVisible(false);*/
         }
         else
          {
@@ -116,6 +123,17 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem registrar = menu.findItem(R.id.registrarse);
+        MenuItem cerrar = menu.findItem(R.id.cerrarSesion);
+        if (mIdUser != null)
+        {
+            registrar.setVisible(false);
+            cerrar.setVisible(true);
+        }
+        else{
+            registrar.setVisible(true);
+            cerrar.setVisible(false);
+        }
         return true;
     }
 
@@ -124,12 +142,21 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.cerrarSesion) {
+            getSupportFragmentManager().beginTransaction().
+                    remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
             SharedPreferences spreferences =  getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
             SharedPreferences.Editor spreferencesEditor = spreferences.edit();
             spreferencesEditor.clear();
             spreferencesEditor.commit();
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            startActivity(new Intent(MainActivity.this, HomeActivity.class));
             finish();
+        }
+        if (id == R.id.registrarse) {
+            getSupportFragmentManager().beginTransaction().
+                    remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
+            Intent myIntent = new Intent(MainActivity.this, HomeActivity.class);
+            myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+            MainActivity.this.startActivity(myIntent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -149,10 +176,21 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().
                         remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
 
-                Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
+/*                Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 myIntent.putExtra("idUser", mIdUser); //Optional parameters
-                MainActivity.this.startActivity(myIntent);
+                MainActivity.this.startActivity(myIntent);*/
+                if(mIdUser != null){
+                    Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
+                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                    MainActivity.this.startActivity(myIntent);
+                }
+                else{
+                    Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
+                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    MainActivity.this.startActivity(myIntent);
+                }
                 break;
             case R.id.nav_anuncios:
                 fragment = new MyAdvertisementsFragment();
@@ -208,7 +246,10 @@ public class MainActivity extends AppCompatActivity
         int id = view.getId();
         Fragment fragment;
         Bundle args = new Bundle();
-        args.putInt("IdUser", mIdUser);
+        Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
+        if(mIdUser != null){
+            args.putInt("IdUser", mIdUser);
+        }
         switch (id) {
             case R.id.btnServicio:
                 fragment = new ServiceListFragment();
@@ -249,10 +290,17 @@ public class MainActivity extends AppCompatActivity
             case R.id.btnPublicar:
                     getSupportFragmentManager().beginTransaction().
                             remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
-                Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
-                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                myIntent.putExtra("idUser", mIdUser); //Optional parameters
-                MainActivity.this.startActivity(myIntent);
+                    if(mIdUser != null){
+                        myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
+                        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                        myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                        MainActivity.this.startActivity(myIntent);
+                    }
+                    else{
+                        myIntent = new Intent(MainActivity.this, LoginActivity.class);
+                        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                        MainActivity.this.startActivity(myIntent);
+                    }
                 break;
 
         }

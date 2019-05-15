@@ -11,17 +11,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-
-import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -66,11 +64,7 @@ import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
-/**
- * A login screen that offers login via email/password.
- */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener,GoogleApiClient.OnConnectionFailedListener {
-
+public class NewLogin extends AppCompatActivity implements View.OnClickListener,GoogleApiClient.OnConnectionFailedListener{
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -87,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    private LoginActivity.UserLoginTask mAuthTask = null;
 
     private View mProgressView;
     private View mLoginFormView;
@@ -118,13 +112,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_new_login);
 
-        //printHashKey(LoginActivity.this);imageView1
-//        SharedPreferences spreferences =  getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-//        SharedPreferences.Editor spreferencesEditor = spreferences.edit();
-//        spreferencesEditor.clear();
-//        spreferencesEditor.commit();
+        @SuppressLint("WrongViewCast") SignInButton sign = (SignInButton) findViewById(R.id.sign);
+        //sign.setSize(SignInButton.SIZE_STANDARD);
+        TextView textView = (TextView) sign.getChildAt(0);
+        textView.setText("Google");
+        textView.setTextSize(17);
+        textView.setPadding(0,0,20,0);
+        //textView.setTextColor(Color.WHITE);
+        //textView.setBackgroundResource(R.drawable.bordesgoogle);
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         Integer IDuser = prefs.getInt("idUser", 0);
@@ -137,37 +134,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             {
                 if (Guide != 0)
                 {
-                    Intent mainIntent = new Intent(LoginActivity.this,
+                    Intent mainIntent = new Intent(NewLogin.this,
                             MainActivity.class);
                     mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                     mainIntent.putExtra("idUser", IDuser); //Optional parameters
                     startActivity(mainIntent);
-                    LoginActivity.this.finish();
+                    NewLogin.this.finish();
                     overridePendingTransition(R.anim.fadein,R.anim.fadeout);
                 }
                 else{
-                    Intent mainIntent = new Intent(LoginActivity.this,
+                    Intent mainIntent = new Intent(NewLogin.this,
                             ChooseZoneActivity.class);
                     mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                     mainIntent.putExtra("idUser", IDuser); //Optional parameters
                     startActivity(mainIntent);
-                    LoginActivity.this.finish();
+                    NewLogin.this.finish();
                     overridePendingTransition(R.anim.fadein,R.anim.fadeout);
                 }
             }
             else{
-                Intent mainIntent = new Intent(LoginActivity.this,
+                Intent mainIntent = new Intent(NewLogin.this,
                         ChooseZoneActivity.class);
                 mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 mainIntent.putExtra("idUser", IDuser); //Optional parameters
                 startActivity(mainIntent);
-                LoginActivity.this.finish();
+                NewLogin.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);
             }
         }
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(this);
+
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -175,28 +171,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Button btnIngreseMail = findViewById(R.id.ingresarEmail);
         btnIngreseMail.setOnClickListener(this);
 
-        Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
-        createDots(0);
+/*        Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
+        createDots(0);*/
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
         //mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        @SuppressLint("WrongViewCast") SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
+/*        @SuppressLint("WrongViewCast") SignInButton signInButton = (SignInButton) findViewById(R.id.sign);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);*/
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .addApi(Plus.API)
                 .build();
-        TextView textView = (TextView) signInButton.getChildAt(0);
+/*        TextView textView = (TextView) signInButton.getChildAt(0);
         textView.setText("INGRESA CON GOOGLE");
         textView.setTextColor(Color.WHITE);
-        textView.setBackgroundResource(R.drawable.bordesgoogle);
+        textView.setBackgroundResource(R.drawable.bordesgoogle);*/
 
-        signInButton.setOnClickListener(new View.OnClickListener() {
+        sign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -219,9 +215,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-
     }
-
 
     public void printHashKey(Context pContext) {
         try {
@@ -266,8 +260,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     String fbUserFirstName = json.optString("name");
                                     String fbUserEmail = json.optString("email");
                                     String fbUserProfilePics = "http://graph.facebook.com/" + fbUserId + "/picture?type=large";
-                                    new UserLoginTask(fbUserEmail, fbUserFirstName).execute();
-                                    Toast.makeText(LoginActivity.this, fbUserEmail, Toast.LENGTH_LONG).show();
+                                    new NewLogin.UserLoginTask(fbUserEmail, fbUserFirstName).execute();
+                                    Toast.makeText(NewLogin.this, fbUserEmail, Toast.LENGTH_LONG).show();
                                 }
                                 Log.v("FaceBook Response :", response.toString());
                             }
@@ -280,13 +274,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onCancel() {
                         Log.d(TAG_CANCEL,"On cancel");
-                        Toast.makeText(LoginActivity.this,"On cancel: ",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NewLogin.this,"On cancel: ",Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(FacebookException error) {
                         Log.d(TAG_ERROR,error.toString());
-                        Toast.makeText(LoginActivity.this,"Error: " + error.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NewLogin.this,"Error: " + error.toString(),Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -369,20 +363,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (id)
         {
             case R.id.ingresarEmail:
-                mainIntent = new Intent(LoginActivity.this,
+                mainIntent = new Intent(NewLogin.this,
                         CreateAccountActivity.class);
                 startActivity(mainIntent);
-                LoginActivity.this.finish();
+                NewLogin.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);
                 break;
             case R.id.sign_in_button:
                 signIn();
                 break;
             case R.id.email_sign_in_button:
-                mainIntent = new Intent(LoginActivity.this,
+                mainIntent = new Intent(NewLogin.this,
                         SignInActivity.class);
                 startActivity(mainIntent);
-                LoginActivity.this.finish();
+                NewLogin.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);
                 break;
         }
@@ -418,7 +412,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             String gPlusID = acct.getId();
 
-            new UserLoginTask(mEmail, mFullName).execute();
+            new NewLogin.UserLoginTask(mEmail, mFullName).execute();
             Toast.makeText(this, mEmail, Toast.LENGTH_LONG).show();
         }
     }
@@ -429,7 +423,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(LoginActivity.this);
+            pDialog = new ProgressDialog(NewLogin.this);
             pDialog.setMessage("Registrando cuenta...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
@@ -482,12 +476,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                 editor.putString("idUser", IDuser.toString());
                 editor.apply();
-                Intent mainIntent = new Intent(LoginActivity.this,
+                Intent mainIntent = new Intent(NewLogin.this,
                         ChooseZoneActivity.class);
                 mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 mainIntent.putExtra("idUser", IDuser); //Optional parameters
                 startActivity(mainIntent);
-                LoginActivity.this.finish();
+                NewLogin.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);
             } else {
                 mNameView.setError(getString(R.string.error_incorrect_password));
@@ -499,8 +493,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         protected void onCancelled() {
             pDialog.dismiss();
             //mAuthTask = null;
-            Toast.makeText(LoginActivity.this,"Sin conexión",Toast.LENGTH_LONG).show();
+            Toast.makeText(NewLogin.this,"Sin conexión",Toast.LENGTH_LONG).show();
         }
     }
 }
-

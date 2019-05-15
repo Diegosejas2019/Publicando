@@ -79,7 +79,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         CardView card_view =  (CardView) view.findViewById(R.id.card_view);
         //        //card_view.setOnClickListener(this);
         ImageView imageView =  (ImageView) view.findViewById(R.id.imageView);
-        //imageView.setOnClickListener(this);
+        imageView.setOnClickListener(this);
         favo =  (ImageView) view.findViewById(R.id.favorite);
         //favorite.setOnClickListener(this);
         TextView textViewTitle =  (TextView) view.findViewById(R.id.textViewTitle);
@@ -206,13 +206,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onClick(View v)
     {
 
-/*        //int position = (int) v.getTag();
+        //int position = (int) v.getTag();
         int id = v.getId();
 
         switch (id) {
-            case R.id.favorite:
-                Toast.makeText(mCtx,"algo",Toast.LENGTH_LONG).show();
-                break
+            case R.id.imageView:
+
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mCtx);
 
             LayoutInflater inflater = LayoutInflater.from(mCtx);
@@ -225,8 +224,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             editText.setImageDrawable(imagen.getDrawable());
             AlertDialog alertDialog = dialogBuilder.create();
             alertDialog.show();
-          /*  break;
-        }*/
+            break;
+        }
     }
 
 /*    public class ViewHolder extends RecyclerView.ViewHolder{

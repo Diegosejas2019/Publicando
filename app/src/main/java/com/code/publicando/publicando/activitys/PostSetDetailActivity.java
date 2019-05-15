@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,6 +19,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.code.publicando.publicando.R;
+import com.code.publicando.publicando.clases.Servicios;
+import com.code.publicando.publicando.clases.ServiciosAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
@@ -27,6 +34,10 @@ public class PostSetDetailActivity extends AppCompatActivity implements View.OnC
     private String mType;
     private AutoCompleteTextView mAuto;
     private Integer mIdUser;
+    List<Servicios> serviciosList;
+
+    //the recyclerview
+    RecyclerView recyclerView;
 
     String[] elementos = {"Mecanico","Electricista","Pintor","Albañil", "Abogado"};
     @Override
@@ -63,6 +74,56 @@ public class PostSetDetailActivity extends AppCompatActivity implements View.OnC
 
         Button btnNext = findViewById(R.id.btnNext);
         btnNext.setOnClickListener(this);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerDetail);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //initializing the productlist
+        serviciosList = new ArrayList<>();
+
+
+        //adding some items to our list
+        serviciosList.add(
+                new Servicios(
+                        1,
+                        "Abogado",
+                        R.drawable.comercio));
+
+        serviciosList.add(
+                new Servicios(
+                        2,
+                        "Arquitecto",
+                        R.drawable.comidas));
+
+        serviciosList.add(
+                new Servicios(
+                        3,
+                        "Electricista",
+                        R.drawable.promos));
+
+        serviciosList.add(
+                new Servicios(
+                        4,
+                        "Pintor",
+                        R.drawable.comercio));
+
+        serviciosList.add(
+                new Servicios(
+                        5,
+                        "Gacista",
+                        R.drawable.comidas));
+
+        serviciosList.add(
+                new Servicios(
+                        6,
+                        "Programador",
+                        R.drawable.promos));
+        //creating recyclerview adapter
+        ServiciosAdapter adapterServicio = new ServiciosAdapter(this, serviciosList,1);
+
+        //setting adapter to recyclerview
+        recyclerView.setAdapter(adapterServicio);
     }
 
     private void createDots(int current_position)

@@ -58,7 +58,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         createDots(0);
 
         mEmailView = findViewById(R.id.createEmail);
-        mNameView = findViewById(R.id.createName);
+        mNameView = findViewById(R.id.createPassword);
 
         Button btn = findViewById(R.id.next);
         btn.setOnClickListener(this);
@@ -219,7 +219,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onBackPressed() {
-        Intent myIntent = new Intent(SignInActivity.this, LoginActivity.class);
+        Intent myIntent = new Intent(SignInActivity.this, HomeActivity.class);
         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         //myIntent.putExtra("key", IDuser); //Optional parameters
         SignInActivity.this.startActivity(myIntent);

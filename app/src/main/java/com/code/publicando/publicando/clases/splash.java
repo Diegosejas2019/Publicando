@@ -9,6 +9,7 @@ import android.view.Window;
 
 import com.code.publicando.publicando.activitys.LoginActivity;
 import com.code.publicando.publicando.R;
+import com.code.publicando.publicando.activitys.MainActivity;
 
 public class splash extends AppCompatActivity {
     private static final long SPLASH_SCREEN_DELAY = 3000;
@@ -46,7 +47,7 @@ public class splash extends AppCompatActivity {
 
                 /* Create an intent that will start the main activity. */
                 Intent mainIntent = new Intent(splash.this,
-                        LoginActivity.class);
+                        MainActivity.class);
                 //mainIntent.putExtra("id", "1");
 
                 //SplashScreen.this.startActivity(mainIntent);

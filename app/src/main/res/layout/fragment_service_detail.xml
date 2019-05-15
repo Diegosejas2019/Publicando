@@ -12,7 +12,60 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Descripción:"
+            android:textSize="20sp"
+            android:textStyle="italic"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:id="@+id/description"
+            />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+ />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
 
+ />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Ubicación"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:textStyle="normal"/>
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapFragment"
+                android:layout_width="match_parent"
+                android:name="com.google.android.gms.maps.MapFragment"
+                android:layout_height="200dp">
+
+            </com.google.android.gms.maps.MapView>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="Foto"
+            android:textSize="20sp"
+            android:textStyle="italic" />
         <ImageView
             android:id="@+id/imagenPost"
             android:layout_width="wrap_content"
@@ -24,46 +77,19 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="0dp"
             android:gravity="center_horizontal"
 
             android:textSize="20sp"
             android:textStyle="italic" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
 
-            android:textSize="20sp"
-            android:textStyle="normal" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
-
-            android:textSize="20sp"
-            android:textStyle="italic" />
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
-
-            android:textSize="20sp"
-            android:textStyle="italic" />
         <RatingBar
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="0dp"
             android:theme="@style/RatingBar"
             android:numStars="0"
             android:rating="0"

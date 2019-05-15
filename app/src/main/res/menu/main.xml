@@ -6,4 +6,9 @@
         android:orderInCategory="100"
         android:title="Cerrar Sesión"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/registrarse"
+        android:orderInCategory="100"
+        android:title="Registrarse"
+        app:showAsAction="never" />
 </menu>

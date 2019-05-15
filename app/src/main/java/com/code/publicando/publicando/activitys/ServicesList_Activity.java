@@ -15,13 +15,15 @@ import android.view.MenuItem;
 import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.clases.Product;
 import com.code.publicando.publicando.clases.ProductAdapter;
+import com.code.publicando.publicando.clases.Servicios;
+import com.code.publicando.publicando.clases.ServiciosAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServicesList_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     //a list to store all the products
-    List<Product> productList;
+    List<Servicios> serviciosList;
 
     //the recyclerview
     RecyclerView recyclerView;
@@ -46,58 +48,52 @@ public class ServicesList_Activity extends AppCompatActivity implements Navigati
         navigationView.setNavigationItemSelectedListener(this);
 
         //getting the recyclerview from xml
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //initializing the productlist
-        productList = new ArrayList<>();
+        serviciosList = new ArrayList<>();
 
 
         //adding some items to our list
-        /*productList.add(
-                new Product(
+        serviciosList.add(
+                new Servicios(
                         1,
                         "Comercio modelo 1",
-                        "10 Sucursales en zona oeste",
                         R.drawable.comercio));
 
-        productList.add(
-                new Product(
+        serviciosList.add(
+                new Servicios(
                         1,
                         "Resto Modelo 1",
-                        "Parrilla",
                         R.drawable.comidas));
 
-        productList.add(
-                new Product(
+        serviciosList.add(
+                new Servicios(
                         1,
                         "Promos Modelo 1",
-                        "Increibles descuentos",
                         R.drawable.promos));
 
-        productList.add(
-                new Product(
+        serviciosList.add(
+                new Servicios(
                         1,
                         "Comercio modelo 1",
-                        "10 Sucursales en zona oeste",
                         R.drawable.comercio));
 
-        productList.add(
-                new Product(
+        serviciosList.add(
+                new Servicios(
                         1,
                         "Resto Modelo 1",
-                        "Parrilla",
                         R.drawable.comidas));
 
-        productList.add(
-                new Product(
+        serviciosList.add(
+                new Servicios(
                         1,
                         "Promos Modelo 1",
-                        "Increibles descuentos",
-                        R.drawable.promos));*/
+                        R.drawable.promos));
         //creating recyclerview adapter
-        ProductAdapter adapter = new ProductAdapter(this, productList,1);
+        ServiciosAdapter adapter = new ServiciosAdapter(this, serviciosList,1);
 
         //setting adapter to recyclerview
         recyclerView.setAdapter(adapter);

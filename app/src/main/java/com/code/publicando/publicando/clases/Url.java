@@ -12,6 +12,8 @@ public class Url {
     }
 
     public Url() {
-        Direccion = "http://10.0.2.2";
+        //Direccion = "http://10.0.2.2";
+        //Direccion = "http://10.0.2.2";
+        Direccion = "http://mrryzen22.asuscomm.com:49152";
     }
 }

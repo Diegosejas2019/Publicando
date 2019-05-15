@@ -160,7 +160,7 @@ public class ServiceListFragment extends Fragment {
                 productList.add(
                         new Product(
                                 posts.get(i).IdPost,
-                                posts.get(i).TypeWork,
+                                posts.get(i).WorkDetail,
                                 posts.get(i).Description,
                                 posts.get(i).ImageUrl,
                                 posts.get(i).Favorite));
@@ -170,7 +170,7 @@ public class ServiceListFragment extends Fragment {
                         productList.add(
                                 new Product(
                                         posts.get(i).IdPost,
-                                        posts.get(i).TypeWork,
+                                        posts.get(i).WorkDetail,
                                         posts.get(i).Description,
                                         posts.get(i).ImageUrl,
                                         0));

@@ -3,17 +3,21 @@ package com.code.publicando.publicando.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.code.publicando.publicando.activitys.MainActivity;
@@ -34,8 +38,9 @@ import java.util.TimerTask;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements View.OnClickListener{
 
+    private static final int FEATURED_IMAGE_RATIO = 0;
     ViewPager viewPager;
     private int[] layouts = {R.layout.detail_first_slide,R.layout.detail_second_slide,R.layout.detail_third_slide};
     int currentPage = 0;
@@ -114,8 +119,40 @@ public class MainFragment extends Fragment {
         });
         viewPager.setAdapter(viewPagerAdapter);
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((MainActivity) getActivity()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        //Toast.makeText(context, String.valueOf(height) + ',' +  String.valueOf(width), Toast.LENGTH_LONG).show();
+        //FEATURED_IMAGE_RATIO = height / 2;
+/*        ViewTreeObserver viewTreeObserver = viewPager.getViewTreeObserver();
+        viewTreeObserver
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                    @Override
+                    public void onGlobalLayout() {
+
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                        int viewPagerWidth = viewPager.getWidth();
+                        float viewPagerHeight = (float) (viewPagerWidth * 1000);
+
+                        layoutParams.width = viewPagerWidth;
+                        layoutParams.height = (int) viewPagerHeight;
+
+                        viewPager.setLayoutParams(layoutParams);
+                        viewPager.getViewTreeObserver()
+                                .removeGlobalOnLayoutListener(this);
+                    }
+                });*/
 
         new ObtenerDestacados().execute();
+        if (Direcciones == null)
+        {
+            new ObtenerDestacados().execute();
+        }
         /*After setting the adapter use the timer */
         //final Handler handler = new Handler();
         myHandler = new Handler();
@@ -138,9 +175,13 @@ public class MainFragment extends Fragment {
                         }
                         img = baseLayout.findViewById(R.id.imagen);
 
+                        if(Direcciones == null)
+                        {
+                            new ObtenerDestacados().execute();
+                        }
                         Picasso.with(context)
                                 .load(url.getDireccion() + "/Imagenes/" + Direcciones.get(0))
-                                .resize(1400, 850)
+                                .resize(1500, 1400)
                                 .into(img);
                         //img.setImageResource(R.drawable.inmobiliaria);
                         break;
@@ -155,7 +196,7 @@ public class MainFragment extends Fragment {
                         img = baseLayout.findViewById(R.id.imagen);
                         Picasso.with(context)
                                 .load(url.getDireccion() + "/Imagenes/" + Direcciones.get(1))
-                                .resize(1400, 850)
+                                .resize(1500, 1400)
                                 .into(img);
                         //img.setImageResource(R.drawable.heladeria);
                         break;
@@ -171,7 +212,7 @@ public class MainFragment extends Fragment {
                         //img.setImageResource(R.drawable.comidas);
                         Picasso.with(context)
                                 .load(url.getDireccion() + "/Imagenes/" + Direcciones.get(2))
-                                .resize(1400, 850)
+                                .resize(1500, 1400)
                                 .into(img);
                         break;
                 }
@@ -228,6 +269,11 @@ public class MainFragment extends Fragment {
         super.onDestroy();
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
+
     public class ObtenerDestacados extends AsyncTask<Void, Void, Boolean> {
 
         @Override
@@ -237,7 +283,7 @@ public class MainFragment extends Fragment {
             pDialog.setMessage("Obteniendo publicaciones...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
-            pDialog.show();
+            //pDialog.show();
         }
 
         @Override
@@ -249,12 +295,13 @@ public class MainFragment extends Fragment {
             JSONObject json = jParser.makeHttpRequest(url.getDireccion() + "/api/master/GetImageUrl", "GET",parames);
 
             try {
-
-                jsonarray = json.getJSONArray("Imagenes");
-                for (int i = 0; i < jsonarray.length(); i++) {
-                    jsonobject = jsonarray.getJSONObject(i);
-                    String direccion = jsonobject.getString("ImageUrl");
-                    Direcciones.add(direccion.substring((direccion.length()-6)).replaceAll("\\\\", ""));
+                if (json != null){
+                    jsonarray = json.getJSONArray("Imagenes");
+                    for (int i = 0; i < jsonarray.length(); i++) {
+                        jsonobject = jsonarray.getJSONObject(i);
+                        String direccion = jsonobject.getString("ImageUrl");
+                        Direcciones.add(direccion.substring((direccion.length()-6)).replaceAll("\\\\", ""));
+                    }
                 }
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
@@ -275,4 +322,6 @@ public class MainFragment extends Fragment {
             Toast.makeText(context,"Sin conexión",Toast.LENGTH_LONG).show();
         }
     }
+
+
 }

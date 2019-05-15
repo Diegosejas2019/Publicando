@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:id="@+id/imagen"/>
     </LinearLayout>
-    <android.support.design.widget.FloatingActionButton
+    <!--<android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -46,5 +46,5 @@
         app:backgroundTint="@color/colorNaranja"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="15dp"
-        app:borderWidth="0dp"/>
+        app:borderWidth="0dp"/>-->
 </RelativeLayout>

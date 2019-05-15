@@ -63,11 +63,26 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:layout_marginTop="10dp"
-                android:hint="Ingrese nombre"
+                android:hint="Ingrese contraseña"
+                android:inputType="textPassword"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/borderwhite"
                 android:focusedByDefault="false"
-                android:id="@+id/createName"
+                android:id="@+id/createPassword"
+                android:focusableInTouchMode="true"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:hint="Confirme contraseña"
+                android:inputType="textPassword"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/borderwhite"
+                android:focusedByDefault="false"
+                android:id="@+id/confirmarContrasena"
                 android:focusableInTouchMode="true"
                 />
 

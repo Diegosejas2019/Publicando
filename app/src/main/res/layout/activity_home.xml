@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/nuevaimagen"
+    tools:context=".activitys.HomeActivity">
+
+    <ScrollView
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/email_login_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="¡Bienvenidos a Publicando!"
+                android:textSize="25dp"
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="20dp"
+                android:textStyle="bold" />
+
+
+            <Button
+                android:id="@+id/ingresar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bordes"
+                android:padding="10dp"
+                android:text="Ingresar"
+                android:textColor="@color/colorWhite" />
+
+            <Button
+                android:id="@+id/registrarme"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/borderwhite"
+                android:text="Registrarme"
+                android:textColor="@color/colorNaranja"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_above="@id/dotsLayout"
+                android:layout_marginBottom="15dp"
+                android:alpha=".5"
+                android:background="@color/colorWhite"></View>
+
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

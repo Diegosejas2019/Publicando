@@ -18,16 +18,21 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
 public class SetZoneActivity extends AppCompatActivity implements View.OnClickListener{
 
     private LinearLayout Dots_Layout;
     private ImageView[] dots;
     private Button next;
-
+    private double mLatitude;
+    private double mLongitud;
+    private Integer mIdUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +71,11 @@ public class SetZoneActivity extends AppCompatActivity implements View.OnClickLi
         next = findViewById(R.id.next);
         next.setOnClickListener(this);
 
+        Bundle b = getIntent().getExtras();
+        if(b != null){
+            mIdUser = b.getInt("idUser");
+        }
+
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         autocompleteFragment.setHint("Calle y Altura (Opcional)");
@@ -74,7 +84,10 @@ public class SetZoneActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
-                Toast.makeText(SetZoneActivity.this, place.getName().toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(SetZoneActivity.this, place.getName().toString(), Toast.LENGTH_LONG).show();
+                LatLng latitude = place.getLatLng();
+                mLatitude = latitude.latitude;
+                mLongitud = latitude.longitude;
             }
 
             @Override
@@ -116,6 +129,10 @@ public class SetZoneActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         Intent myIntent = new Intent(SetZoneActivity.this,
                 LocationActivity.class);
+        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+        myIntent.putExtra("idUser", mIdUser); //Optional parameters
+        myIntent.putExtra("Latitude", Double.toString(mLatitude) ); //Optional parameters
+        myIntent.putExtra("Longitud", Double.toString(mLongitud)); //Optional parameters
         startActivity(myIntent);
         SetZoneActivity.this.finish();
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);

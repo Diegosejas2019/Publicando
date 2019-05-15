@@ -37,7 +37,8 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
     private EditText mEmailView;
-    private EditText mNameView;
+    private EditText mPassword;
+    private EditText mRePassword;
     private Integer IDuser;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
     private static final String TAG_SUCCESS = "StatusCode";
@@ -55,7 +56,8 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         createDots(0);
 
         mEmailView = findViewById(R.id.createEmail);
-        mNameView = findViewById(R.id.createName);
+        mPassword = findViewById(R.id.createPassword);
+        mRePassword = findViewById(R.id.confirmarContrasena);
 
         /*Button btn = findViewById(R.id.next);UserLoginTask
         btn.setOnClickListener(this);*/
@@ -107,29 +109,38 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
     private void crearCuenta() {
         mEmailView.setError(null);
-        mNameView.setError(null);
+        mPassword.setError(null);
+        mRePassword.setError(null);
 
         mEmailView = findViewById(R.id.createEmail);
-        mNameView = findViewById(R.id.createName);
+        mPassword = findViewById(R.id.createPassword);
+        mRePassword = findViewById(R.id.confirmarContrasena);
 
         String email = mEmailView.getText().toString();
-        String name = mNameView.getText().toString();
+        String contrasena = mPassword.getText().toString();
+        String recontrasena = mPassword.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        if (TextUtils.isEmpty(name)) {
-            mNameView.setError(getString(R.string.error_field_required));
-            focusView = mNameView;
+        if (TextUtils.isEmpty(contrasena)) {
+            mPassword.setError("Compo obligatorio");
+            focusView = mPassword;
             cancel = true;
         }
 
+        if (!recontrasena.equals(contrasena))
+        {
+            mRePassword.setError("Las contraseñas deben coincidir");
+            focusView = mRePassword;
+            cancel = true;
+        }
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
+            mEmailView.setError("Compo obligatorio");
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
+            mEmailView.setError("Correo invalido");
             focusView = mEmailView;
             cancel = true;
         }
@@ -139,11 +150,11 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         } else {
             SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
             editor.putString("Email", email);
-            editor.putString("Name", name);
+            editor.putString("Name", contrasena);
             editor.apply();
             //mAuthTask = new UserLoginTask(email, password);
             //mAuthTask.execute((Void) null);
-            new UserLoginTask(email, name).execute();
+            new UserLoginTask(email, contrasena).execute();
         }
     }
 
@@ -218,8 +229,8 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                 CreateAccountActivity.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);
             } else {
-                mNameView.setError(getString(R.string.error_incorrect_password));
-                mNameView.requestFocus();
+                mPassword.setError("Contraseña incorrecta");
+                mPassword.requestFocus();
             }
         }
 
@@ -233,7 +244,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onBackPressed() {
-      Intent myIntent = new Intent(CreateAccountActivity.this, LoginActivity.class);
+      Intent myIntent = new Intent(CreateAccountActivity.this, NewLogin.class);
         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         //myIntent.putExtra("key", IDuser); //Optional parameters
         CreateAccountActivity.this.startActivity(myIntent);

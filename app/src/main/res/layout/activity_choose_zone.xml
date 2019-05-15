@@ -54,7 +54,7 @@
                 android:text="Elegir Zona"
                 android:textColor="@color/colorWhite"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/bordesgoogle"
+                android:background="@drawable/bordes"
                 />
             <Button
                 android:id="@+id/myUbication"
@@ -65,7 +65,7 @@
                 android:text="Mi Ubicación"
                 android:textColor="@color/colorWhite"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/bordesface"
+                android:background="@drawable/bordes"
                 />
             <View
                 android:layout_width="match_parent"

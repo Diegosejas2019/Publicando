@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,6 +25,14 @@ import com.code.publicando.publicando.clases.Post;
 import com.code.publicando.publicando.clases.Product;
 import com.code.publicando.publicando.clases.ProductAdapter;
 import com.code.publicando.publicando.clases.Url;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -37,7 +46,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ServiceDetailFragment extends Fragment {
+public class ServiceDetailFragment extends Fragment implements OnMapReadyCallback {
 
     List<Product> productList;
 
@@ -56,6 +65,8 @@ public class ServiceDetailFragment extends Fragment {
     private  View view;
     RatingBar mRatingBar;
     TextView mRatingScale;
+    private GoogleMap mMap;
+    private MapView mapView;
     public ServiceDetailFragment() {
         // Required empty public constructor
     }
@@ -66,14 +77,15 @@ public class ServiceDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         context = inflater.getContext();
         view = inflater.inflate(R.layout.fragment_service_detail, container, false);
-
+        ((MainActivity) getActivity())
+                .setActionBarTitle("Mis Anuncios");
 
         Bundle args = getArguments();
         IdPost = args.getString("idPost", null);
         IdUser = args.getInt("idUser", 0);
 
         ((MainActivity) getActivity())
-                .setActionBarTitle(Type);
+                .setActionBarTitle("Detalle");
 
         new ObtenerDestacados().execute();
 
@@ -81,6 +93,34 @@ public class ServiceDetailFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mapView = (MapView) view.findViewById(R.id.mapFragment);
+        if (mapView  != null)
+        {
+            mapView.onCreate(null);
+            mapView.onResume();
+            mapView.getMapAsync(this);
+        }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        LatLng sevilla = new LatLng(Double.parseDouble(posts.getLatitude()),Double.parseDouble(posts.getLongitude()));
+        mMap.addMarker(new MarkerOptions().position(sevilla).title("Hola desde Sevilla!").draggable(true));
+
+        final CameraPosition camera = new CameraPosition.Builder()
+                .target(sevilla)
+                .zoom(11.0f)           // limit -> 21
+                .bearing(0)         // 0 - 365º
+                .tilt(30)           // limit -> 90
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(camera));
+    }
+
     public class ObtenerDestacados extends AsyncTask<Void, Void, Boolean> {
 
         @Override
@@ -130,14 +170,14 @@ public class ServiceDetailFragment extends Fragment {
         protected void onPostExecute(final Boolean success) {
             pDialog.dismiss();
 
-            txt = view.findViewById(R.id.textView);
-            txt.setText(posts.TypeWork);
+            txt = view.findViewById(R.id.description);
+            txt.setText(posts.getDescription());
             TextView textView2 = view.findViewById(R.id.textView2);
             textView2.setText("Celular : " + posts.getCelular());
             TextView textView3 = view.findViewById(R.id.textView3);
             textView3.setText("Telefono : " + posts.getPhone());
-            TextView textView4 = view.findViewById(R.id.textView4);
-            textView4.setText("Descripción: " + posts.getDescription());
+/*            TextView textView4 = view.findViewById(R.id.textView4);
+            textView4.setText(posts.getDescription());*/
             mRatingScale = view.findViewById(R.id.tvRatingScale);
             mRatingBar = (RatingBar) view.findViewById(R.id.ratingBar);
 
