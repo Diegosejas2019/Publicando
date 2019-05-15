@@ -87,38 +87,32 @@ public class PostSetDetailActivity extends AppCompatActivity implements View.OnC
         serviciosList.add(
                 new Servicios(
                         1,
-                        "Abogado",
-                        R.drawable.comercio));
+                        "Abogado"));
 
         serviciosList.add(
                 new Servicios(
                         2,
-                        "Arquitecto",
-                        R.drawable.comidas));
+                        "Arquitecto"));
 
         serviciosList.add(
                 new Servicios(
                         3,
-                        "Electricista",
-                        R.drawable.promos));
+                        "Electricista"));
 
         serviciosList.add(
                 new Servicios(
                         4,
-                        "Pintor",
-                        R.drawable.comercio));
+                        "Pintor"));
 
         serviciosList.add(
                 new Servicios(
                         5,
-                        "Gacista",
-                        R.drawable.comidas));
+                        "Gacista"));
 
         serviciosList.add(
                 new Servicios(
                         6,
-                        "Programador",
-                        R.drawable.promos));
+                        "Programador"));
         //creating recyclerview adapter
         ServiciosAdapter adapterServicio = new ServiciosAdapter(this, serviciosList,1);
 

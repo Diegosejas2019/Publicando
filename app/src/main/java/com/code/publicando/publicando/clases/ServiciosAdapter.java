@@ -102,7 +102,7 @@ public class ServiciosAdapter extends RecyclerView.Adapter<ServiciosAdapter.Serv
 
 
 
-        holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(servicio.getImage()));
+        //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(servicio.getImage()));
     }
 
 

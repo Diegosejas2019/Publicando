@@ -45,7 +45,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
     private int[] layouts = {R.layout.detail_first_slide,R.layout.detail_second_slide,R.layout.detail_third_slide};
     int currentPage = 0;
     Timer timer;
-    final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
+    final long DELAY_MS = 2500;//delay in milliseconds before task is to be executed
     final long PERIOD_MS = 6000;
     private View baseLayout;
     private ImageView img;
@@ -75,7 +75,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         context = inflater.getContext();
         ((MainActivity) getActivity())
                 .setActionBarTitle("Publicando");
-
+        new ObtenerDestacados().execute();
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
@@ -148,11 +148,8 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                     }
                 });*/
 
-        new ObtenerDestacados().execute();
-        if (Direcciones == null)
-        {
-            new ObtenerDestacados().execute();
-        }
+
+
         /*After setting the adapter use the timer */
         //final Handler handler = new Handler();
         myHandler = new Handler();
@@ -163,6 +160,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                     currentPage = 0;
                 }
                 Url url =  new Url();
+                //new ObtenerDestacados().execute();
                  switch (currentPage)
                 {
                     case 0:
@@ -174,15 +172,18 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                             baseLayout = viewPager.findViewWithTag(layouts[currentPage]);
                         }
                         img = baseLayout.findViewById(R.id.imagen);
-
-                        if(Direcciones == null)
-                        {
+/*
+                        do{
                             new ObtenerDestacados().execute();
+                        }while(Direcciones == null);*/
+
+                        if (Direcciones.size() == 0 || Direcciones.size() > 0)
+                        {
+                            Picasso.with(context)
+                                    .load(url.getDireccion() + "/Imagenes/" + Direcciones.get(0))
+                                    .resize(1500, 1400)
+                                    .into(img);
                         }
-                        Picasso.with(context)
-                                .load(url.getDireccion() + "/Imagenes/" + Direcciones.get(0))
-                                .resize(1500, 1400)
-                                .into(img);
                         //img.setImageResource(R.drawable.inmobiliaria);
                         break;
                     case 1:
@@ -283,7 +284,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
             pDialog.setMessage("Obteniendo publicaciones...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
-            //pDialog.show();
+            pDialog.show();
         }
 
         @Override

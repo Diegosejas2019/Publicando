@@ -54,6 +54,18 @@
                 android:focusableInTouchMode="true"
                 />
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="10dp"
+                android:hint="Ingrese Email"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/borderwhite"
+                android:id="@+id/createEmail"
+                android:focusedByDefault="false"
+                android:focusableInTouchMode="true"
+                />
 
             <Button
                 android:id="@+id/next"

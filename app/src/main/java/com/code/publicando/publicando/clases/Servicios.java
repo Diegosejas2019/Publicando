@@ -11,6 +11,11 @@ public class Servicios {
         this.image = image;
     }
 
+    public Servicios(int id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
     public int getId() {
         return id;
     }

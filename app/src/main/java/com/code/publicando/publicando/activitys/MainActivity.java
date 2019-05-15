@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        SharedPreferences spreferences =  getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+/*        SharedPreferences spreferences =  getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor spreferencesEditor = spreferences.edit();
         spreferencesEditor.clear();
-        spreferencesEditor.commit();
+        spreferencesEditor.commit();*/
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         Integer restoredText = prefs.getInt("idUser", 0);
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity
                     MainActivity.this.startActivity(myIntent);
                 }
                 else{
-                    Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
+                    Intent myIntent = new Intent(MainActivity.this, HomeActivity.class);
                     myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                     MainActivity.this.startActivity(myIntent);
                 }
@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity
                         MainActivity.this.startActivity(myIntent);
                     }
                     else{
-                        myIntent = new Intent(MainActivity.this, LoginActivity.class);
+                        myIntent = new Intent(MainActivity.this, HomeActivity.class);
                         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                         MainActivity.this.startActivity(myIntent);
                     }
