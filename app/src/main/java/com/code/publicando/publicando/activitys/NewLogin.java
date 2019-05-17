@@ -123,24 +123,35 @@ public class NewLogin extends AppCompatActivity implements View.OnClickListener,
         //textView.setTextColor(Color.WHITE);
         //textView.setBackgroundResource(R.drawable.bordesgoogle);
 
-        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        Integer IDuser = prefs.getInt("idUser", 0);
-        if (IDuser != 0) {
-            String mLongitud = prefs.getString("Longitud", null);
-            String mLatitude = prefs.getString("Latitude", null);
-            String mRadius = prefs.getString("Radius", null);
-            Integer Guide = prefs.getInt("Guide", 0);
-            if (mLongitud != null)
-            {
-                if (Guide != 0)
+        try{
+            SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+            Integer IDuser = prefs.getInt("idUser", 0);
+            if (IDuser != 0) {
+                String mLongitud = prefs.getString("Longitud", null);
+                String mLatitude = prefs.getString("Latitude", null);
+                String mRadius = prefs.getString("Radius", null);
+                Integer Guide = prefs.getInt("Guide", 0);
+                if (mLongitud != null)
                 {
-                    Intent mainIntent = new Intent(NewLogin.this,
-                            MainActivity.class);
-                    mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                    mainIntent.putExtra("idUser", IDuser); //Optional parameters
-                    startActivity(mainIntent);
-                    NewLogin.this.finish();
-                    overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                    if (Guide != 0)
+                    {
+                        Intent mainIntent = new Intent(NewLogin.this,
+                                MainActivity.class);
+                        mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                        mainIntent.putExtra("idUser", IDuser); //Optional parameters
+                        startActivity(mainIntent);
+                        NewLogin.this.finish();
+                        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                    }
+                    else{
+                        Intent mainIntent = new Intent(NewLogin.this,
+                                ChooseZoneActivity.class);
+                        mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                        mainIntent.putExtra("idUser", IDuser); //Optional parameters
+                        startActivity(mainIntent);
+                        NewLogin.this.finish();
+                        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                    }
                 }
                 else{
                     Intent mainIntent = new Intent(NewLogin.this,
@@ -152,18 +163,11 @@ public class NewLogin extends AppCompatActivity implements View.OnClickListener,
                     overridePendingTransition(R.anim.fadein,R.anim.fadeout);
                 }
             }
-            else{
-                Intent mainIntent = new Intent(NewLogin.this,
-                        ChooseZoneActivity.class);
-                mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                mainIntent.putExtra("idUser", IDuser); //Optional parameters
-                startActivity(mainIntent);
-                NewLogin.this.finish();
-                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
-            }
         }
-
-
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -495,5 +499,13 @@ public class NewLogin extends AppCompatActivity implements View.OnClickListener,
             //mAuthTask = null;
             Toast.makeText(NewLogin.this,"Sin conexión",Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent myIntent = new Intent(NewLogin.this, HomeActivity.class);
+        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+        //myIntent.putExtra("key", IDuser); //Optional parameterse
+        NewLogin    .this.startActivity(myIntent);
     }
 }

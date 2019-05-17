@@ -39,6 +39,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     private EditText mEmailView;
     private EditText mPassword;
     private EditText mRePassword;
+    private EditText mName;
     private Integer IDuser;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
     private static final String TAG_SUCCESS = "StatusCode";
@@ -58,7 +59,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         mEmailView = findViewById(R.id.createEmail);
         mPassword = findViewById(R.id.createPassword);
         mRePassword = findViewById(R.id.confirmarContrasena);
-
+        mName = findViewById(R.id.name);
         /*Button btn = findViewById(R.id.next);UserLoginTask
         btn.setOnClickListener(this);*/
     }
@@ -111,14 +112,17 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         mEmailView.setError(null);
         mPassword.setError(null);
         mRePassword.setError(null);
+        mName.setError(null);
 
         mEmailView = findViewById(R.id.createEmail);
         mPassword = findViewById(R.id.createPassword);
         mRePassword = findViewById(R.id.confirmarContrasena);
+        mName = findViewById(R.id.name);
 
         String email = mEmailView.getText().toString();
         String contrasena = mPassword.getText().toString();
-        String recontrasena = mPassword.getText().toString();
+        String recontrasena = mRePassword.getText().toString();
+        String name = mName.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -135,6 +139,13 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             focusView = mRePassword;
             cancel = true;
         }
+
+        if (TextUtils.isEmpty(name)) {
+            mName.setError("Compo obligatorio");
+            focusView = mName;
+            cancel = true;
+        }
+
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError("Compo obligatorio");
             focusView = mEmailView;
@@ -145,6 +156,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             cancel = true;
         }
 
+
         if (cancel) {
             focusView.requestFocus();
         } else {
@@ -154,7 +166,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             editor.apply();
             //mAuthTask = new UserLoginTask(email, password);
             //mAuthTask.execute((Void) null);
-            new UserLoginTask(email, contrasena).execute();
+            new UserLoginTask(email, contrasena, name).execute();
         }
     }
 
@@ -181,18 +193,21 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
         private final String mEmail;
         private final String mName;
+        private final String mPasswordPost;
 
-        UserLoginTask(String email, String name) {
+        UserLoginTask(String email,String contraseña, String name) {
             mEmail = email;
             mName = name;
+            mPasswordPost = name;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             Boolean flag = false;
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
             nameValuePairs.add(new BasicNameValuePair("Email", mEmail));
             nameValuePairs.add(new BasicNameValuePair("UserName", mName));
+            nameValuePairs.add(new BasicNameValuePair("Password", mPasswordPost));
 
             String Resultado="";
             Url url = new Url();

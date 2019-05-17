@@ -5,9 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -25,9 +24,8 @@ import com.code.publicando.publicando.fragments.ChooseZoneFragment;
 import com.code.publicando.publicando.fragments.FavoriteFragment;
 import com.code.publicando.publicando.fragments.MainFragment;
 import com.code.publicando.publicando.fragments.MyAdvertisementsFragment;
-import com.code.publicando.publicando.fragments.ServiceDetailFragment;
-import com.code.publicando.publicando.fragments.ServiceDetalDialogFragment;
 import com.code.publicando.publicando.fragments.ServiceListFragment;
+import com.code.publicando.publicando.fragments.filter;
 
 import java.util.Timer;
 
@@ -64,25 +62,28 @@ public class MainActivity extends AppCompatActivity
         spreferencesEditor.commit();*/
 
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        Integer restoredText = prefs.getInt("idUser", 0);
-        if (restoredText != 0) {
-            mIdUser = prefs.getInt("idUser", 0);
-            mLatitude = prefs.getString("Latitude", null);
-            mLongitud = prefs.getString("Longitud", null);
-            mRadius = prefs.getString("Radius", null);
-/*            item = findViewById(R.id.registrarse);
-            item.setVisible(false);*/
+        try {Integer restoredText = prefs.getInt("idUser", 0);
+            if (restoredText != 0) {
+                mIdUser = prefs.getInt("idUser", 0);
+                mLatitude = prefs.getString("Latitude", null);
+                mLongitud = prefs.getString("Longitud", null);
+                mRadius = prefs.getString("Radius", null);
+            }
+            else
+            {
+                Bundle b = getIntent().getExtras();
+                if(b != null){
+                    mIdUser = b.getInt("idUser");
+                    mLatitude = b.getString("Latitude");
+                    mLongitud = b.getString("Longitud");
+                    mRadius = b.getString("Radius");
+                }
+            }
         }
-        else
-         {
-             Bundle b = getIntent().getExtras();
-             if(b != null){
-                 mIdUser = b.getInt("idUser");
-                 mLatitude = b.getString("Latitude");
-                 mLongitud = b.getString("Longitud");
-                 mRadius = b.getString("Radius");
-             }
-         }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         setActionBarTitle("Publicando");
 
@@ -170,68 +171,58 @@ public class MainActivity extends AppCompatActivity
         Bundle args;
         int id = item.getItemId();
 
-        switch (id)
+        if(mIdUser == null)
         {
-            case R.id.nav_publicar:
-                getSupportFragmentManager().beginTransaction().
-                        remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
 
-/*                Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
-                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                myIntent.putExtra("idUser", mIdUser); //Optional parameters
-                MainActivity.this.startActivity(myIntent);*/
-                if(mIdUser != null){
-                    Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
-                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                    myIntent.putExtra("idUser", mIdUser); //Optional parameters
-                    MainActivity.this.startActivity(myIntent);
-                }
-                else{
-                    Intent myIntent = new Intent(MainActivity.this, HomeActivity.class);
-                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                    MainActivity.this.startActivity(myIntent);
-                }
-                break;
-            case R.id.nav_anuncios:
-                fragment = new MyAdvertisementsFragment();
-                args = new Bundle();
-                args.putString("idUser", mIdUser.toString());
-                fragment.setArguments(args);
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
-                break;
-            case R.id.nav_fav:
-                fragment = new FavoriteFragment();
-                args = new Bundle();
-                args.putString("idUser", mIdUser.toString());
-                fragment.setArguments(args);
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
-                break;
-        }
-        /*if (id == R.id.nav_publicar) {
             getSupportFragmentManager().beginTransaction().
                     remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
 
-            Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
-            myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-            myIntent.putExtra("idUser", mIdUser); //Optional parameters
-            MainActivity.this.startActivity(myIntent);
-        } else if (id == R.id.nav_anuncios) {
-            fragment = new MyAdvertisementsFragment();
-            args = new Bundle();
-            args.putString("idUser", mIdUser.toString());
-            fragment.setArguments(args);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+        Intent myIntent = new Intent(MainActivity.this, HomeActivity.class);
+        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+        MainActivity.this.startActivity(myIntent);
+        }
+        else{
+            switch (id)
+            {
+                case R.id.nav_publicar:
+                    getSupportFragmentManager().beginTransaction().
+                            remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
+    /*                Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
+                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                    MainActivity.this.startActivity(myIntent);*/
+                    //if(mIdUser != null){
+                        Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
+                        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                        myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                        MainActivity.this.startActivity(myIntent);
+    /*                }
+                    else{
 
-        } else if (id == R.id.nav_slideshow) {
+                    }*/
+                    break;
+                case R.id.nav_anuncios:
+                    getSupportFragmentManager().beginTransaction().
+                            remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
 
-        } else if (id == R.id.nav_manage) {
+                    fragment = new MyAdvertisementsFragment();
+                    args = new Bundle();
+                    args.putString("idUser", mIdUser.toString());
+                    fragment.setArguments(args);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                    break;
+                case R.id.nav_fav:
+                    getSupportFragmentManager().beginTransaction().
+                            remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }*/
-
+                    fragment = new FavoriteFragment();
+                    args = new Bundle();
+                    args.putString("idUser", mIdUser.toString());
+                    fragment.setArguments(args);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                    break;
+            }
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -252,21 +243,22 @@ public class MainActivity extends AppCompatActivity
         }
         switch (id) {
             case R.id.btnServicio:
-                fragment = new ServiceListFragment();
+                fragment = new filter();
+                //fragment = new FilterServiceFragment();
                 //args = new Bundle();
                 args.putString("Type", "Servicio");
                 fragment.setArguments(args);
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 break;
             case R.id.btnComercio:
-                fragment = new ServiceListFragment();
+                fragment = new filter();
                 //args = new Bundle();
                 args.putString("Type", "Comercio");
                 fragment.setArguments(args);
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 break;
             case R.id.btnPromo:
-                fragment = new ServiceListFragment();
+                fragment = new filter();
                 //args = new Bundle();
                 args.putString("Type", "Promocion");
                 fragment.setArguments(args);

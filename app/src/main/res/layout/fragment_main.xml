@@ -98,49 +98,57 @@
                         />
                 </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
+                android:id="@+id/adLayoutId"
                 android:layout_gravity="center"
                 android:layout_marginLeft="0dp"
                 android:layout_marginTop="0dp">
                 <ImageView
-                    android:layout_marginTop="0dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginLeft="0dp"
-                    android:layout_width="130dp"
-                    android:layout_height="110dp"
+                    android:layout_width="135dp"
+                    android:layout_height="150dp"
+                    android:layout_alignParentStart="true"
                     android:id="@+id/btnServicio"
                     android:onClick="onClick"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/servicios"/>
                 <ImageView
-                    android:layout_marginTop="10dp"
-                    android:layout_width="130dp"
-                    android:layout_height="110dp"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="135dp"
+                    android:layout_height="150dp"
+                    android:layout_centerInParent="true"
                     android:id="@+id/btnComercio"
                     android:onClick="onClick"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/comercio"/>
                 <ImageView
-                    android:layout_marginTop="10dp"
-                    android:layout_width="130dp"
-                    android:layout_height="110dp"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="2dp"
+                    android:layout_width="135dp"
+                    android:layout_height="150dp"
+                    android:layout_alignParentEnd="true"
                     android:id="@+id/btnPromo"
                     android:onClick="onClick"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/promos"/>
-            </LinearLayout>
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/bordes"
-                android:layout_margin="0dp"
-                android:onClick="onClick"
-                android:layout_gravity="center"
-                android:id="@+id/btnPublicar"
-                android:text="Publicar Aquí"
-                android:textColor="@color/colorWhite"
-                tools:ignore="InvalidId" />
+                <Button
+                    android:layout_width="250dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bordes"
+                    android:layout_margin="0dp"
+                    android:onClick="onClick"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/btnPublicar"
+                    android:text="Publicar Aquí"
+                    android:textColor="@color/colorWhite"
+                    tools:ignore="InvalidId" />
+            </RelativeLayout>
+
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

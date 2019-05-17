@@ -5,7 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -45,6 +45,7 @@ public class ServiceListFragment extends Fragment {
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
     private String Type;
+    private String Detail;
     private Integer IdUser;
     ArrayList<Post> posts;
     private Context context;
@@ -80,6 +81,7 @@ public class ServiceListFragment extends Fragment {
         Bundle args = getArguments();
         Type = args.getString("Type", null);
         IdUser = args.getInt("IdUser", 0);
+        Detail = args.getString("Detail", null);
 
         ((MainActivity) getActivity())
                 .setActionBarTitle(Type);
@@ -117,8 +119,9 @@ public class ServiceListFragment extends Fragment {
             posts = new ArrayList<Post>();
 
             List parames = new ArrayList();
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
             nameValuePairs.add(new BasicNameValuePair("TypeWork", Type));
+            nameValuePairs.add(new BasicNameValuePair("WorkDetail", Detail));
             nameValuePairs.add(new BasicNameValuePair("IdUser", String.valueOf(IdUser)));
             Url url = new Url();
             JSONObject json = jParser.makeHttpRequest(url.getDireccion()  + "/api/master/GetAllPost/", "POST", nameValuePairs);

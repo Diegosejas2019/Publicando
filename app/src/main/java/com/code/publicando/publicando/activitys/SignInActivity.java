@@ -40,7 +40,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
     private EditText mEmailView;
-    private EditText mNameView;
+    private EditText mPassword;
     private Integer IDuser;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
     private static final String TAG_SUCCESS = "StatusCode";
@@ -57,8 +57,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         Dots_Layout = (LinearLayout) findViewById(R.id.dotsLayout);
         createDots(0);
 
-        mEmailView = findViewById(R.id.createEmail);
-        mNameView = findViewById(R.id.createPassword);
+        mEmailView = findViewById(R.id.user);
+        mPassword = findViewById(R.id.password);
 
         Button btn = findViewById(R.id.next);
         btn.setOnClickListener(this);
@@ -107,20 +107,28 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private void ingresarCuenta() {
         mEmailView.setError(null);
 
-        mEmailView = findViewById(R.id.createEmail);
+        mEmailView = findViewById(R.id.user);
+        mPassword = findViewById(R.id.password);
 
         String email = mEmailView.getText().toString();
+        String password = mPassword.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
+            mEmailView.setError("Campo requerido");
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
+            mEmailView.setError("Correo invalido");
             focusView = mEmailView;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            mPassword.setError("Campo requerido");
+            focusView = mPassword;
             cancel = true;
         }
 
@@ -132,7 +140,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             editor.apply();
             //mAuthTask = new UserLoginTask(email, password);
             //mAuthTask.execute((Void) null);
-            new SignInActivity.UserLoginTask(email).execute();
+            new SignInActivity.UserLoginTask(email,password).execute();
         }
     }
 
@@ -158,9 +166,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         private final String mEmail;
+        private final String mPasswordLogin;
 
-        UserLoginTask(String email) {
+        UserLoginTask(String email, String password) {
             mEmail = email;
+            mPasswordLogin = password;
         }
 
         @Override
@@ -168,6 +178,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             Boolean flag = false;
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
             nameValuePairs.add(new BasicNameValuePair("Email", mEmail));
+            nameValuePairs.add(new BasicNameValuePair("Password", mPasswordLogin));
 
             String Resultado="";
             Url url = new Url();
@@ -204,8 +215,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 SignInActivity.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);
             } else {
-                mNameView.setError(getString(R.string.error_incorrect_password));
-                mNameView.requestFocus();
+                mPassword.setError("Contraseña incorrecta");
+                mPassword.requestFocus();
             }
         }
 

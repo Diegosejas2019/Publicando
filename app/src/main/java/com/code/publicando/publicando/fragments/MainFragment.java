@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +46,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
     private int[] layouts = {R.layout.detail_first_slide,R.layout.detail_second_slide,R.layout.detail_third_slide};
     int currentPage = 0;
     Timer timer;
-    final long DELAY_MS = 2500;//delay in milliseconds before task is to be executed
+    final long DELAY_MS = 2000;//delay in milliseconds before task is to be executed
     final long PERIOD_MS = 6000;
     private View baseLayout;
     private ImageView img;
@@ -75,7 +76,16 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         context = inflater.getContext();
         ((MainActivity) getActivity())
                 .setActionBarTitle("Publicando");
-        new ObtenerDestacados().execute();
+        //new ObtenerDestacados().execute();
+
+        try {
+            Boolean str_result = new ObtenerDestacados().execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
@@ -172,15 +182,13 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                             baseLayout = viewPager.findViewWithTag(layouts[currentPage]);
                         }
                         img = baseLayout.findViewById(R.id.imagen);
-/*
-                        do{
-                            new ObtenerDestacados().execute();
-                        }while(Direcciones == null);*/
+
 
                         if (Direcciones.size() == 0 || Direcciones.size() > 0)
                         {
                             Picasso.with(context)
-                                    .load(url.getDireccion() + "/Imagenes/" + Direcciones.get(0))
+                                    //.load(url.getDireccion() + "/Imagenes/" + Direcciones.get(0))
+                                    .load("http://mrryzen22.asuscomm.com:49152/Imagenes/" + Direcciones.get(0) )
                                     .resize(1500, 1400)
                                     .into(img);
                         }
@@ -196,7 +204,8 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                         }
                         img = baseLayout.findViewById(R.id.imagen);
                         Picasso.with(context)
-                                .load(url.getDireccion() + "/Imagenes/" + Direcciones.get(1))
+                                //.load(url.getDireccion() + "/Imagenes/" + Direcciones.get(1))
+                                .load("http://mrryzen22.asuscomm.com:49152/Imagenes/" + Direcciones.get(1))
                                 .resize(1500, 1400)
                                 .into(img);
                         //img.setImageResource(R.drawable.heladeria);
@@ -212,7 +221,8 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                         img = baseLayout.findViewById(R.id.imagen);
                         //img.setImageResource(R.drawable.comidas);
                         Picasso.with(context)
-                                .load(url.getDireccion() + "/Imagenes/" + Direcciones.get(2))
+                                //.load(url.getDireccion() + "/Imagenes/" + Direcciones.get(2))
+                                .load("http://mrryzen22.asuscomm.com:49152/Imagenes/" + Direcciones.get(2))
                                 .resize(1500, 1400)
                                 .into(img);
                         break;
@@ -313,6 +323,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
 
         @Override
         protected void onPostExecute(final Boolean success) {
+            myMethod("ok");
             pDialog.dismiss();
         }
 
@@ -321,6 +332,11 @@ public class MainFragment extends Fragment implements View.OnClickListener{
             pDialog.dismiss();
             //mAuthTask = null;
             Toast.makeText(context,"Sin conexión",Toast.LENGTH_LONG).show();
+        }
+
+        private String myMethod(String myValue) {
+            //handle value
+            return myValue;
         }
     }
 
