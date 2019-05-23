@@ -14,10 +14,13 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:gravity="center"
+
         android:layout_marginBottom="0dp">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:paddingTop="45dp"
             android:id="@+id/imagen"/>
     </LinearLayout>
 <!--    <android.support.design.widget.FloatingActionButton

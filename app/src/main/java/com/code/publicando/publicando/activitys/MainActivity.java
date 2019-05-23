@@ -85,6 +85,8 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
+
+
         setActionBarTitle("Publicando");
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -96,8 +98,29 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Fragment fragment = new MainFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+        Bundle b = getIntent().getExtras();
+        if(b != null){
+            String frame = b.getString("Frame",null);
+            String detalle = b.getString("Detail",null);
+            if (frame != null){
+                Fragment fragment = new ServiceListFragment();
+                Bundle args = new Bundle();
+                args.putString("Type", "Servicio");
+                args.putString("Detail", detalle);
+                fragment.setArguments(args);
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment)
+                        .addToBackStack("ServiceListFragment")
+                        .commit();
+            }
+            else{
+                Fragment fragment = new MainFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+            }
+        }
+        else{
+            Fragment fragment = new MainFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+        }
     }
 
 
@@ -112,8 +135,15 @@ public class MainActivity extends AppCompatActivity
                 drawer.closeDrawer(GravityCompat.START);
             }
             else {
-                Fragment fragment = new MainFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                //Fragment fragment = new MainFragment();
+                //getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                getSupportFragmentManager().beginTransaction().
+                        remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
+                Intent myIntent = new Intent(MainActivity.this, NewServiceActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                MainActivity.this.startActivity(myIntent);
+                MainActivity.this.finish();
             }
         } else {
             getFragmentManager().popBackStack();
@@ -195,7 +225,10 @@ public class MainActivity extends AppCompatActivity
                         Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
                         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                         myIntent.putExtra("idUser", mIdUser); //Optional parameters
-                        MainActivity.this.startActivity(myIntent);
+                       // MainActivity.this.startActivity(myIntent);
+                    startActivity(myIntent);
+                    MainActivity.this.finish();
+                    overridePendingTransition(R.anim.fadein,R.anim.fadeout);
     /*                }
                     else{
 
@@ -243,26 +276,32 @@ public class MainActivity extends AppCompatActivity
         }
         switch (id) {
             case R.id.btnServicio:
-                fragment = new filter();
-                //fragment = new FilterServiceFragment();
-                //args = new Bundle();
+                /*fragment = new filter();
+                //fragment = new ServiceListFragment();
                 args.putString("Type", "Servicio");
                 fragment.setArguments(args);
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();*/
+
+                getSupportFragmentManager().beginTransaction().
+                        remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
+                myIntent = new Intent(MainActivity.this, NewServiceActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                MainActivity.this.startActivity(myIntent);
+                MainActivity.this.finish();
+                //overridePendingTransition(R.anim.fadein,R.anim.fadeout);
                 break;
             case R.id.btnComercio:
-                fragment = new filter();
-                //args = new Bundle();
+                /*fragment = new ServiceListFragment();
                 args.putString("Type", "Comercio");
                 fragment.setArguments(args);
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();*/
                 break;
             case R.id.btnPromo:
-                fragment = new filter();
-                //args = new Bundle();
+                /*fragment = new ServiceListFragment();
                 args.putString("Type", "Promocion");
                 fragment.setArguments(args);
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();*/
                 break;
             case R.id.imageView:
 

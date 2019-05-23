@@ -100,7 +100,7 @@ public class ChooseZoneActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
-        Intent myIntent = new Intent(ChooseZoneActivity.this, CreateAccountActivity.class);
+        Intent myIntent = new Intent(ChooseZoneActivity.this, HomeActivity.class);
         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         ChooseZoneActivity.this.startActivity(myIntent);
     }

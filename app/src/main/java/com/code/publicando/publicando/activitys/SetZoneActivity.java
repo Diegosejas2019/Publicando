@@ -137,4 +137,12 @@ public class SetZoneActivity extends AppCompatActivity implements View.OnClickLi
         SetZoneActivity.this.finish();
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent myIntent = new Intent(SetZoneActivity.this, ChooseZoneActivity.class);
+        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+        //myIntent.putExtra("key", IDuser); //Optional parameterse
+        SetZoneActivity.this.startActivity(myIntent);
+    }
 }

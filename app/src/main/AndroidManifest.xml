@@ -82,10 +82,7 @@
         <activity
             android:name=".activitys.SetZoneActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activitys.ServicesList_Activity"
             android:screenOrientation="portrait"
@@ -94,9 +91,7 @@
             android:name=".activitys.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activitys.CreatePostActivity" />
         <activity android:name=".activitys.PostSetDetailActivity" />
         <activity android:name=".activitys.PostUploadPhotoActivity" />
@@ -110,13 +105,15 @@
         <activity android:name=".activitys.MyAdvertisementsActivity" />
         <activity
             android:name=".activitys.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity android:name=".activitys.NewLogin"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activitys.NewLogin"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activitys.FilterActivity" />
+        <activity android:name=".activitys.NewServiceActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

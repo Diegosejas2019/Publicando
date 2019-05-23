@@ -60,38 +60,32 @@ public class ServicesList_Activity extends AppCompatActivity implements Navigati
         serviciosList.add(
                 new Servicios(
                         1,
-                        "Comercio modelo 1",
-                        R.drawable.comercio));
+                        "Comercio modelo 1"));
 
         serviciosList.add(
                 new Servicios(
                         1,
-                        "Resto Modelo 1",
-                        R.drawable.comidas));
+                        "Resto Modelo 1"));
 
         serviciosList.add(
                 new Servicios(
                         1,
-                        "Promos Modelo 1",
-                        R.drawable.promos));
+                        "Promos Modelo 1"));
 
         serviciosList.add(
                 new Servicios(
                         1,
-                        "Comercio modelo 1",
-                        R.drawable.comercio));
+                        "Comercio modelo 1"));
 
         serviciosList.add(
                 new Servicios(
                         1,
-                        "Resto Modelo 1",
-                        R.drawable.comidas));
+                        "Resto Modelo 1"));
 
         serviciosList.add(
                 new Servicios(
                         1,
-                        "Promos Modelo 1",
-                        R.drawable.promos));
+                        "Promos Modelo 1"));
         //creating recyclerview adapter
         ServiciosAdapter adapter = new ServiciosAdapter(this, serviciosList,1);
 

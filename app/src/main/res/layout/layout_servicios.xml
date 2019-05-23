@@ -14,7 +14,7 @@
         android:layout_margin="5dp">
 
         <RelativeLayout
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingRight="8dp"
@@ -30,14 +30,15 @@
 
             <TextView
                 android:id="@+id/textViewTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:gravity="center_horizontal"
                 android:textSize="25dp"
                 android:padding="5dp"
+                android:textAlignment="center"
                 android:layout_centerHorizontal="true"
-                android:layout_toRightOf="@id/imageView"
-                android:text="Apple MacBook Air Core i5 5th Gen - (8 GB/128 GB SSD/Mac OS Sierra)"
+                android:text="Apple Maa)"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="#000000" />
 
