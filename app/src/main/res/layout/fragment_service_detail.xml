@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="match_parent" android:layout_width="match_parent"
+    android:layout_gravity="fill_vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="?attr/actionBarSize"
+    android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:layout_gravity="center_vertical"
+    android:paddingTop="?attr/actionBarSize"
     tools:context=".fragments.ServiceDetailFragment">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="?attr/actionBarSize"
         android:layout_gravity="center_vertical"
         >
         <TextView
@@ -20,7 +25,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="0dp"
             android:text="Descripción:"
             android:textSize="20sp"
             android:textStyle="italic"/>
@@ -78,58 +83,58 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="0dp"
             />
-        <TextView
-            android:id="@+id/textView"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:gravity="center_horizontal"
+            android:layout_height="match_parent" >
 
-            android:textSize="20sp"
-            android:textStyle="italic" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:weightSum="4" android:layout_alignParentBottom="true">
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:text="hello"/>
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="2" android:text="hello"/>
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:text="hello"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <!--    <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:gravity="center_horizontal"
+
+                android:textSize="20sp"
+                android:textStyle="italic" />
 
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="0dp"
-            android:theme="@style/RatingBar"
-            android:numStars="0"
-            android:rating="0"
-            android:stepSize="1" />
 
-        <TextView
-            android:id="@+id/tvRatingScale"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            android:layout_marginTop="5dp"
-            android:text="Malo"
-          />
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="0dp"
+                android:theme="@style/RatingBar"
+                android:numStars="0"
+                android:rating="0"
+                android:stepSize="1" />
+             <TextView
+                android:id="@+id/tvRatingScale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"
+                android:text="Malo"
 
-<!--        <EditText
-            android:id="@+id/etFeedback"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:gravity="top"
-            android:hint="Tell us what you loved"
-            android:inputType="textMultiLine"
-            android:lines="5" />-->
 
-        <Button
-            android:id="@+id/btnSubmit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/colorNaranja"
-            android:text="Enviar calificación"
-            android:textColor="@android:color/white" />
+
+              <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorNaranja"
+                android:text="Enviar calificación"
+                android:textColor="@android:color/white" />-->
 
     </LinearLayout>
-
-</FrameLayout>
+    </ScrollView>
+</FrameLayout></ScrollView>

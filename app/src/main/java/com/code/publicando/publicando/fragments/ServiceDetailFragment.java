@@ -179,8 +179,8 @@ public class ServiceDetailFragment extends Fragment implements OnMapReadyCallbac
             textView3.setText("Telefono : " + posts.getPhone());
 /*            TextView textView4 = view.findViewById(R.id.textView4);
             textView4.setText(posts.getDescription());*/
-            mRatingScale = view.findViewById(R.id.tvRatingScale);
-            mRatingBar = (RatingBar) view.findViewById(R.id.ratingBar);
+            //mRatingScale = view.findViewById(R.id.tvRatingScale);
+/*            mRatingBar = (RatingBar) view.findViewById(R.id.ratingBar);
 
             mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
@@ -206,7 +206,7 @@ public class ServiceDetailFragment extends Fragment implements OnMapReadyCallbac
                             mRatingScale.setText("");
                     }
                 }
-            });
+            });*/
 
             ImageView imagenPost = view.findViewById(R.id.imagenPost);
             Url url = new Url();
@@ -215,29 +215,6 @@ public class ServiceDetailFragment extends Fragment implements OnMapReadyCallbac
                     .resize(1400, 850)
                     .into(imagenPost);
 
-/*                if (posts.Favorite == 1){
-                    productList.add(
-                            new Product(
-                                    posts.IdPost,
-                                    posts.TypeWork,
-                                    posts.Description,
-                                    posts.ImageUrl,
-                                    posts.Favorite));
-                }
-                else
-                {
-                    productList.add(
-                            new Product(
-                                    posts.IdPost,
-                                    posts.TypeWork,
-                                    posts.Description,
-                                    posts.ImageUrl,
-                                    0));
-                }
-
-            ProductAdapter adapter = new ProductAdapter(context, productList,IdUser);
-
-            recyclerView.setAdapter(adapter);*/
         }
 
         @Override

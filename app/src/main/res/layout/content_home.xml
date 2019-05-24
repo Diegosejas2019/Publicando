@@ -37,6 +37,7 @@
             android:layout_alignEnd="@+id/recyclerDetail"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
+            android:layout_marginBottom="10dp"
             android:paddingTop="10dp"
             android:scrollbarStyle="insideOverlay" />
 
