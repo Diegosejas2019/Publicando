@@ -101,11 +101,19 @@ public class MainActivity extends AppCompatActivity
         Bundle b = getIntent().getExtras();
         if(b != null){
             String frame = b.getString("Frame",null);
-            Integer idUser = b.getInt("idUser",0);
+            mIdUser = b.getInt("idUser",0);
             if (frame != null){
-                if (frame == "Anuncios")
+                if (frame.equals("Anuncios"))
                 {
                     Fragment fragment = new MyAdvertisementsFragment();
+                    Bundle args = new Bundle();
+                    args.putString("idUser", mIdUser.toString());
+                    fragment.setArguments(args);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                }
+                if (frame.equals("Favorite"))
+                {
+                    Fragment fragment = new FavoriteFragment();
                     Bundle args = new Bundle();
                     args.putString("idUser", mIdUser.toString());
                     fragment.setArguments(args);
@@ -222,17 +230,13 @@ public class MainActivity extends AppCompatActivity
                     myIntent.putExtra("idUser", mIdUser); //Optional parameters
                     MainActivity.this.startActivity(myIntent);*/
                     //if(mIdUser != null){
-                        Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
-                        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                        myIntent.putExtra("idUser", mIdUser); //Optional parameters
-                       // MainActivity.this.startActivity(myIntent);
+                    Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
+                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                    // MainActivity.this.startActivity(myIntent);
                     startActivity(myIntent);
                     MainActivity.this.finish();
                     overridePendingTransition(R.anim.fadein,R.anim.fadeout);
-    /*                }
-                    else{
-
-                    }*/
                     break;
                 case R.id.nav_anuncios:
                     getSupportFragmentManager().beginTransaction().

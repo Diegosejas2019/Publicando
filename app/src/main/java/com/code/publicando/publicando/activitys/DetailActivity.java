@@ -182,9 +182,9 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
             txt = findViewById(R.id.description);
             txt.setText(posts.getDescription());
             TextView textView2 = findViewById(R.id.textView2);
-            textView2.setText("Celular : " + posts.getCelular());
+/*            textView2.setText("Celular : " + posts.getCelular());
             TextView textView3 = findViewById(R.id.textView3);
-            textView3.setText("Telefono : " + posts.getPhone());
+            textView3.setText("Telefono : " + posts.getPhone());*/
 
             ImageView imagenPost = findViewById(R.id.imagenPost);
             Url url = new Url();
@@ -266,41 +266,24 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
             switch (id)
             {
                 case R.id.nav_publicar:
-                    getSupportFragmentManager().beginTransaction().
-                            remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
-    /*                Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
-                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                    myIntent.putExtra("idUser", mIdUser); //Optional parameters
-                    MainActivity.this.startActivity(myIntent);*/
-                    //if(mIdUser != null){
                     Intent myIntent = new Intent(DetailActivity.this, CreatePostActivity.class);
                     myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                     myIntent.putExtra("idUser", IdUser); //Optional parameters
                     DetailActivity.this.startActivity(myIntent);
-    /*                }
-                    else{
-
-                    }*/
                     break;
                 case R.id.nav_anuncios:
-                    getSupportFragmentManager().beginTransaction().
-                            remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
-
-                    fragment = new MyAdvertisementsFragment();
-                    args = new Bundle();
-                    args.putString("idUser", IdUser.toString());
-                    fragment.setArguments(args);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                    myIntent = new Intent(DetailActivity.this, MainActivity.class);
+                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    myIntent.putExtra("idUser", IdUser); //Optional parameters
+                    myIntent.putExtra("Frame", "Anuncios"); //Optional parameters
+                    DetailActivity.this.startActivity(myIntent);
                     break;
                 case R.id.nav_fav:
-                    getSupportFragmentManager().beginTransaction().
-                            remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
-
-                    fragment = new FavoriteFragment();
-                    args = new Bundle();
-                    args.putString("idUser", IdUser.toString());
-                    fragment.setArguments(args);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                    myIntent = new Intent(DetailActivity.this, MainActivity.class);
+                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    myIntent.putExtra("idUser", IdUser); //Optional parameters
+                    myIntent.putExtra("Frame", "Favorite"); //Optional parameters
+                    DetailActivity.this.startActivity(myIntent);
                     break;
             }
         }

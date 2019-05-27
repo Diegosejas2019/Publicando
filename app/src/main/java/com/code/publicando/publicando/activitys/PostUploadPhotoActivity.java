@@ -148,8 +148,9 @@ public class PostUploadPhotoActivity extends AppCompatActivity implements View.O
             mBitmap = null;
             try {
                 mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                Bitmap resized = Bitmap.createScaledBitmap(mBitmap, 1400, 1300, true);
                 ImageView img = findViewById(R.id.imageUpload);
-                img.setImageBitmap(mBitmap);
+                img.setImageBitmap(resized);
 
 //Saves the  image
                // MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, timestamp, timestamp);

@@ -214,25 +214,12 @@ public class NewServiceActivity extends AppCompatActivity implements NavigationV
             switch (id)
             {
                 case R.id.nav_publicar:
-                    getSupportFragmentManager().beginTransaction().
-                            remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
-    /*                Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
-                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                    myIntent.putExtra("idUser", mIdUser); //Optional parameters
-                    MainActivity.this.startActivity(myIntent);*/
-                    //if(mIdUser != null){
                     Intent myIntent = new Intent(NewServiceActivity.this, CreatePostActivity.class);
                     myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                     myIntent.putExtra("idUser", mIdUser); //Optional parameters
                     NewServiceActivity.this.startActivity(myIntent);
-    /*                }
-                    else{
-
-                    }*/
                     break;
                 case R.id.nav_anuncios:
-
-
                     myIntent = new Intent(NewServiceActivity.this, MainActivity.class);
                     myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                     myIntent.putExtra("idUser", mIdUser); //Optional parameters
@@ -240,14 +227,11 @@ public class NewServiceActivity extends AppCompatActivity implements NavigationV
                     NewServiceActivity.this.startActivity(myIntent);
                     break;
                 case R.id.nav_fav:
-                    getSupportFragmentManager().beginTransaction().
-                            remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
-
-                    fragment = new FavoriteFragment();
-                    args = new Bundle();
-                    args.putString("idUser", mIdUser.toString());
-                    fragment.setArguments(args);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                    myIntent = new Intent(NewServiceActivity.this, MainActivity.class);
+                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                    myIntent.putExtra("Frame", "Favorite"); //Optional parameters
+                    NewServiceActivity.this.startActivity(myIntent);
                     break;
             }
         }
