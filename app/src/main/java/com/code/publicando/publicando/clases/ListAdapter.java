@@ -3,13 +3,7 @@ package com.code.publicando.publicando.clases;
 import android.app.Activity;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentTransaction;
-import android.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,10 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.code.publicando.publicando.activitys.ListMain;
 import com.code.publicando.publicando.R;
-import com.code.publicando.publicando.activitys.MainActivity;
-import com.code.publicando.publicando.fragments.ServiceListFragment;
-import com.code.publicando.publicando.fragments.filter;
 
 import java.util.List;
 
@@ -64,7 +56,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
             @Override
             public void onClick(View v) {
                 String detalle = String.valueOf(serviciosList.get(position).getTitle());
-                Intent myIntent = new Intent(mCtx, MainActivity.class);
+                Intent myIntent = new Intent(mCtx, ListMain.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 myIntent.putExtra("Detail", detalle);
                 myIntent.putExtra("Type", "Servicio");

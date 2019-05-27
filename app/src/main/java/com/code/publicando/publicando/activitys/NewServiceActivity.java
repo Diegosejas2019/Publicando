@@ -117,6 +117,12 @@ public class NewServiceActivity extends AppCompatActivity implements NavigationV
 
         //setting adapter to recyclerview
         recyclerView.setAdapter(adapterServicio);
+
+        Bundle b = getIntent().getExtras();
+        int value = -1; // or other values
+        if(b != null){
+            mIdUser = b.getInt("idUser");
+        }
     }
 
     public void setActionBarTitle(String title) {
@@ -225,14 +231,13 @@ public class NewServiceActivity extends AppCompatActivity implements NavigationV
                     }*/
                     break;
                 case R.id.nav_anuncios:
-                    getSupportFragmentManager().beginTransaction().
-                            remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
 
-                    fragment = new MyAdvertisementsFragment();
-                    args = new Bundle();
-                    args.putString("idUser", mIdUser.toString());
-                    fragment.setArguments(args);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+
+                    myIntent = new Intent(NewServiceActivity.this, MainActivity.class);
+                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                    myIntent.putExtra("Frame", "Anuncios"); //Optional parameters
+                    NewServiceActivity.this.startActivity(myIntent);
                     break;
                 case R.id.nav_fav:
                     getSupportFragmentManager().beginTransaction().

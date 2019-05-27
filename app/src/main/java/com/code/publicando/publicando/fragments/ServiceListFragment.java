@@ -166,7 +166,7 @@ public class ServiceListFragment extends Fragment {
                                 posts.get(i).WorkDetail,
                                 posts.get(i).Description,
                                 posts.get(i).ImageUrl,
-                                posts.get(i).Favorite));
+                                posts.get(i).Favorite,""));
                 }
                 else
                     {
@@ -176,7 +176,7 @@ public class ServiceListFragment extends Fragment {
                                         posts.get(i).WorkDetail,
                                         posts.get(i).Description,
                                         posts.get(i).ImageUrl,
-                                        0));
+                                        0,""));
                     }
             }
             ProductAdapter adapter = new ProductAdapter(context, productList,IdUser);

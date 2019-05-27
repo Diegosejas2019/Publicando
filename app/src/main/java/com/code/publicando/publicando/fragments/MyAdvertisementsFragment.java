@@ -127,7 +127,7 @@ public class MyAdvertisementsFragment extends Fragment {
                                 posts.get(i).IdPost,
                                 posts.get(i).TypeWork,
                                 posts.get(i).Description,
-                                posts.get(i).ImageUrl,1));
+                                posts.get(i).ImageUrl,1,""));
             }
             ProductAdapter adapter = new ProductAdapter(context, productList,1);
 

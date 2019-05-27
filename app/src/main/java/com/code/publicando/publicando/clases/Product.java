@@ -13,9 +13,9 @@ public class Product {
     private int image;
     private int favorite;
     private String imageUrl;
+    private String Type;
 
-
-    public Product(int id, String title, String shortdesc, String image, int favorite) {
+    public Product(int id, String title, String shortdesc, String image, int favorite,String Type) {
         this.id = id;
         this.title = title;
         this.shortdesc = shortdesc;
@@ -23,6 +23,7 @@ public class Product {
         //this.image = image;
         this.imageUrl = image;
         this.favorite = favorite;
+        this.Type = Type;
     }
 
     public int getId() {
@@ -31,6 +32,10 @@ public class Product {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getType() {
+        return Type;
     }
 
     public String getShortdesc() {

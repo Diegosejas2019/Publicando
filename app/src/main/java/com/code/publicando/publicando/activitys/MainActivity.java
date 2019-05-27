@@ -101,16 +101,16 @@ public class MainActivity extends AppCompatActivity
         Bundle b = getIntent().getExtras();
         if(b != null){
             String frame = b.getString("Frame",null);
-            String detalle = b.getString("Detail",null);
+            Integer idUser = b.getInt("idUser",0);
             if (frame != null){
-                Fragment fragment = new ServiceListFragment();
-                Bundle args = new Bundle();
-                args.putString("Type", "Servicio");
-                args.putString("Detail", detalle);
-                fragment.setArguments(args);
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment)
-                        .addToBackStack("ServiceListFragment")
-                        .commit();
+                if (frame == "Anuncios")
+                {
+                    Fragment fragment = new MyAdvertisementsFragment();
+                    Bundle args = new Bundle();
+                    args.putString("idUser", mIdUser.toString());
+                    fragment.setArguments(args);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                }
             }
             else{
                 Fragment fragment = new MainFragment();
@@ -135,15 +135,15 @@ public class MainActivity extends AppCompatActivity
                 drawer.closeDrawer(GravityCompat.START);
             }
             else {
-                //Fragment fragment = new MainFragment();
-                //getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
-                getSupportFragmentManager().beginTransaction().
+                Fragment fragment = new MainFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+/*                getSupportFragmentManager().beginTransaction().
                         remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
-                Intent myIntent = new Intent(MainActivity.this, NewServiceActivity.class);
+                Intent myIntent = new Intent(MainActivity.this, MA.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 myIntent.putExtra("idUser", mIdUser); //Optional parameters
                 MainActivity.this.startActivity(myIntent);
-                MainActivity.this.finish();
+                MainActivity.this.finish();*/
             }
         } else {
             getFragmentManager().popBackStack();

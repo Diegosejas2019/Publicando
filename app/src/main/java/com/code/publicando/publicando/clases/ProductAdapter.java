@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 
 import com.code.publicando.publicando.R;
+import com.code.publicando.publicando.activitys.DetailActivity;
+import com.code.publicando.publicando.activitys.ListMain;
 import com.code.publicando.publicando.fragments.ServiceDetailFragment;
 import com.squareup.picasso.Picasso;
 
@@ -37,6 +39,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 import static com.facebook.login.widget.ProfilePictureView.TAG;
 
 /**
@@ -103,7 +106,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             @Override
             public void onClick(View v) {
                 idPost = String.valueOf(productList.get(position).getId());
-                Fragment fragment = new ServiceDetailFragment();
+                String detail = String.valueOf(productList.get(position).getTitle());
+                String Type = String.valueOf(productList.get(position).getType());
+/*                Fragment fragment = new ServiceDetailFragment();
                 Bundle args = new Bundle();
                 args.putString("idPost", idPost);
                 args.putInt("idUser", mIdUser);
@@ -111,7 +116,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 ((Activity) mCtx).getFragmentManager().beginTransaction()
                         .replace(R.id.content_frame, fragment)
                         .addToBackStack(null)
-                        .commit();
+                        .commit();*/
+                //String detalle = String.valueOf(serviciosList.get(position).getTitle());
+                Intent myIntent = new Intent(mCtx, DetailActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                myIntent.putExtra("idPost", idPost);
+                myIntent.putExtra("idUser", mIdUser);
+                myIntent.putExtra("Detail", detail);
+                myIntent.putExtra("Type", Type);
+                mCtx.startActivity(myIntent);
+                ((Activity) mCtx).finish();
+                ((Activity) mCtx).overridePendingTransition(R.anim.fadein,R.anim.fadeout);
             }
         });
         holder.textViewShortDesc.setText(product.getShortdesc());
@@ -119,7 +134,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             @Override
             public void onClick(View v) {
                 idPost = String.valueOf(productList.get(position).getId());
-                Fragment fragment = new ServiceDetailFragment();
+                String detail = String.valueOf(productList.get(position).getTitle());
+                String Type = String.valueOf(productList.get(position).getType());
+/*                Fragment fragment = new ServiceDetailFragment();
                 Bundle args = new Bundle();
                 args.putString("idPost", idPost);
                 args.putInt("idUser", mIdUser);
@@ -127,7 +144,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 ((Activity) mCtx).getFragmentManager().beginTransaction()
                         .replace(R.id.content_frame, fragment)
                         .addToBackStack(null)
-                        .commit();
+                        .commit();*/
+                Intent myIntent = new Intent(mCtx, DetailActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                myIntent.putExtra("idPost", idPost);
+                myIntent.putExtra("idUser", mIdUser);
+                myIntent.putExtra("Detail", detail);
+                myIntent.putExtra("Type", Type);
+                mCtx.startActivity(myIntent);
+                ((Activity) mCtx).finish();
+                ((Activity) mCtx).overridePendingTransition(R.anim.fadein,R.anim.fadeout);
             }
         });
         //holder.textViewRating.setText(String.valueOf(product.getRating()));

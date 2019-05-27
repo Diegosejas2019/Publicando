@@ -136,7 +136,7 @@ public class FavoriteFragment extends Fragment {
                                     posts.get(i).TypeWork,
                                     posts.get(i).Description,
                                     posts.get(i).ImageUrl,
-                                    posts.get(i).Favorite));
+                                    posts.get(i).Favorite,""));
                 }
 /*                else
                 {
