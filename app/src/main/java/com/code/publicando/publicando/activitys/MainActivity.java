@@ -129,6 +129,8 @@ public class MainActivity extends AppCompatActivity
                     Fragment fragment = new MyAdvertisementsFragment();
                     Bundle args = new Bundle();
                     args.putString("idUser", mIdUser.toString());
+                    args.putDouble("Latitude", mLatitude);
+                    args.putDouble("Longuitude", mLongitud);
                     fragment.setArguments(args);
                     getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 }
@@ -137,6 +139,8 @@ public class MainActivity extends AppCompatActivity
                     Fragment fragment = new FavoriteFragment();
                     Bundle args = new Bundle();
                     args.putString("idUser", mIdUser.toString());
+                    args.putDouble("Latitude", mLatitude);
+                    args.putDouble("Longuitude", mLongitud);
                     fragment.setArguments(args);
                     getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                 }
@@ -341,6 +345,8 @@ public class MainActivity extends AppCompatActivity
                     fragment = new MyAdvertisementsFragment();
                     args = new Bundle();
                     args.putString("idUser", mIdUser.toString());
+                    args.putDouble("Latitude", mLatitude);
+                    args.putDouble("Longuitude", mLongitud);
                     fragment.setArguments(args);
                     getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                     break;
@@ -351,6 +357,8 @@ public class MainActivity extends AppCompatActivity
                     fragment = new FavoriteFragment();
                     args = new Bundle();
                     args.putString("idUser", mIdUser.toString());
+                    args.putDouble("Latitude", mLatitude);
+                    args.putDouble("Longuitude", mLongitud);
                     fragment.setArguments(args);
                     getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
                     break;

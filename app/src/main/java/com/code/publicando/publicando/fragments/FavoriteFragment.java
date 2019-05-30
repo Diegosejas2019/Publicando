@@ -43,6 +43,8 @@ public class FavoriteFragment extends Fragment {
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
     private String idUser;
+    private Double Latitude;
+    private Double Longuitude;
     ArrayList<Post> posts;
     private Context context;
     public FavoriteFragment() {
@@ -61,6 +63,8 @@ public class FavoriteFragment extends Fragment {
 
         Bundle args = getArguments();
         idUser = args.getString("idUser", null);
+        Latitude = args.getDouble("Latitude", 0);
+        Longuitude = args.getDouble("Longuitude", 0);
 
         new ObtenerDestacados().execute();
 
@@ -136,7 +140,13 @@ public class FavoriteFragment extends Fragment {
                                     posts.get(i).TypeWork,
                                     posts.get(i).Description,
                                     posts.get(i).ImageUrl,
-                                    posts.get(i).Favorite,""));
+                                    posts.get(i).Favorite,"",
+                                    "",
+                                    0,
+                                    "",
+                                    "",
+                                    Double.parseDouble(posts.get(i).Latitude),
+                                    Double.parseDouble(posts.get(i).Longitude)));
                 }
 /*                else
                 {
@@ -149,7 +159,7 @@ public class FavoriteFragment extends Fragment {
                                     0));
                 }*/
             }
-            ProductAdapter adapter = new ProductAdapter(context, productList, Integer.parseInt(idUser));
+            ProductAdapter adapter = new ProductAdapter(context, productList, Integer.parseInt(idUser),Latitude,Longuitude);
 
             recyclerView.setAdapter(adapter);
         }

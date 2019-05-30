@@ -103,6 +103,7 @@ public class ListMain extends AppCompatActivity implements NavigationView.OnNavi
         ScrollView mainScrollView = (ScrollView)findViewById(R.id.scrolllist);
         mainScrollView.fullScroll(ScrollView.FOCUS_UP);
 
+        btnZona = findViewById(R.id.btnZona);
         btnZona.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

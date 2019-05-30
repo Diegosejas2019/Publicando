@@ -171,6 +171,10 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
                     posts.setRadius(json.optInt("Radius"));
                     posts.setWorkDetail(json.getString("WorkDetail"));
                     posts.setFavorite(json.getInt("Favorite"));
+/*                    ubicacion.Calle = json.getString("Calle");
+                    ubicacion.Altura = json.getInt("Altura");
+                    ubicacion.Localidad = json.getString("Localidad");
+                    ubicacion.Partido = json.getString("Partido");*/
                 }
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());

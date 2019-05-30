@@ -377,6 +377,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                     .strokeColor(Color.BLUE)
                     .fillColor(Color.TRANSPARENT)
                     .strokeWidth(5));
+            getAddress(mLatitude,mLongitud);
         }
 
         SeekBar bar = findViewById(R.id.seekBar);
