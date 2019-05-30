@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.clases.JSONParser;
 import com.code.publicando.publicando.clases.PreferenceManager;
+import com.code.publicando.publicando.clases.Ubicacion;
 import com.code.publicando.publicando.clases.Url;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -47,6 +48,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -85,11 +87,12 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     private int NEW_RADIUS = 0;
     private Circle mCircle;
     private Integer mIdUser;
-    private double mLatitude;
-    private double mLongitud;
-
+    private Double mLatitude;
+    private Double mLongitud;
+    Ubicacion ubicacion = new Ubicacion();
     private String Latitude;
     private String Longitud;
+    Gson gson = new Gson();
 
     JSONParser jParser = new JSONParser();
     Url url = new Url();
@@ -104,8 +107,10 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         Bundle b = getIntent().getExtras();
         if(b != null){
             mIdUser = b.getInt("idUser");
-            Latitude = b.getString("Latitude", null);
-            Longitud = b.getString("Longitud", null);
+            mLatitude = b.getDouble("Latitude", 0);
+            mLongitud = b.getDouble("Longitud", 0);
+            ubicacion.Latitude = String.valueOf(mLatitude);
+            ubicacion.Longitude = String.valueOf(mLongitud);
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -123,6 +128,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onClick(View view) {
 
+                //new SaveUbicationTask().execute();
                 new SaveUbicationTask().execute();
             }
         });
@@ -130,7 +136,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
 
     }
 
-    public class SaveUbicationTask extends AsyncTask<Void, Void, Boolean> {
+    /*public class SaveUbicationTask extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected void onPreExecute() {
@@ -197,7 +203,77 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
 
             Toast.makeText(LocationActivity.this,"Sin conexión",Toast.LENGTH_LONG).show();
         }
+    }*/
+
+    public class SaveUbicationTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(LocationActivity.this);
+            pDialog.setMessage("Guardando ubicación...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Boolean flag = false;
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(10);
+            nameValuePairs.add(new BasicNameValuePair("IdUser", Integer.toString(mIdUser)));
+            nameValuePairs.add(new BasicNameValuePair("Radius", Integer.toString(RADIUS_DEFAULT)));
+            nameValuePairs.add(new BasicNameValuePair("Latitude", ubicacion.getLatitude()));
+            nameValuePairs.add(new BasicNameValuePair("Longitude", ubicacion.getLongitude()));
+            nameValuePairs.add(new BasicNameValuePair("Provincia", ubicacion.getProvincia()));
+            nameValuePairs.add(new BasicNameValuePair("CP", ubicacion.getCP()));
+            nameValuePairs.add(new BasicNameValuePair("Partido", ubicacion.getPartido()));
+            nameValuePairs.add(new BasicNameValuePair("Localidad", ubicacion.getLocalidad()));
+            nameValuePairs.add(new BasicNameValuePair("Calle", ubicacion.getCalle()));
+            nameValuePairs.add(new BasicNameValuePair("Altura", Integer.toString(ubicacion.getAltura())));
+
+            String Resultado="";
+
+            JSONObject json = jParser.makeHttpRequest(url.getDireccion() + "/api/master/AddUbication", "POST", nameValuePairs);
+
+            try {
+                if (json != null){
+                    int success = json.getInt(TAG_SUCCESS);
+                    if (success == 200){
+                        flag = true;}
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Resultado = e.getMessage();
+            }
+            return flag;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            pDialog.dismiss();
+            if (success) {
+                new PreferenceManager(LocationActivity.this).clearPreference();
+                Intent myIntent = new Intent(LocationActivity.this, GuideActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                String Ubicacion = gson.toJson(ubicacion);
+                myIntent.putExtra("Ubicacion", Ubicacion);
+                LocationActivity.this.startActivity(myIntent);
+            } else {
+                Toast.makeText(LocationActivity.this,"Hubo un problema al guardar la ubicación",Toast.LENGTH_LONG).show();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            pDialog.dismiss();
+
+            Toast.makeText(LocationActivity.this,"Sin conexión",Toast.LENGTH_LONG).show();
+        }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -279,16 +355,16 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
 
         }
 
-/*        if ((!Latitude.isEmpty()) && (!Longitud.isEmpty()))
-        {1
-            LatLng sevilla = new LatLng(Double.parseDouble(Latitude),Double.parseDouble(Longitud));
-            mMap.addMarker(new MarkerOptions().position(sevilla).title("").draggable(true));
+        if (mLatitude != 0 && mLongitud != 0)
+        {
+            //LatLng sevilla = new LatLng(Double.parseDouble(Latitude),Double.parseDouble(Longitud));
+            LatLng ubicacion = new LatLng(mLatitude,mLongitud);
+            mMap.addMarker(new MarkerOptions().position(ubicacion).title("").draggable(true));
 
-            mLatitude = (int) sevilla.latitude;
-            mLongitud = (int) sevilla.longitude;
-
+            mLatitude = ubicacion.latitude;
+            mLongitud = ubicacion.longitude;
             final CameraPosition camera = new CameraPosition.Builder()
-                    .target(sevilla)
+                    .target(ubicacion)
                     .zoom(11.0f)           // limit -> 21
                     .bearing(0)         // 0 - 365º
                     .tilt(30)           // limit -> 90
@@ -296,12 +372,12 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(camera));
 
             mCircle = mMap.addCircle(new CircleOptions()
-                    .center(sevilla)
+                    .center(ubicacion)
                     .radius(RADIUS_DEFAULT)
                     .strokeColor(Color.BLUE)
                     .fillColor(Color.TRANSPARENT)
                     .strokeWidth(5));
-        }*/
+        }
 
         SeekBar bar = findViewById(R.id.seekBar);
         bar.setMax(20);
@@ -425,14 +501,19 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
 
-        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLatitude == 0 && mLongitud == 0)
+        {
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        if (location == null) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-        }
-        else {
-            handleNewLocation(location);
-            getAddress(mLatitude,mLongitud);
+            if (location == null) {
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            }
+            else {
+                handleNewLocation(location);
+                getAddress(mLatitude,mLongitud);
+                ubicacion.Latitude = String.valueOf(mLatitude);
+                ubicacion.Longitude = String.valueOf(mLongitud);
+            }
         }
     }
 
@@ -443,16 +524,16 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
             Address obj = addresses.get(0);
-            String add = obj.getAddressLine(0);
-            add = add + "\n" + obj.getCountryName();
-            add = add + "\n" + obj.getCountryCode();
-            add = add + "\n" + obj.getAdminArea();
-            add = add + "\n" + obj.getPostalCode();
-            add = add + "\n" + obj.getSubAdminArea();
-            add = add + "\n" + obj.getLocality();
-            add = add + "\n" + obj.getSubThoroughfare();
-
-            Log.v("IGA", "Address" + add);
+            ubicacion.IdUser = mIdUser;
+            ubicacion.Radius = RADIUS_DEFAULT;
+            ubicacion.Latitude = String.valueOf(lat);
+            ubicacion.Longitude = String.valueOf(lng);
+            ubicacion.Provincia = obj.getAdminArea();
+            ubicacion.CP = obj.getPostalCode();
+            ubicacion.Partido = obj.getSubAdminArea();
+            ubicacion.Localidad = obj.getLocality();
+            ubicacion.Calle = obj.getThoroughfare();
+            ubicacion.Altura = Integer.parseInt(obj.getSubThoroughfare());
 
 
         } catch (IOException e) {
@@ -474,7 +555,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         //mMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("Current Location"));
         MarkerOptions options = new MarkerOptions()
                 .position(latLng)
-                .title("I am here!");
+                .title("Estoy aca!");
         mMap.addMarker(options);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));

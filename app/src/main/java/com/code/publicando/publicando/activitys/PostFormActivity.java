@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.code.publicando.publicando.R;
+import com.code.publicando.publicando.clases.Ubicacion;
+import com.google.gson.Gson;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
@@ -34,6 +36,8 @@ public class PostFormActivity extends AppCompatActivity implements View.OnClickL
     private TextView mPhone;
     private TextView mDescription;
     private Integer mIdUser;
+    Ubicacion ubicacion = new Ubicacion();
+    Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +62,13 @@ public class PostFormActivity extends AppCompatActivity implements View.OnClickL
             mType = b.getString("Type");
             mAuto = b.getString("Detail");
             mBitmap =  (Bitmap) b.getParcelable("Photo");
-            mRadius = b.getInt("Radius");
+            /*mRadius = b.getInt("Radius");
             mLatitude = b.getDouble("Latitude");
-            mLongitude = b.getDouble("Longitude");
+            mLongitude = b.getDouble("Longitude");*/
             mIdUser = b.getInt("idUser");
+
+            String clase = getIntent().getStringExtra("Ubicacion");
+            ubicacion = gson.fromJson(clase, Ubicacion.class);
         }
 
 
@@ -150,9 +157,11 @@ public class PostFormActivity extends AppCompatActivity implements View.OnClickL
                     myIntent.putExtra("Type", mType);
                     myIntent.putExtra("Detail", mAuto);
                     myIntent.putExtra("idUser", mIdUser);
-                    myIntent.putExtra("Radius", mRadius);
+                    /*myIntent.putExtra("Radius", mRadius);
                     myIntent.putExtra("Latitude", mLatitude);
-                    myIntent.putExtra("Longitude", mLongitude);
+                    myIntent.putExtra("Longitude", mLongitude);*/
+                    String Ubicacion = gson.toJson(ubicacion);
+                    myIntent.putExtra("Ubicacion", Ubicacion);
                     myIntent.putExtra("Celular", mCelular.getText().toString());
                     myIntent.putExtra("Phone", mPhone.getText().toString());
                     myIntent.putExtra("Description", mDescription.getText().toString());

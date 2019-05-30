@@ -24,7 +24,9 @@ import android.widget.Toast;
 import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.clases.BitmapHelper;
 import com.code.publicando.publicando.clases.JSONParser;
+import com.code.publicando.publicando.clases.Ubicacion;
 import com.code.publicando.publicando.clases.Url;
+import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -52,7 +54,8 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
     private String mPhone;
     private String mDescription;;
     private Integer mIdUser;
-
+    Ubicacion ubicacion = new Ubicacion();
+    Gson gson = new Gson();
     //private String url = "http://10.0.2.2/api/login/";
     //private String url = "http://192.168.1.149/api/login/";
     JSONParser jParser = new JSONParser();
@@ -60,9 +63,10 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
     private EditText mEmailView;
     private EditText mNameView;
     private Integer IDuser;
+    private Integer IDPost;
     private static final String TAG_SUCCESS = "StatusCode";
     private static final String TAG_USER = "UserName";
-
+    Url url = new Url();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,9 +90,11 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
             mType = b.getString("Type");
             mAuto = b.getString("Detail");
             mBitmap = BitmapHelper.getInstance().getBitmap();
-            mRadius = b.getInt("Radius");
+/*            mRadius = b.getInt("Radius");
             mLatitude = b.getDouble("Latitude");
-            mLongitude = b.getDouble("Longitude");
+            mLongitude = b.getDouble("Longitude");*/
+            String clase = getIntent().getStringExtra("Ubicacion");
+            ubicacion = gson.fromJson(clase, Ubicacion.class);
             mCelular = b.getString("Celular");
             mPhone = b.getString("Phone");
             mDescription = b.getString("Description");
@@ -228,9 +234,9 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
             nameValuePairs.add(new BasicNameValuePair("TypeWork", mType));
             nameValuePairs.add(new BasicNameValuePair("WorkDetail", mAuto));
             nameValuePairs.add(new BasicNameValuePair("Image64", base64));
-            nameValuePairs.add(new BasicNameValuePair("Radius", mRadius.toString()));
+/*            nameValuePairs.add(new BasicNameValuePair("Radius", mRadius.toString()));
             nameValuePairs.add(new BasicNameValuePair("Latitude", mLatitude.toString()));
-            nameValuePairs.add(new BasicNameValuePair("Longitude", mLongitude.toString()));
+            nameValuePairs.add(new BasicNameValuePair("Longitude", mLongitude.toString()));*/
             nameValuePairs.add(new BasicNameValuePair("Celular", mCelular));
             nameValuePairs.add(new BasicNameValuePair("Phone", mPhone));
             nameValuePairs.add(new BasicNameValuePair("Description", mDescription));
@@ -238,7 +244,7 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
 
 
             String Resultado="";
-            Url url = new Url();
+
             JSONObject json = jParser.makeHttpRequest(url.getDireccion() + "/api/master/RegisterPost", "POST", nameValuePairs);
 
             try {
@@ -246,6 +252,74 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
                     int success = json.getInt(TAG_SUCCESS);
                     if (success == 200){
                         IDuser = json.getInt("IdUser");
+                        IDPost = json.getInt("IdPost");
+                        flag = true;}
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Resultado = e.getMessage();
+            }
+            return flag;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            //pDialog.dismiss();
+            if (success) {
+/*                Intent myIntent = new Intent(CreateAccountActivity.this, ChooseZoneActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                myIntent.putExtra("key", IDuser); //Optional parameters
+                CreateAccountActivity.this.startActivity(myIntent);*/
+                new SaveUbication().execute();
+                //showInfoAlert();
+
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            pDialog.dismiss();
+            //mAuthTask = null;
+            Toast.makeText(PostFinishAcvitity.this,"Sin conexión",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class SaveUbication extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+/*            pDialog = new ProgressDialog(PostFinishAcvitity.this);
+            pDialog.setMessage("Realizando Publicación...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();*/
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Boolean flag = false;
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(10);
+            nameValuePairs.add(new BasicNameValuePair("IdPost", Integer.toString(IDPost)));
+            nameValuePairs.add(new BasicNameValuePair("Radius", Integer.toString(ubicacion.getRadius())));
+            nameValuePairs.add(new BasicNameValuePair("Latitude", ubicacion.getLatitude()));
+            nameValuePairs.add(new BasicNameValuePair("Longitude", ubicacion.getLongitude()));
+            nameValuePairs.add(new BasicNameValuePair("Provincia", ubicacion.getProvincia()));
+            nameValuePairs.add(new BasicNameValuePair("CP", ubicacion.getCP()));
+            nameValuePairs.add(new BasicNameValuePair("Partido", ubicacion.getPartido()));
+            nameValuePairs.add(new BasicNameValuePair("Localidad", ubicacion.getLocalidad()));
+            nameValuePairs.add(new BasicNameValuePair("Calle", ubicacion.getCalle()));
+            nameValuePairs.add(new BasicNameValuePair("Altura", Integer.toString(ubicacion.getAltura())));
+
+            String Resultado="";
+
+            JSONObject json = jParser.makeHttpRequest(url.getDireccion() + "/api/master/AddUbicationPost", "POST", nameValuePairs);
+
+            try {
+                if (json != null){
+                    int success = json.getInt(TAG_SUCCESS);
+                    if (success == 200){
                         flag = true;}
                 }
 
@@ -260,15 +334,8 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
         protected void onPostExecute(final Boolean success) {
             pDialog.dismiss();
             if (success) {
-/*                Intent myIntent = new Intent(CreateAccountActivity.this, ChooseZoneActivity.class);
-                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                myIntent.putExtra("key", IDuser); //Optional parameters
-                CreateAccountActivity.this.startActivity(myIntent);*/
                 showInfoAlert();
 
-            } else {
-                mNameView.setError(getString(R.string.error_incorrect_password));
-                mNameView.requestFocus();
             }
         }
 

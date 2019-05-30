@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.clases.MpagerAdapter;
 import com.code.publicando.publicando.clases.PreferenceManager;
+import com.code.publicando.publicando.clases.Ubicacion;
+import com.google.gson.Gson;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 import static com.code.publicando.publicando.activitys.LoginActivity.MY_PREFS_NAME;
@@ -32,8 +34,10 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
     private Button skip,next;
     private Integer mIdUser;
     private Integer mRadius;
-    private Integer mLatitude;
-    private Integer mLongitud;
+    private Double mLatitude;
+    private Double mLongitud;
+    Ubicacion ubicacion = new Ubicacion();
+    Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +75,11 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         Bundle b = getIntent().getExtras();
         if(b != null){
             mIdUser = b.getInt("idUser");
-            mLatitude = b.getInt("Latitude");
-            mLongitud = b.getInt("Longitud");
-            mRadius = b.getInt("Radius");
+/*            mLatitude = b.getDouble("Latitude");
+            mLongitud = b.getDouble("Longitud");
+            mRadius = b.getInt("Radius");*/
+            String clase = getIntent().getStringExtra("Ubicacion");
+            ubicacion = gson.fromJson(clase, Ubicacion.class);
         }
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -148,21 +154,12 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
 
     private void loadHome()
     {
-        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-        editor.putInt("idUser", mIdUser);
-        editor.putString("Latitude", mLatitude.toString());
-        editor.putString("Longitud", mLongitud.toString());
-        editor.putString("Radius", mRadius.toString());
-        editor.putInt("Guide", 1);
-        editor.apply();
         new PreferenceManager(GuideActivity.this).clearPreference();
         Intent myIntent = new Intent(GuideActivity.this, MainActivity.class);
         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         myIntent.putExtra("idUser", mIdUser);
-        myIntent.putExtra("Latitude", mLatitude);
-        myIntent.putExtra("Longitud", mLongitud);
-        myIntent.putExtra("Radius", mRadius);
-
+        String Ubicacion = gson.toJson(ubicacion);
+        myIntent.putExtra("Ubicacion", Ubicacion);
         GuideActivity.this.startActivity(myIntent);
         finish();
     }

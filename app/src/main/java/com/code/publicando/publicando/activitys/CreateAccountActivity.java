@@ -197,8 +197,9 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
         UserLoginTask(String email,String contraseña, String name) {
             mEmail = email;
+            mPasswordPost = contraseña;
             mName = name;
-            mPasswordPost = name;
+
         }
 
         @Override

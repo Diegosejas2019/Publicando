@@ -19,6 +19,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -57,7 +59,9 @@ public class ListMain extends AppCompatActivity implements NavigationView.OnNavi
     private Integer mIdUser;
     ArrayList<Post> posts;
     private Context context;
-
+    private Double Latitude;
+    private Double Longuitude;
+    private Button btnZona;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +88,8 @@ public class ListMain extends AppCompatActivity implements NavigationView.OnNavi
             Type = b.getString("Type");
             Detail = b.getString("Detail");
             mIdUser = b.getInt("idUser");
+            Latitude = b.getDouble("Latitude");
+            Longuitude = b.getDouble("Longuitude");
         }
 
         new ObtenerDestacados().execute();
@@ -96,6 +102,13 @@ public class ListMain extends AppCompatActivity implements NavigationView.OnNavi
 
         ScrollView mainScrollView = (ScrollView)findViewById(R.id.scrolllist);
         mainScrollView.fullScroll(ScrollView.FOCUS_UP);
+
+        btnZona.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Toast.makeText(ListMain.this,"Pendiente", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public class ObtenerDestacados extends AsyncTask<Void, Void, Boolean> {
@@ -142,6 +155,10 @@ public class ListMain extends AppCompatActivity implements NavigationView.OnNavi
                     post.setRadius(jsonobject.optInt("Radius"));
                     post.setWorkDetail(jsonobject.getString("WorkDetail"));
                     post.setFavorite(jsonobject.getInt("Favorite"));
+                    post.setPartido(jsonobject.getString("Partido"));
+                    post.setLocalidad(jsonobject.getString("Localidad"));
+                    post.setAltura(jsonobject.getInt("Altura"));
+                    post.setCalle(jsonobject.getString("Calle"));
                     posts.add(post);
                 }
             } catch (Exception e) {
@@ -163,7 +180,13 @@ public class ListMain extends AppCompatActivity implements NavigationView.OnNavi
                                     posts.get(i).Description,
                                     posts.get(i).ImageUrl,
                                     posts.get(i).Favorite,
-                                    posts.get(i).TypeWork));
+                                    posts.get(i).TypeWork,
+                                    posts.get(i).Localidad,
+                                    posts.get(i).Altura,
+                                    posts.get(i).Calle,
+                                    posts.get(i).Partido,
+                                    Double.parseDouble(posts.get(i).Latitude),
+                                    Double.parseDouble(posts.get(i).Longitude)));
                 }
                 else
                 {
@@ -174,10 +197,16 @@ public class ListMain extends AppCompatActivity implements NavigationView.OnNavi
                                     posts.get(i).Description,
                                     posts.get(i).ImageUrl,
                                     0,
-                                    posts.get(i).TypeWork));
+                                    posts.get(i).TypeWork,
+                                    posts.get(i).Localidad,
+                                    posts.get(i).Altura,
+                                    posts.get(i).Calle,
+                                    posts.get(i).Partido,
+                                    Double.parseDouble(posts.get(i).Latitude),
+                                    Double.parseDouble(posts.get(i).Longitude)));
                 }
             }
-            ProductAdapter adapter = new ProductAdapter(ListMain.this   , productList,mIdUser);
+            ProductAdapter adapter = new ProductAdapter(ListMain.this   , productList,mIdUser,Latitude,Longuitude);
 
             recyclerView.setAdapter(adapter);
         }
@@ -253,41 +282,24 @@ public class ListMain extends AppCompatActivity implements NavigationView.OnNavi
             switch (id)
             {
                 case R.id.nav_publicar:
-                    getSupportFragmentManager().beginTransaction().
-                            remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
-    /*                Intent myIntent = new Intent(MainActivity.this, CreatePostActivity.class);
-                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                    myIntent.putExtra("idUser", mIdUser); //Optional parameters
-                    MainActivity.this.startActivity(myIntent);*/
-                    //if(mIdUser != null){
                     Intent myIntent = new Intent(ListMain.this, CreatePostActivity.class);
                     myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                     myIntent.putExtra("idUser", mIdUser); //Optional parameters
                     ListMain.this.startActivity(myIntent);
-    /*                }
-                    else{
-
-                    }*/
                     break;
                 case R.id.nav_anuncios:
-                    getSupportFragmentManager().beginTransaction().
-                            remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
-
-                    fragment = new MyAdvertisementsFragment();
-                    args = new Bundle();
-                    args.putString("idUser", mIdUser.toString());
-                    fragment.setArguments(args);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                    myIntent = new Intent(ListMain.this, MainActivity.class);
+                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                    myIntent.putExtra("Frame", "Anuncios"); //Optional parameters
+                    ListMain.this.startActivity(myIntent);
                     break;
                 case R.id.nav_fav:
-                    getSupportFragmentManager().beginTransaction().
-                            remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
-
-                    fragment = new FavoriteFragment();
-                    args = new Bundle();
-                    args.putString("idUser", mIdUser.toString());
-                    fragment.setArguments(args);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
+                    myIntent = new Intent(ListMain.this, MainActivity.class);
+                    myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                    myIntent.putExtra("Frame", "Favorite"); //Optional parameters
+                    ListMain.this.startActivity(myIntent);
                     break;
             }
         }

@@ -25,6 +25,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     private ImageView favo;
     private Integer mIdUser;
     private String idPost;
+    private Double Latitude;
+    private Double Longuitude;
 
     //getting the context and product list with constructor
     public ListAdapter(Context mCtx, List<ListFilter> serviciosList, Integer iduser) {
@@ -32,6 +34,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         this.serviciosList = serviciosList;
         this.mIdUser = iduser;
 
+    }
+
+    public ListAdapter(Context mCtx, List<ListFilter> serviciosList,Integer iduser,Double Latitude, Double Longuitude) {
+        this.mCtx = mCtx;
+        this.serviciosList = serviciosList;
+        this.mIdUser = iduser;
+        this.Latitude = Latitude;
+        this.Longuitude = Longuitude;
     }
 
     @Override
@@ -61,6 +71,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
                 myIntent.putExtra("Detail", detalle);
                 myIntent.putExtra("Type", "Servicio");
                 myIntent.putExtra("idUser", mIdUser);
+                myIntent.putExtra("Latitude", Latitude);
+                myIntent.putExtra("Longuitude", Longuitude);
                 myIntent.putExtra("Frame", "List");
                 mCtx.startActivity(myIntent);
                 ((Activity) mCtx).finish();

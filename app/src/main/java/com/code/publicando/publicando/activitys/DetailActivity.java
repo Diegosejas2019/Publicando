@@ -28,6 +28,7 @@ import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.clases.JSONParser;
 import com.code.publicando.publicando.clases.Post;
 import com.code.publicando.publicando.clases.Product;
+import com.code.publicando.publicando.clases.Ubicacion;
 import com.code.publicando.publicando.clases.Url;
 import com.code.publicando.publicando.fragments.FavoriteFragment;
 import com.code.publicando.publicando.fragments.MyAdvertisementsFragment;
@@ -44,6 +45,7 @@ import com.squareup.picasso.Picasso;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -55,7 +57,7 @@ import static com.code.publicando.publicando.activitys.LoginActivity.MY_PREFS_NA
 public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback,NavigationView.OnNavigationItemSelectedListener {
 
     List<Product> productList;
-
+    private static final String TAG_SUCCESS = "StatusCode";
     //the recyclerview
     RecyclerView recyclerView;
     JSONArray jsonarray;
@@ -74,6 +76,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     TextView mRatingScale;
     private GoogleMap mMap;
     private MapView mapView;
+    Ubicacion ubicacion = new Ubicacion();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
             Type = b.getString("Type");
         }
 
+        new UserUbicationTask().execute();
         new ObtenerDestacados().execute();
 
         mapView = (MapView) findViewById(R.id.mapFragment);
@@ -181,10 +185,10 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
             txt = findViewById(R.id.description);
             txt.setText(posts.getDescription());
-            TextView textView2 = findViewById(R.id.textView2);
-/*            textView2.setText("Celular : " + posts.getCelular());
-            TextView textView3 = findViewById(R.id.textView3);
-            textView3.setText("Telefono : " + posts.getPhone());*/
+            TextView calle = findViewById(R.id.Calle);
+            calle.setText(ubicacion.getCalle() + ' ' + String.valueOf(ubicacion.getAltura()));
+            TextView Partido = findViewById(R.id.partido);
+            Partido.setText(ubicacion.getPartido() + ' ' + ubicacion.getLocalidad());
 
             ImageView imagenPost = findViewById(R.id.imagenPost);
             Url url = new Url();
@@ -192,6 +196,59 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
                     .load(url.getDireccion() + "/Imagenes/" + posts.getImageUrl().substring((posts.getImageUrl().length()-6)).replaceAll("\\\\", ""))
                     .resize(1400, 850)
                     .into(imagenPost);
+
+        }
+
+        @Override
+        protected void onCancelled() {
+            pDialog.dismiss();
+            //mAuthTask = null;
+            Toast.makeText(DetailActivity.this,"Sin conexión",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public class UserUbicationTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        UserUbicationTask() {
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Boolean flag = false;
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            nameValuePairs.add(new BasicNameValuePair("idPost", String.valueOf(IdPost)));
+
+            String Resultado="";
+            Url url = new Url();
+            JSONObject json = jParser.makeHttpRequest(url.getDireccion() + "/api/master/GetUbicationPost", "POST", nameValuePairs);
+
+            try {
+                if (json != null){
+                    int success = json.getInt(TAG_SUCCESS);
+                    if (success == 200){
+                        ubicacion.Calle = json.getString("Calle");
+                        ubicacion.Altura = json.getInt("Altura");
+                        ubicacion.Localidad = json.getString("Localidad");
+                        ubicacion.Partido = json.getString("Partido");
+                        flag = true;}
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Resultado = e.getMessage();
+            }
+            return flag;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
 
         }
 

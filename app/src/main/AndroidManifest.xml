@@ -116,7 +116,6 @@
         <activity
             android:name=".activitys.NewLogin"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activitys.FilterActivity" />
         <activity
             android:name=".activitys.NewServiceActivity"
             android:label="@string/app_name"

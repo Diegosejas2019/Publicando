@@ -14,6 +14,42 @@ public class Post {
     public String Phone ;
     public String Description ;
     public Integer Favorite;
+    public String Partido ;
+    public String Localidad ;
+    public String Calle ;
+    public Integer Altura;
+
+    public String getLocalidad() {
+        return Localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        Localidad = localidad;
+    }
+
+    public String getCalle() {
+        return Calle;
+    }
+
+    public void setCalle(String calle) {
+        Calle = calle;
+    }
+
+    public Integer getAltura() {
+        return Altura;
+    }
+
+    public void setAltura(Integer altura) {
+        Altura = altura;
+    }
+
+    public String getPartido() {
+        return Partido;
+    }
+
+    public void setPartido(String partido) {
+        Partido = partido;
+    }
 
     public Post()
     {

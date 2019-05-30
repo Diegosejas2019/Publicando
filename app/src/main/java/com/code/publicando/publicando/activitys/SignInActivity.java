@@ -42,6 +42,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private EditText mEmailView;
     private EditText mPassword;
     private Integer IDuser;
+    private Integer Radius;
+    private Double Latitude;
+    private Double Longuitude;
     public static final String MY_PREFS_NAME = "MyPrefsFile";
     private static final String TAG_SUCCESS = "StatusCode";
     private static final String TAG_USER = "UserName";
@@ -207,13 +210,103 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                 editor.putInt("idUser", IDuser);
                 editor.apply();
-                Intent mainIntent = new Intent(SignInActivity.this,
+/*                Intent mainIntent = new Intent(SignInActivity.this,
                         ChooseZoneActivity.class);
                 mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 mainIntent.putExtra("idUser", IDuser); //Optional parameters
                 startActivity(mainIntent);
                 SignInActivity.this.finish();
-                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                overridePendingTransition(R.anim.fadein,R.anim.fadeout);*/
+                new UserUbicationTask().execute();
+            } else {
+                mPassword.setError("Contraseña incorrecta");
+                mPassword.requestFocus();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            pDialog.dismiss();
+            //mAuthTask = null;
+            Toast.makeText(SignInActivity.this,"Sin conexión",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public class UserUbicationTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        UserUbicationTask() {
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Boolean flag = false;
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            nameValuePairs.add(new BasicNameValuePair("IdUser", String.valueOf(IDuser)));
+
+            String Resultado="";
+            Url url = new Url();
+            JSONObject json = jParser.makeHttpRequest(url.getDireccion() + "/api/master/GetUbication", "POST", nameValuePairs);
+
+            try {
+                if (json != null){
+                    int success = json.getInt(TAG_SUCCESS);
+                    if (success == 200){
+                        IDuser = json.getInt("IdUser");
+                        Radius = json.getInt("Radius");
+                        if (Radius > 0)
+                        {
+                            Latitude = json.getDouble("Latitude");
+                            Longuitude = json.getDouble("Longitude");
+                        }
+                        flag = true;}
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Resultado = e.getMessage();
+            }
+            return flag;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            pDialog.dismiss();
+            mAuthTask = null;
+            if (success) {
+
+                Intent mainIntent;
+                if(Radius > 0)
+                {
+                    mainIntent = new Intent(SignInActivity.this,
+                            MainActivity.class);
+                    mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    mainIntent.putExtra("idUser", IDuser);
+                    mainIntent.putExtra("Radius", Radius);
+                    mainIntent.putExtra("Latitude", Latitude);
+                    mainIntent.putExtra("Longuitude", Longuitude);
+                    startActivity(mainIntent);
+                    SignInActivity.this.finish();
+                    overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                }
+                else{
+                    mainIntent = new Intent(SignInActivity.this,
+                                ChooseZoneActivity.class);
+                     mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                     mainIntent.putExtra("idUser", IDuser);
+                     mainIntent.putExtra("Radius", Radius);
+                     mainIntent.putExtra("Latitude", Latitude);
+                     mainIntent.putExtra("Longuitude", Longuitude);
+                     startActivity(mainIntent);
+                     SignInActivity.this.finish();
+                     overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                }
             } else {
                 mPassword.setError("Contraseña incorrecta");
                 mPassword.requestFocus();

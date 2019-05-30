@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.code.publicando.publicando.R;
 import com.code.publicando.publicando.clases.BitmapHelper;
+import com.code.publicando.publicando.clases.Ubicacion;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -44,6 +45,11 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 
@@ -75,6 +81,7 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
     private Integer mIdUser;
     private double mLatitude;
     private double mLongitude;
+    Ubicacion ubicacion = new Ubicacion();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,7 +229,69 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
-                RADIUS_DEFAULT = RADIUS_DEFAULT + progress + 100;
+                //RADIUS_DEFAULT = RADIUS_DEFAULT + progress + 100;
+                switch (progress){
+                    case 1:
+                        RADIUS_DEFAULT = 2300;
+                        break;
+                    case 2:
+                        RADIUS_DEFAULT = 2600;
+                        break;
+                    case 3:
+                        RADIUS_DEFAULT = 2900;
+                        break;
+                    case 4:
+                        RADIUS_DEFAULT = 3200;
+                        break;
+                    case 5:
+                        RADIUS_DEFAULT = 3500;
+                        break;
+                    case 6:
+                        RADIUS_DEFAULT = 3800;
+                        break;
+                    case 7:
+                        RADIUS_DEFAULT = 4100;
+                        break;
+                    case 8:
+                        RADIUS_DEFAULT = 4400;
+                        break;
+                    case 9:
+                        RADIUS_DEFAULT = 4700;
+                        break;
+                    case 10:
+                        RADIUS_DEFAULT = 5000;
+                        break;
+                    case 11:
+                        RADIUS_DEFAULT = 5300;
+                        break;
+                    case 12:
+                        RADIUS_DEFAULT = 5600;
+                        break;
+                    case 13:
+                        RADIUS_DEFAULT = 5900;
+                        break;
+                    case 14:
+                        RADIUS_DEFAULT = 6200;
+                        break;
+                    case 15:
+                        RADIUS_DEFAULT = 6500;
+                        break;
+                    case 16:
+                        RADIUS_DEFAULT = 6800;
+                        break;
+                    case 17:
+                        RADIUS_DEFAULT = 7100;
+                        break;
+                    case 18:
+                        RADIUS_DEFAULT = 7400;
+                        break;
+                    case 19:
+                        RADIUS_DEFAULT = 7700;
+                        break;
+                    case 20:
+                        RADIUS_DEFAULT = 8000;
+                        break;
+                }
                 mCircle.setRadius(RADIUS_DEFAULT);
             }
         });
@@ -256,6 +325,32 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
         }
         else {
             handleNewLocation(location);
+            getAddress(mLatitude,mLongitude);
+        }
+    }
+
+    public void getAddress(double lat, double lng) {
+        String currentLocation = "";
+
+        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.ENGLISH);
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+            Address obj = addresses.get(0);
+            ubicacion.IdUser = mIdUser;
+            ubicacion.Radius = RADIUS_DEFAULT;
+            ubicacion.Latitude = String.valueOf(lat);
+            ubicacion.Longitude = String.valueOf(lng);
+            ubicacion.Provincia = obj.getAdminArea();
+            ubicacion.CP = obj.getPostalCode();
+            ubicacion.Partido = obj.getSubAdminArea();
+            ubicacion.Localidad = obj.getLocality();
+            ubicacion.Calle = obj.getThoroughfare();
+            ubicacion.Altura = Integer.parseInt(obj.getSubThoroughfare());
+
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
@@ -385,14 +480,19 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
                 break;
             case R.id.next:
                 Intent myIntent = new Intent(PostSetUbicationActivity.this, PostFormActivity.class);
+                Bundle b = new Bundle();
+
+                Gson gson = new Gson();
+                String Ubicacion = gson.toJson(ubicacion);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 myIntent.putExtra("Detail", mAuto.toString());
                 myIntent.putExtra("Type", mType);
                 myIntent.putExtra("idUser", mIdUser);
-                myIntent.putExtra("Radius", RADIUS_DEFAULT);
+                myIntent.putExtra("Ubicacion", Ubicacion);
+                /*myIntent.putExtra("Radius", RADIUS_DEFAULT);
                 myIntent.putExtra("Latitude", mLatitude);
                 myIntent.putExtra("Longitude", mLongitude);
-
+*/
                 PostSetUbicationActivity.this.startActivity(myIntent);
                 PostSetUbicationActivity.this.finish();
                 overridePendingTransition(R.anim.fadein,R.anim.fadeout);

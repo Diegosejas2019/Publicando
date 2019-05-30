@@ -1,8 +1,10 @@
 package com.code.publicando.publicando.activitys;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
@@ -18,15 +20,27 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.code.publicando.publicando.R;
+import com.code.publicando.publicando.clases.JSONParser;
+import com.code.publicando.publicando.clases.Ubicacion;
+import com.code.publicando.publicando.clases.Url;
 import com.code.publicando.publicando.fragments.ChooseZoneFragment;
 import com.code.publicando.publicando.fragments.FavoriteFragment;
 import com.code.publicando.publicando.fragments.MainFragment;
 import com.code.publicando.publicando.fragments.MyAdvertisementsFragment;
 import com.code.publicando.publicando.fragments.ServiceListFragment;
 import com.code.publicando.publicando.fragments.filter;
+import com.google.gson.Gson;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
@@ -34,7 +48,7 @@ import static com.code.publicando.publicando.activitys.LoginActivity.MY_PREFS_NA
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
-
+    JSONParser jParser = new JSONParser();
     ViewPager viewPager;
     private int[] layouts = {R.layout.first_slide,R.layout.detail_first_slide,R.layout.third_slide};
     int currentPage = 0;
@@ -45,9 +59,13 @@ public class MainActivity extends AppCompatActivity
     private ImageView img;
     //private String url = "10.0.2.2/api/version";
     private Integer mIdUser;
-    private String mLatitude;
-    private String mLongitud;
-    private String mRadius;
+    private Double mLatitude;
+    private Double mLongitud;
+    private int mRadius;
+    private static final String TAG_SUCCESS = "StatusCode";
+    private ProgressDialog pDialog;
+    Ubicacion ubicacion = new Ubicacion();
+    Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,18 +83,21 @@ public class MainActivity extends AppCompatActivity
         try {Integer restoredText = prefs.getInt("idUser", 0);
             if (restoredText != 0) {
                 mIdUser = prefs.getInt("idUser", 0);
-                mLatitude = prefs.getString("Latitude", null);
-                mLongitud = prefs.getString("Longitud", null);
-                mRadius = prefs.getString("Radius", null);
+                new UserUbicationTask().execute();
+                /*mLatitude = prefs.getFloat("Latitude",0);
+                mLongitud = prefs.getFloat("Longitud",0);
+                mRadius = prefs.getString("Radius", null);*/
             }
             else
             {
                 Bundle b = getIntent().getExtras();
                 if(b != null){
                     mIdUser = b.getInt("idUser");
-                    mLatitude = b.getString("Latitude");
-                    mLongitud = b.getString("Longitud");
-                    mRadius = b.getString("Radius");
+                    String clase = getIntent().getStringExtra("Ubicacion");
+                    ubicacion = gson.fromJson(clase, Ubicacion.class);
+                    mLatitude = Double.parseDouble(ubicacion.getLatitude());
+                    mLongitud = Double.parseDouble(ubicacion.getLongitude());
+                    mRadius = ubicacion.getRadius();
                 }
             }
         }
@@ -131,7 +152,82 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public class UserUbicationTask extends AsyncTask<Void, Void, Boolean> {
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(MainActivity.this);
+            pDialog.setMessage("Ingresando...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        UserUbicationTask() {
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Boolean flag = false;
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            nameValuePairs.add(new BasicNameValuePair("IdUser", String.valueOf(mIdUser)));
+
+            String Resultado="";
+            Url url = new Url();
+            JSONObject json = jParser.makeHttpRequest(url.getDireccion() + "/api/master/GetUbication", "POST", nameValuePairs);
+
+            try {
+                if (json != null){
+                    int success = json.getInt(TAG_SUCCESS);
+                    if (success == 200){
+                        mRadius = json.getInt("Radius");
+                        if (mRadius > 0)
+                        {
+                            mLatitude = json.getDouble("Latitude");
+                            mLongitud = json.getDouble("Longitude");
+                        }
+                        flag = true;}
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Resultado = e.getMessage();
+            }
+            return flag;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            pDialog.dismiss();
+/*            if (success) {
+
+                Intent mainIntent;
+                if(mRadius > 0)
+                {
+                    mLatitude
+                    mainIntent = new Intent(SignInActivity.this,
+                            MainActivity.class);
+                    mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    mainIntent.putExtra("idUser", IDuser);
+                    mainIntent.putExtra("Radius", Radius);
+                    mainIntent.putExtra("Latitude", Latitude);
+                    mainIntent.putExtra("Longuitude", Longuitude);
+                    startActivity(mainIntent);
+                    SignInActivity.this.finish();
+                    overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+                }
+            } */
+        }
+
+        @Override
+        protected void onCancelled() {
+            pDialog.dismiss();
+            //mAuthTask = null;
+            Toast.makeText(MainActivity.this,"Sin conexión",Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -290,7 +386,10 @@ public class MainActivity extends AppCompatActivity
                         remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
                 myIntent = new Intent(MainActivity.this, NewServiceActivity.class);
                 myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                myIntent.putExtra("idUser", mIdUser); //Optional parameters
+                myIntent.putExtra("idUser", mIdUser);
+                myIntent.putExtra("Latitud", mLatitude);
+                myIntent.putExtra("Longuitud", mLongitud);
+                myIntent.putExtra("Radius", mRadius);
                 MainActivity.this.startActivity(myIntent);
                 MainActivity.this.finish();
                 //overridePendingTransition(R.anim.fadein,R.anim.fadeout);

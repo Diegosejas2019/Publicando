@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -58,6 +59,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private ImageView favo;
     private Integer mIdUser;
     private String idPost;
+    private Double Latitude;
+    private Double Longuitude;
     private static final String TAG_SUCCESS = "StatusCode";
     //the recyclerview
     RecyclerView recyclerView;
@@ -73,12 +76,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.mIdUser = iduser;
 
     }
+    public ProductAdapter(Context mCtx, List<Product> productList,Integer iduser,Double Latitude, Double Longuitude) {
+        this.mCtx = mCtx;
+        this.productList = productList;
+        this.mIdUser = iduser;
+        this.Latitude = Latitude;
+        this.Longuitude = Longuitude;
+    }
 
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_products, null);
+
         CardView card_view =  (CardView) view.findViewById(R.id.card_view);
         //        //card_view.setOnClickListener(this);
         ImageView imageView =  (ImageView) view.findViewById(R.id.imageView);
@@ -102,6 +113,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.cardView.setTag(position);
         //binding the data with the viewholder views
         holder.textViewTitle.setText(product.getTitle());
+
+
+        Location locationA = new Location("point A");
+
+        locationA.setLatitude(product.getLatitude());
+        locationA.setLongitude(product.getLonguitude());
+
+        Location locationB = new Location("point B");
+
+        locationB.setLatitude(Latitude);
+        locationB.setLongitude(Longuitude);
+
+        float distance = locationA.distanceTo(locationB);
+        Integer km = (int)distance/1000;
+
         holder.textViewTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +155,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 ((Activity) mCtx).overridePendingTransition(R.anim.fadein,R.anim.fadeout);
             }
         });
-        holder.textViewShortDesc.setText(product.getShortdesc());
+        holder.textViewShortDesc.setText(product.getPartido() + "-" + product.getLocalidad() + "(" + String.valueOf(km) + "km)");
         holder.textViewShortDesc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

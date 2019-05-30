@@ -50,9 +50,9 @@ public class NewServiceActivity extends AppCompatActivity implements NavigationV
     private ImageView img;
     //private String url = "10.0.2.2/api/version";
     private Integer mIdUser;
-    private String mLatitude;
-    private String mLongitud;
-    private String mRadius;
+    private Double mLatitude;
+    private Double mLongitud;
+    private Integer mRadius;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +77,15 @@ public class NewServiceActivity extends AppCompatActivity implements NavigationV
         recyclerView = (RecyclerView) findViewById(R.id.recyclerNew);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        Bundle b = getIntent().getExtras();
+        int value = -1; // or other values
+        if(b != null){
+            mIdUser = b.getInt("idUser");
+            mLatitude = b.getDouble("Latitud");
+            mLongitud = b.getDouble("Longuitud");
+            mRadius = b.getInt("Radius");
+        }
 
         //initializing the productlist
         serviciosList = new ArrayList<>();
@@ -113,16 +122,10 @@ public class NewServiceActivity extends AppCompatActivity implements NavigationV
                         6,
                         "Programador"));
         //creating recyclerview adapter
-        ListAdapter adapterServicio = new ListAdapter(NewServiceActivity.this, serviciosList,1);
+        ListAdapter adapterServicio = new ListAdapter(NewServiceActivity.this, serviciosList,1,mLatitude,mLongitud);
 
         //setting adapter to recyclerview
         recyclerView.setAdapter(adapterServicio);
-
-        Bundle b = getIntent().getExtras();
-        int value = -1; // or other values
-        if(b != null){
-            mIdUser = b.getInt("idUser");
-        }
     }
 
     public void setActionBarTitle(String title) {

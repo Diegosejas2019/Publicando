@@ -187,8 +187,8 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                         if (Direcciones.size() == 0 || Direcciones.size() > 0)
                         {
                             Picasso.with(context)
-                                    .load(url.getDireccion() + "/Imagenes/" + Direcciones.get(0))
-                                    //.load("http://mrryzen22.asuscomm.com:49152/Imagenes/" + Direcciones.get(0) )
+                                    //.load(url.getDireccion() + "/Imagenes/" + Direcciones.get(0))
+                                    .load("http://mrryzen22.asuscomm.com:49152/Imagenes/" + Direcciones.get(0) )
                                     .resize(1500, 1400)
                                     .into(img);
                         }
@@ -204,8 +204,8 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                         }
                         img = baseLayout.findViewById(R.id.imagen);
                         Picasso.with(context)
-                                .load(url.getDireccion() + "/Imagenes/" + Direcciones.get(1))
-                                //.load("http://mrryzen22.asuscomm.com:49152/Imagenes/" + Direcciones.get(1))
+                                //.load(url.getDireccion() + "/Imagenes/" + Direcciones.get(1))
+                                .load("http://mrryzen22.asuscomm.com:49152/Imagenes/" + Direcciones.get(1))
                                 .resize(1500, 1400)
                                 .into(img);
                         //img.setImageResource(R.drawable.heladeria);
@@ -221,8 +221,8 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                         img = baseLayout.findViewById(R.id.imagen);
                         //img.setImageResource(R.drawable.comidas);
                         Picasso.with(context)
-                                .load(url.getDireccion() + "/Imagenes/" + Direcciones.get(2))
-                                //.load("http://mrryzen22.asuscomm.com:49152/Imagenes/" + Direcciones.get(2))
+                                //.load(url.getDireccion() + "/Imagenes/" + Direcciones.get(2))
+                                .load("http://mrryzen22.asuscomm.com:49152/Imagenes/" + Direcciones.get(2))
                                 .resize(1500, 1400)
                                 .into(img);
                         break;
