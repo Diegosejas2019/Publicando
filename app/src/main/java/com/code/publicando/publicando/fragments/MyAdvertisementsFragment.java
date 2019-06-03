@@ -22,11 +22,14 @@ import com.code.publicando.publicando.clases.Product;
 import com.code.publicando.publicando.clases.ProductAdapter;
 import com.code.publicando.publicando.clases.Url;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +43,9 @@ public class MyAdvertisementsFragment extends Fragment {
     JSONObject jsonobject;
     JSONParser jParser = new JSONParser();
     private ProgressDialog pDialog;
-    private String idUser;
+    private Integer idUser;
+    private Double Latitude;
+    private Double Longuitude;
     ArrayList<Post> posts;
     private Context context;
     public MyAdvertisementsFragment() {
@@ -58,9 +63,17 @@ public class MyAdvertisementsFragment extends Fragment {
                     .setActionBarTitle("Mis Anuncios");
 
         Bundle args = getArguments();
-        idUser = args.getString("idUser", null);
+        idUser = args.getInt("idUser", 0);
+        Latitude = args.getDouble("Latitude", 0);
+        Longuitude = args.getDouble("Longuitude", 0);
 
-        new ObtenerDestacados().execute();
+        try {
+            new ObtenerDestacados().execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -87,6 +100,8 @@ public class MyAdvertisementsFragment extends Fragment {
             posts = new ArrayList<Post>();
 
             List parames = new ArrayList();
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            nameValuePairs.add(new BasicNameValuePair("IdUser", String.valueOf(idUser)));
             Url url = new Url();
             JSONObject json = jParser.makeHttpRequest(url.getDireccion()  + "/api/master/GetAllPostByUser/" + idUser, "GET", parames);
 
@@ -109,6 +124,10 @@ public class MyAdvertisementsFragment extends Fragment {
                     post.setTypeWork(jsonobject.getString("TypeWork"));
                     post.setRadius(jsonobject.optInt("Radius"));
                     post.setWorkDetail(jsonobject.getString("WorkDetail"));
+                    post.setPartido(jsonobject.getString("Partido"));
+                    post.setLocalidad(jsonobject.getString("Localidad"));
+                    post.setCalle(jsonobject.getString("Calle"));
+                    post.setAltura(jsonobject.getInt("Favorite"));
                     posts.add(post);
                 }
             } catch (Exception e) {
@@ -124,12 +143,30 @@ public class MyAdvertisementsFragment extends Fragment {
             for (int i = 0; i < posts.size(); i++) {
                 productList.add(
                         new Product(
-                                posts.get(i).IdPost,
+                                /*posts.get(i).IdPost,
                                 posts.get(i).TypeWork,
                                 posts.get(i).Description,
-                                posts.get(i).ImageUrl,1,""));
+                                posts.get(i).ImageUrl,1,"",
+                                posts.get(i).Localidad,
+                                posts.get(i).Altura,
+                                posts.get(i).Calle,
+                                posts.get(i).Partido,
+                                Double.parseDouble(posts.get(i).Latitude),
+                                Double.parseDouble(posts.get(i).Longitude)));*/
+                                posts.get(i).IdPost,
+                                posts.get(i).WorkDetail,
+                                posts.get(i).Description,
+                                posts.get(i).ImageUrl,
+                                0,
+                                posts.get(i).TypeWork,
+                                posts.get(i).Localidad,
+                                posts.get(i).Altura,
+                                posts.get(i).Calle,
+                                posts.get(i).Partido,
+                                Double.parseDouble(posts.get(i).Latitude),
+                                Double.parseDouble(posts.get(i).Longitude)));
             }
-            ProductAdapter adapter = new ProductAdapter(context, productList,1);
+            ProductAdapter adapter = new ProductAdapter(context, productList,idUser,Latitude,Longuitude,"Anuncios");
 
             recyclerView.setAdapter(adapter);
         }

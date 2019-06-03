@@ -115,7 +115,13 @@ public class PostFormActivity extends AppCompatActivity implements View.OnClickL
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
             Intent myIntent = new Intent(PostFormActivity.this, PostSetUbicationActivity.class);
+            Gson gson = new Gson();
+            String Ubicacion = gson.toJson(ubicacion);
             myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+            myIntent.putExtra("Detail", mAuto);
+            myIntent.putExtra("Type", mType);
+            myIntent.putExtra("idUser", mIdUser);
+            myIntent.putExtra("Ubicacion", Ubicacion);
             startActivity(myIntent);
             finish(); // close this activity and return to preview activity (if there is any)
         }
@@ -176,8 +182,13 @@ public class PostFormActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onBackPressed() {
         Intent myIntent = new Intent(PostFormActivity.this, PostSetUbicationActivity.class);
+        Gson gson = new Gson();
+        String Ubicacion = gson.toJson(ubicacion);
         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-        //myIntent.putExtra("key", IDuser); //Optional parameters
+        myIntent.putExtra("Detail", mAuto);
+        myIntent.putExtra("Type", mType);
+        myIntent.putExtra("idUser", mIdUser);
+        myIntent.putExtra("Ubicacion", Ubicacion);
         PostFormActivity.this.startActivity(myIntent);
         finish();
     }

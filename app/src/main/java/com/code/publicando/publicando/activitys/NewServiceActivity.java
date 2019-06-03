@@ -122,7 +122,7 @@ public class NewServiceActivity extends AppCompatActivity implements NavigationV
                         6,
                         "Programador"));
         //creating recyclerview adapter
-        ListAdapter adapterServicio = new ListAdapter(NewServiceActivity.this, serviciosList,1,mLatitude,mLongitud);
+        ListAdapter adapterServicio = new ListAdapter(NewServiceActivity.this, serviciosList,mIdUser,mLatitude,mLongitud);
 
         //setting adapter to recyclerview
         recyclerView.setAdapter(adapterServicio);

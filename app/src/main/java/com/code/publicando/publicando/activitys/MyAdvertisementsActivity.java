@@ -127,7 +127,7 @@ public class MyAdvertisementsActivity extends AppCompatActivity {
                                 posts.get(i).Description,
                                 posts.get(i).ImageUrl,1,""));
             }
-            ProductAdapter adapter = new ProductAdapter(MyAdvertisementsActivity.this, productList,1);
+            ProductAdapter adapter = new ProductAdapter(MyAdvertisementsActivity.this, productList,mIdUser);
 
             recyclerView.setAdapter(adapter);
         }

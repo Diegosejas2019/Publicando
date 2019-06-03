@@ -34,12 +34,17 @@ import com.code.publicando.publicando.clases.BitmapHelper;
 import com.code.publicando.publicando.clases.Ubicacion;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -82,7 +87,7 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
     private double mLatitude;
     private double mLongitude;
     Ubicacion ubicacion = new Ubicacion();
-
+    Gson gson = new Gson();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +112,13 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
             mAuto = b.getString("Detail");
             mBitmap = BitmapHelper.getInstance().getBitmap();
             mIdUser = b.getInt("idUser");
+            String clase = getIntent().getStringExtra("Ubicacion");
+            Ubicacion ubicacion = gson.fromJson(clase, Ubicacion.class);
+            if (ubicacion != null)
+            {
+                mLatitude = Double.parseDouble(ubicacion.getLatitude());
+                mLongitude = Double.parseDouble(ubicacion.getLongitude());
+            }
         }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -124,6 +136,44 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
 
         Button next = findViewById(R.id.next);
         next.setOnClickListener(this);
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment.setHint("Calle y Altura (Opcional)");
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                //Toast.makeText(SetZoneActivity.this, place.getName().toString(), Toast.LENGTH_LONG).show();
+                LatLng latitude = place.getLatLng();
+                mLatitude = latitude.latitude;
+                mLongitude = latitude.longitude;
+                getAddress(mLatitude,mLongitude);
+                LatLng ubicacion = new LatLng(mLatitude,mLongitude);
+                mMap.addMarker(new MarkerOptions().position(ubicacion).title("").draggable(true));
+
+                final CameraPosition camera = new CameraPosition.Builder()
+                        .target(ubicacion)
+                        .zoom(11.0f)           // limit -> 21
+                        .bearing(0)         // 0 - 365º
+                        .tilt(30)           // limit -> 90
+                        .build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(camera));
+
+                mCircle = mMap.addCircle(new CircleOptions()
+                        .center(ubicacion)
+                        .radius(RADIUS_DEFAULT)
+                        .strokeColor(Color.BLUE)
+                        .fillColor(Color.TRANSPARENT)
+                        .strokeWidth(5));
+            }
+
+            @Override
+            public void onError(Status status) {
+
+            }
+        });
     }
 
     @Override
@@ -210,6 +260,31 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
+        }
+
+        if (mLatitude != 0 && mLongitude != 0)
+        {
+            //LatLng sevilla = new LatLng(Double.parseDouble(Latitude),Double.parseDouble(Longitud));
+            LatLng ubicacion = new LatLng(mLatitude,mLongitude);
+            mMap.addMarker(new MarkerOptions().position(ubicacion).title("").draggable(true));
+
+            mLatitude = ubicacion.latitude;
+            mLongitude = ubicacion.longitude;
+            final CameraPosition camera = new CameraPosition.Builder()
+                    .target(ubicacion)
+                    .zoom(11.0f)           // limit -> 21
+                    .bearing(0)         // 0 - 365º
+                    .tilt(30)           // limit -> 90
+                    .build();
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(camera));
+
+            mCircle = mMap.addCircle(new CircleOptions()
+                    .center(ubicacion)
+                    .radius(RADIUS_DEFAULT)
+                    .strokeColor(Color.BLUE)
+                    .fillColor(Color.TRANSPARENT)
+                    .strokeWidth(5));
+            getAddress(mLatitude,mLongitude);
         }
 
         SeekBar bar = findViewById(R.id.seekBar);
@@ -511,6 +586,9 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
         if (item.getItemId() == android.R.id.home) {
             Intent myIntent = new Intent(PostSetUbicationActivity.this, PostUploadPhotoActivity.class);
             myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+            myIntent.putExtra("Detail", mAuto);
+            myIntent.putExtra("Type", mType);
+            myIntent.putExtra("idUser", mIdUser);
             startActivity(myIntent);
             finish(); // close this activity and return to preview activity (if there is any)
         }
@@ -522,7 +600,7 @@ public class PostSetUbicationActivity extends AppCompatActivity implements OnMap
     public void onBackPressed() {
         Intent myIntent = new Intent(PostSetUbicationActivity.this, PostUploadPhotoActivity.class);
         myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-        //myIntent.putExtra("key", IDuser); //Optional parameters
+        myIntent.putExtra("idUser", mIdUser);
         PostSetUbicationActivity.this.startActivity(myIntent);
         finish();
     }

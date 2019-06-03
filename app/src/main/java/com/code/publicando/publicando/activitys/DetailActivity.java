@@ -50,6 +50,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
 import static com.code.publicando.publicando.activitys.LoginActivity.MY_PREFS_NAME;
@@ -68,7 +69,10 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     private String IdPost;
     private Integer IdUser;
     private String Detail;
+    private String View = "";
     private TextView txt;
+    private Double Latitude;
+    private Double Longuitude;
     private Post posts = new Post();
     private Context context;
     private View view;
@@ -101,14 +105,30 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         Bundle b = getIntent().getExtras();
         int value = -1; // or other values
         if(b != null){
-            IdPost = b.getString("idPost");
-            IdUser = b.getInt("idUser");
-            Detail = b.getString("Detail");
-            Type = b.getString("Type");
+            IdPost = b.getString("idPost","");
+            IdUser = b.getInt("idUser",0);
+            Detail = b.getString("Detail","");
+            Type = b.getString("Type","");
+            View = b.getString("View","");
+            Latitude = b.getDouble("Latitude",0);
+            Longuitude = b.getDouble("Longuitude",0);
         }
 
-        new UserUbicationTask().execute();
-        new ObtenerDestacados().execute();
+         Boolean flag = null;
+        try {
+            flag = new UserUbicationTask().execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        try {
+            flag = new ObtenerDestacados().execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         mapView = (MapView) findViewById(R.id.mapFragment);
         if (mapView  != null)
@@ -355,11 +375,42 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onBackPressed() {
-        Intent myIntent = new Intent(DetailActivity.this, ListMain.class);
-        myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-        myIntent.putExtra("Type", Type);
-        myIntent.putExtra("Detail", Detail);
-        myIntent.putExtra("idUser", IdUser);
-        DetailActivity.this.startActivity(myIntent);
+        if(!View.isEmpty())
+        {
+            if(View.equals("Favoritos"))
+            {
+                Intent myIntent = new Intent(DetailActivity.this, MainActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                myIntent.putExtra("Type", Type);
+                myIntent.putExtra("Detail", Detail);
+                myIntent.putExtra("idUser", IdUser);
+                myIntent.putExtra("Frame", "Favorite");
+                myIntent.putExtra("Latitude",Double.parseDouble(posts.getLatitude()));
+                myIntent.putExtra("Longuitude",Double.parseDouble(posts.getLongitude()));
+                DetailActivity.this.startActivity(myIntent);
+            }
+            if(View.equals("Anuncios"))
+            {
+                Intent myIntent = new Intent(DetailActivity.this, MainActivity.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                myIntent.putExtra("Type", Type);
+                myIntent.putExtra("Detail", Detail);
+                myIntent.putExtra("idUser", IdUser);
+                myIntent.putExtra("Frame", "Anuncios");
+                myIntent.putExtra("Latitude",Double.parseDouble(posts.getLatitude()));
+                myIntent.putExtra("Longuitude",Double.parseDouble(posts.getLongitude()));
+                DetailActivity.this.startActivity(myIntent);
+            }
+        }
+        else{
+            Intent myIntent = new Intent(DetailActivity.this, ListMain.class);
+            myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+            myIntent.putExtra("Type", Type);
+            myIntent.putExtra("Detail", Detail);
+            myIntent.putExtra("idUser", IdUser);
+            myIntent.putExtra("Latitude", Latitude);
+            myIntent.putExtra("Longuitude", Longuitude);
+            DetailActivity.this.startActivity(myIntent);
+        }
     }
 }

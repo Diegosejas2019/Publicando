@@ -61,6 +61,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private String idPost;
     private Double Latitude;
     private Double Longuitude;
+    private String View;
     private static final String TAG_SUCCESS = "StatusCode";
     //the recyclerview
     RecyclerView recyclerView;
@@ -82,6 +83,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.mIdUser = iduser;
         this.Latitude = Latitude;
         this.Longuitude = Longuitude;
+        this.Longuitude = Longuitude;
+    }
+
+    public ProductAdapter(Context mCtx, List<Product> productList,Integer iduser,Double Latitude, Double Longuitude,String View) {
+        this.mCtx = mCtx;
+        this.productList = productList;
+        this.mIdUser = iduser;
+        this.Latitude = Latitude;
+        this.Longuitude = Longuitude;
+        this.View = View;
     }
 
     @Override
@@ -150,6 +161,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 myIntent.putExtra("idUser", mIdUser);
                 myIntent.putExtra("Detail", detail);
                 myIntent.putExtra("Type", Type);
+                myIntent.putExtra("View", View);
+                myIntent.putExtra("Latitude", Latitude);
+                myIntent.putExtra("Longuitude", Longuitude);
                 mCtx.startActivity(myIntent);
                 ((Activity) mCtx).finish();
                 ((Activity) mCtx).overridePendingTransition(R.anim.fadein,R.anim.fadeout);
@@ -177,6 +191,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 myIntent.putExtra("idUser", mIdUser);
                 myIntent.putExtra("Detail", detail);
                 myIntent.putExtra("Type", Type);
+                myIntent.putExtra("View", View);
                 mCtx.startActivity(myIntent);
                 ((Activity) mCtx).finish();
                 ((Activity) mCtx).overridePendingTransition(R.anim.fadein,R.anim.fadeout);

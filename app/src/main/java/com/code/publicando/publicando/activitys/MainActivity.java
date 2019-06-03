@@ -128,7 +128,9 @@ public class MainActivity extends AppCompatActivity
                 {
                     Fragment fragment = new MyAdvertisementsFragment();
                     Bundle args = new Bundle();
-                    args.putString("idUser", mIdUser.toString());
+                    args.putInt("idUser", mIdUser);
+                    mLatitude = b.getDouble("Latitude",0);
+                    mLongitud = b.getDouble("Longuitude",0);
                     args.putDouble("Latitude", mLatitude);
                     args.putDouble("Longuitude", mLongitud);
                     fragment.setArguments(args);
@@ -139,6 +141,8 @@ public class MainActivity extends AppCompatActivity
                     Fragment fragment = new FavoriteFragment();
                     Bundle args = new Bundle();
                     args.putString("idUser", mIdUser.toString());
+                    mLatitude = b.getDouble("Latitude",0);
+                    mLongitud = b.getDouble("Longuitude",0);
                     args.putDouble("Latitude", mLatitude);
                     args.putDouble("Longuitude", mLongitud);
                     fragment.setArguments(args);
@@ -205,6 +209,16 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(final Boolean success) {
             pDialog.dismiss();
+            if (mRadius == 0)
+            {
+                Intent mainIntent = new Intent(MainActivity.this,
+                        ChooseZoneActivity.class);
+                mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                mainIntent.putExtra("idUser", mIdUser);
+                startActivity(mainIntent);
+                MainActivity.this.finish();
+                overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+            }
 /*            if (success) {
 
                 Intent mainIntent;
@@ -344,7 +358,7 @@ public class MainActivity extends AppCompatActivity
 
                     fragment = new MyAdvertisementsFragment();
                     args = new Bundle();
-                    args.putString("idUser", mIdUser.toString());
+                    args.putInt("idUser", mIdUser);
                     args.putDouble("Latitude", mLatitude);
                     args.putDouble("Longuitude", mLongitud);
                     fragment.setArguments(args);

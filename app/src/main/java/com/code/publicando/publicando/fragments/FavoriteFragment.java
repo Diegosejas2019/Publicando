@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,7 +67,13 @@ public class FavoriteFragment extends Fragment {
         Latitude = args.getDouble("Latitude", 0);
         Longuitude = args.getDouble("Longuitude", 0);
 
-        new ObtenerDestacados().execute();
+        try {
+            new ObtenerDestacados().execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -120,6 +127,10 @@ public class FavoriteFragment extends Fragment {
                     post.setRadius(jsonobject.optInt("Radius"));
                     post.setWorkDetail(jsonobject.getString("WorkDetail"));
                     post.setFavorite(jsonobject.getInt("Favorite"));
+                    post.setPartido(jsonobject.getString("Partido"));
+                    post.setLocalidad(jsonobject.getString("Localidad"));
+                    post.setCalle(jsonobject.getString("Calle"));
+                    post.setAltura(jsonobject.getInt("Favorite"));
                     posts.add(post);
                 }
             } catch (Exception e) {
@@ -136,15 +147,27 @@ public class FavoriteFragment extends Fragment {
                 if (posts.get(i).Favorite == 1){
                     productList.add(
                             new Product(
-                                    posts.get(i).IdPost,
+                                    /*posts.get(i).IdPost,
                                     posts.get(i).TypeWork,
                                     posts.get(i).Description,
                                     posts.get(i).ImageUrl,
                                     posts.get(i).Favorite,"",
-                                    "",
+                                    posts.get(i).Localidad,
+                                    posts.get(i).Altura,
+                                    posts.get(i).Calle,
+                                    posts.get(i).Partido,
+                                    Double.parseDouble(posts.get(i).Latitude),
+                                    Double.parseDouble(posts.get(i).Longitude)));*/
+                                    posts.get(i).IdPost,
+                                    posts.get(i).WorkDetail,
+                                    posts.get(i).Description,
+                                    posts.get(i).ImageUrl,
                                     0,
-                                    "",
-                                    "",
+                                    posts.get(i).TypeWork,
+                                    posts.get(i).Localidad,
+                                    posts.get(i).Altura,
+                                    posts.get(i).Calle,
+                                    posts.get(i).Partido,
                                     Double.parseDouble(posts.get(i).Latitude),
                                     Double.parseDouble(posts.get(i).Longitude)));
                 }
@@ -159,7 +182,7 @@ public class FavoriteFragment extends Fragment {
                                     0));
                 }*/
             }
-            ProductAdapter adapter = new ProductAdapter(context, productList, Integer.parseInt(idUser),Latitude,Longuitude);
+            ProductAdapter adapter = new ProductAdapter(context, productList, Integer.parseInt(idUser),Latitude,Longuitude,"Favoritos");
 
             recyclerView.setAdapter(adapter);
         }

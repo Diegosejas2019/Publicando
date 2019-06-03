@@ -114,7 +114,7 @@ public class PostSetDetailActivity extends AppCompatActivity implements View.OnC
                         6,
                         "Programador"));
         //creating recyclerview adapter
-        ServiciosAdapter adapterServicio = new ServiciosAdapter(this, serviciosList,1);
+        ServiciosAdapter adapterServicio = new ServiciosAdapter(this, serviciosList,mIdUser);
 
         //setting adapter to recyclerview
         recyclerView.setAdapter(adapterServicio);
