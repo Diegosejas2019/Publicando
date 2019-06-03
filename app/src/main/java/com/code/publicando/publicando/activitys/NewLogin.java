@@ -448,6 +448,7 @@ public class NewLogin extends AppCompatActivity implements View.OnClickListener,
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
             nameValuePairs.add(new BasicNameValuePair("Email", mEmail));
             nameValuePairs.add(new BasicNameValuePair("UserName", mName));
+            nameValuePairs.add(new BasicNameValuePair("Password", "R"));
 
             String Resultado="";
             Url url = new Url();

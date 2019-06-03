@@ -211,8 +211,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
         //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
         Url url = new Url();
+
+        String[] separated = product.getImageUrl().split("\\\\");
         Picasso.with(mCtx)
-                .load(url.getDireccion() + "/Imagenes/" + product.getImageUrl().substring((product.getImageUrl().length()-6)).replaceAll("\\\\", ""))
+                //.load(url.getDireccion() + "/Imagenes/" + product.getImageUrl().substring((product.getImageUrl().length()-6)).replaceAll("\\\\", ""))
+                .load(url.getDireccion() + "/Imagenes/" + separated[5])
                 .resize(1400, 850)
                 .into(holder.imageView);
 

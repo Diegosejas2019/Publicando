@@ -447,9 +447,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected Boolean doInBackground(Void... params) {
             Boolean flag = false;
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
             nameValuePairs.add(new BasicNameValuePair("Email", mEmail));
             nameValuePairs.add(new BasicNameValuePair("UserName", mName));
+            nameValuePairs.add(new BasicNameValuePair("Password", "R "));
 
             String Resultado="";
             Url url = new Url();

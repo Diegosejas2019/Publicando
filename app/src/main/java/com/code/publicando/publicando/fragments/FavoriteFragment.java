@@ -162,7 +162,7 @@ public class FavoriteFragment extends Fragment {
                                     posts.get(i).WorkDetail,
                                     posts.get(i).Description,
                                     posts.get(i).ImageUrl,
-                                    0,
+                                    posts.get(i).Favorite,
                                     posts.get(i).TypeWork,
                                     posts.get(i).Localidad,
                                     posts.get(i).Altura,

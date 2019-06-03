@@ -176,7 +176,7 @@ public class PostFinishAcvitity extends AppCompatActivity implements View.OnClic
                         Intent mainIntent = new Intent(PostFinishAcvitity.this,
                                 MainActivity.class);
                         mainIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                        mainIntent.putExtra("idUser", IDuser); //Optional parameters
+                        mainIntent.putExtra("idUser", mIdUser); //Optional parameters
                         startActivity(mainIntent);
                         PostFinishAcvitity.this.finish();
                         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
