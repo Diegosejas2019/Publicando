@@ -158,6 +158,9 @@ public class MainActivity extends AppCompatActivity
             Fragment fragment = new MainFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
         }
+
+
+
     }
 
     public class UserUbicationTask extends AsyncTask<Void, Void, Boolean> {
@@ -398,11 +401,6 @@ public class MainActivity extends AppCompatActivity
         }
         switch (id) {
             case R.id.btnServicio:
-                /*fragment = new filter();
-                //fragment = new ServiceListFragment();
-                args.putString("Type", "Servicio");
-                fragment.setArguments(args);
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();*/
 
                 getSupportFragmentManager().beginTransaction().
                         remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
@@ -427,6 +425,19 @@ public class MainActivity extends AppCompatActivity
                 args.putString("Type", "Promocion");
                 fragment.setArguments(args);
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();*/
+                break;
+            case R.id.setUbicacion:
+
+                myIntent = new Intent(MainActivity.this, MainZone.class);
+                myIntent.addFlags(FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                myIntent.putExtra("idUser", mIdUser);
+                myIntent.putExtra("Latitud", mLatitude);
+                myIntent.putExtra("Longuitud", mLongitud);
+                myIntent.putExtra("Radius", mRadius);
+                getSupportFragmentManager().beginTransaction().
+                        remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
+                MainActivity.this.startActivity(myIntent);
+                MainActivity.this.finish();
                 break;
             case R.id.imageView:
 

@@ -78,16 +78,11 @@
         <activity
             android:name=".activitys.LocationActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activitys.SetZoneActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activitys.ServicesList_Activity"
             android:screenOrientation="portrait"
@@ -99,9 +94,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activitys.CreatePostActivity" />
         <activity android:name=".activitys.PostSetDetailActivity" />
-        <activity android:name=".activitys.PostUploadPhotoActivity">
-
-        </activity>
+        <activity android:name=".activitys.PostUploadPhotoActivity"></activity>
         <activity android:name=".activitys.PostSetUbicationActivity" />
         <activity android:name=".activitys.PostFormActivity" />
         <activity android:name=".activitys.PostFinishAcvitity" />
@@ -126,10 +119,12 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activitys.DetailActivity"
+        <activity
+            android:name=".activitys.DetailActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" ></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activitys.MainZone"></activity>
     </application>
 
 </manifest>

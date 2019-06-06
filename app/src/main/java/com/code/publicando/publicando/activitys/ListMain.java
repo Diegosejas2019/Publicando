@@ -70,7 +70,7 @@ public class ListMain extends AppCompatActivity implements NavigationView.OnNavi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Publicando");
+
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -91,6 +91,8 @@ public class ListMain extends AppCompatActivity implements NavigationView.OnNavi
             Latitude = b.getDouble("Latitude");
             Longuitude = b.getDouble("Longuitude");
         }
+
+        getSupportActionBar().setTitle(Detail);
 
         new ObtenerDestacados().execute();
 
